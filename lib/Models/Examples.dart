@@ -208,6 +208,10 @@ class Examples
   );
 
 static final Application APPLICATION = Application(
+    schoolId: 'shoolid1',
+    serviceId: 'not applicable',
+    courseName: '2 wheeler driving',
+    learnerName: 'Learner Name',
     dateApplied: DateTime.now(),
     learnerObjectId: 'learner123',
     applicationNumber: 'APP001',

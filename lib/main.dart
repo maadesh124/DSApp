@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/firebase_options.dart';
@@ -10,17 +11,12 @@ void main() async{
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
-  var docs= await db.collection('Test').doc('t1').set(Examples.CORURSE.toMap());//.then((qurysnap)
-  //var map=docs.data();
- // print(map!['date']);
-  var d1=await db.collection('Test').doc('t2').get();
-var t=d1.data()!['time'].seconds;
-  var dt = DateTime.fromMillisecondsSinceEpoch(t*1000);
-  print(dt);
+  var docs= await db.collection('Test').doc('t1').set(Examples.APPLICATION.toMap());//.then((qurysnap)
+
   db.collection('Test').doc('t1').get().then((value)
   {
-    Course course=Course.fromMap(value.data()!);
-    print(course.dsName);
+    Application application=Application.fromMap(value.data()!);
+    print(application.toMap());
   },);
 
 
