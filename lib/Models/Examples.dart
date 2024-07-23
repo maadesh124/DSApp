@@ -191,17 +191,19 @@ class Examples
 
 
   static final SchoolAttendance SCHOOLATTENDANCE = SchoolAttendance(
-    schoolObjectId: 'school123',
-    attendanceData: {
-      '2023|11|24': {
-        'instructor1,insname1': true,
-        'instructor2,insname2': false,
-      },
-      '2023|11|25': {
-        'instructor1,insname1': true,
-        'instructor2,insname2': true,
-      },
-    },
+    schoolId: 'school123',
+    attendance:{
+      '24|07|24':
+      [SingleAttendance(name: 'Name1',id: 'id1',status: false),
+      SingleAttendance(name: 'Name2',id: 'id2',status: false),
+      SingleAttendance(name: 'Name3',id: 'id3',status: false)
+      ],
+            '23|07|24':
+      [SingleAttendance(name: 'Name1',id: 'id1',status: false),
+      SingleAttendance(name: 'Name2',id: 'id2',status: false),
+      SingleAttendance(name: 'Name3',id: 'id3',status: false)
+      ]
+    } 
   );
 
 static final Application APPLICATION = Application(

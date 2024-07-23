@@ -8,6 +8,12 @@ import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Enquiry.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
+import 'package:fp3/Models/Learner.dart';
+import 'package:fp3/Models/Ratings.dart';
+import 'package:fp3/Models/Reviews.dart';
+import 'package:fp3/Models/SchoolAttendance.dart';
+import 'package:fp3/Models/Service.dart';
+import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/firebase_options.dart';
 
 void main() async{
@@ -15,14 +21,12 @@ void main() async{
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
-  var docs= await db.collection('Test').doc('t1').set(Examples.INSTRUCTOR.toMap());//.then((qurysnap)
+  var docs= await db.collection('Test').doc('t1').set(Examples.VEHICLE.toMap());//.then((qurysnap)
 
-  db.collection('Test').doc('t1').get().then((value)
-  {
-   Instructor c= Instructor.fromMap(value.data()!);
-    print(c.courseIds);
+  db.collection('Test').doc('t1').get().then((value) {
+    Vehicle r=Vehicle.fromMap(value.data()!);
+    print(r.timeTable.runtimeType);
   },);
-
 
 
   runApp(const MyApp());
