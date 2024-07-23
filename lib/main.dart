@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/CourseAttendance.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/firebase_options.dart';
 
@@ -11,12 +12,12 @@ void main() async{
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
-  var docs= await db.collection('Test').doc('t1').set(Examples.APPLICATION.toMap());//.then((qurysnap)
+  var docs= await db.collection('Test').doc('t1').set(Examples.COURSEATTENDANCE.toMap());//.then((qurysnap)
 
   db.collection('Test').doc('t1').get().then((value)
   {
-    Application application=Application.fromMap(value.data()!);
-    print(application.toMap());
+   CourseAttendance c= CourseAttendance.fromMap(value.data()!);
+    print(c.attendance.runtimeType);
   },);
 
 

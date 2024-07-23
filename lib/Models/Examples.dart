@@ -168,25 +168,22 @@ class Examples
     courseObjectIds: ['course1', 'course2'],
   );
   
+  static final SingleAttendance SINGLEATTENDANCE=SingleAttendance(name: 'Name1',id: 'id1',status: false);
 
   static final CourseAttendance COURSEATTENDANCE = CourseAttendance(
     courseId: 'C001',
     courseName:'Course NAme',
     attendance:{
       '24|07|24':
-      {
-        'studid12,name5':true,
-        'studid1,name1':true,
-        'studid2,name2':true,
-        'studid3,name3':false
-      },
+      [SingleAttendance(name: 'Name1',id: 'id1',status: false),
+      SingleAttendance(name: 'Name2',id: 'id2',status: false),
+      SingleAttendance(name: 'Name3',id: 'id3',status: false)
+      ],
             '23|07|24':
-      {
-        'studid12,name5':true,
-        'studid1,name1':true,
-        'studid2,name2':true,
-        'studid3,name3':false
-      }
+      [SingleAttendance(name: 'Name1',id: 'id1',status: false),
+      SingleAttendance(name: 'Name2',id: 'id2',status: false),
+      SingleAttendance(name: 'Name3',id: 'id3',status: false)
+      ]
     } 
   );
 
