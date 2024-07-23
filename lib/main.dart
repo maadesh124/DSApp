@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/CourseAttendance.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
+import 'package:fp3/Models/Enquiry.dart';
 import 'package:fp3/Models/Examples.dart';
+import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/firebase_options.dart';
 
 void main() async{
@@ -12,12 +15,12 @@ void main() async{
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
-  var docs= await db.collection('Test').doc('t1').set(Examples.COURSEATTENDANCE.toMap());//.then((qurysnap)
+  var docs= await db.collection('Test').doc('t1').set(Examples.INSTRUCTOR.toMap());//.then((qurysnap)
 
   db.collection('Test').doc('t1').get().then((value)
   {
-   CourseAttendance c= CourseAttendance.fromMap(value.data()!);
-    print(c.attendance.runtimeType);
+   Instructor c= Instructor.fromMap(value.data()!);
+    print(c.courseIds);
   },);
 
 
