@@ -1,9 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/Models/Instructor.dart';
 
 class CreateInstructor extends StatelessWidget {
-  const CreateInstructor({super.key});
+ CreateInstructor({super.key});
+  TextEditingController insIdCont=TextEditingController();
+  TextEditingController pwdCont=TextEditingController();
+  TextEditingController cnfPwdCont=TextEditingController();
+  
+  void createClicked()
+  {
+      if(pwdCont.text!=cnfPwdCont.text)
+      return;
+      else
+      {
+        Instructor.createInstructor(id: insIdCont.text, pwd: pwdCont.text);
+      }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,7 @@ class CreateInstructor extends StatelessWidget {
       
       Container(width:180,
     height: 30,
-     child:TextField(cursorColor: Colors.black,
+     child:TextField( controller: insIdCont,  cursorColor: Colors.black,
     // cursorHeight: 16,
   decoration: InputDecoration(
     hintText: 'Instructor id',
@@ -43,7 +58,7 @@ class CreateInstructor extends StatelessWidget {
     SizedBox(height: 10,), 
     Container(width:180,
     height: 30,
-     child:TextField(cursorColor: Colors.black,
+     child:TextField( controller: pwdCont,  cursorColor: Colors.black,
     // cursorHeight: 16,
   decoration: InputDecoration(
     hintText: 'Password',
@@ -60,7 +75,7 @@ class CreateInstructor extends StatelessWidget {
     SizedBox(height: 10,), 
         Container(width:180,
     height: 30,
-     child:TextField(cursorColor: Colors.black,
+     child:TextField(controller: cnfPwdCont,  cursorColor: Colors.black,
     // cursorHeight: 16,
   decoration: InputDecoration(
     hintText: 'Confirm Password',
@@ -75,10 +90,10 @@ class CreateInstructor extends StatelessWidget {
 )
     ),
     SizedBox(height: 50,), 
-    Container(width: 100,height: 30,decoration: BoxDecoration(
+ InkWell(onTap: createClicked,  child:  Container(width: 100,height: 30,decoration: BoxDecoration(
       color: PageConstants.DARKGREEN,
       borderRadius: BorderRadius.circular(10)
-    ),child:Center(child:Text("Create",style: TextStyle(color: Colors.white)),),)
+    ),child:Center(child:Text("Create",style: TextStyle(color: Colors.white)),),))
     
     ],),))
 

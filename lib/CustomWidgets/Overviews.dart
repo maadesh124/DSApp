@@ -36,7 +36,7 @@ class CourseOverview extends StatelessWidget {
           children: [
           Text(course.name),
           Text(instructor.name),
-          Text(instructor.id),
+          Text(instructor.insId),
           Text('${course.startTime.hour}.${course.startTime.minute}-${course.endTime.hour}.${course.endTime.minute}'),
           Text(vehicle.vehicleNumber),
           Text('${course.availableSeats}/${course.totalSeats} seats available')
@@ -93,7 +93,7 @@ class InstructorOverview extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
           children: [
           Text(instructor.name),
-          Text(instructor.id),
+          Text(instructor.insId),
           Text(instructor.mobileNumber),
           Text(instructor.email),
           Text(instructor.specialization),

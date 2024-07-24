@@ -5,7 +5,7 @@ import 'package:fp3/Models/Examples.dart';
 
 class User {
   static String docId = '';
-  static DrivingSchool currentSchool = DrivingSchool.fromMap({});
+  static DrivingSchool _currentSchool = DrivingSchool.fromMap({});
 
   static Future<void> initialize(String docIda) async {
     int n=0;
@@ -15,16 +15,22 @@ class User {
     // Fetch initial data
     final snapshot = await docRef.get();
     if (snapshot.exists) {
-      User.currentSchool = DrivingSchool.fromMap(snapshot.data()!);
+      User._currentSchool = DrivingSchool.fromMap(snapshot.data()!);
     }
 
     // Listen for updates
     docRef.snapshots().listen((snapshot) {
       if (snapshot.exists) {
-        User.currentSchool = DrivingSchool.fromMap(snapshot.data()!);
+        User._currentSchool = DrivingSchool.fromMap(snapshot.data()!);
         n++;
         print('changed'+n.toString());
       }
     });
   }
+
+  static DrivingSchool getDS()=>User._currentSchool;
+
+  static setDS(DrivingSchool ds)=>
+    FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc(docId).set(ds.toMap());
+  
 }

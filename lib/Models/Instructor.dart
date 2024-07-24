@@ -1,42 +1,68 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fp3/DrivingSchool/CreateInstructor.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
+import 'package:fp3/Models/Examples.dart';
+import 'package:fp3/User.dart';
+
 class Instructor {
-  final String name;
-  final String id;
-  final String mobileNumber;
-  final String email;
-  final DateTime joinDate;
-  final double salary;
-  final DateTime dob;
-  final String gender;
-  final String specialization;
-  final String schoolId;
-  final Map<String, Map<String, String>> timeTable;
-  final List<String> courseIds;
-  final List<String> serviceIds;
-  final String objectId;
-  final String password;
+  String name;
+  String insId;
+  String mobileNumber;
+  String email;
+  DateTime? joinDate=DateTime.now();
+  double salary;
+  DateTime? dob;
+  String gender;
+  String specialization;
+  String schoolId;
+  Map<String, Map<String, String>> timeTable;
+  List<String> courseIds;
+  List<String> serviceIds;
+  String objectId;
+  String password;
 
   Instructor({
-    required this.name,
-    required this.id,
-    required this.mobileNumber,
-    required this.email,
-    required this.joinDate,
-    required this.salary,
-    required this.dob,
-    required this.gender,
-    required this.specialization,
+    this.name='',
+    required this.insId,
+    this.mobileNumber='',
+    this.email='',
+    this.joinDate,
+    this.salary=0,
+    this.dob,
+    this.gender='',
+    this.specialization='',
     this.schoolId = '', // Default to an empty string
     this.timeTable = const {}, // Default to an empty map
     this.courseIds = const [], // Default to an empty list
     this.serviceIds = const [], // Default to an empty list
     this.objectId = '', // Default to an empty string
-    this.password = '', // Default to an empty string
+    required  this.password , // Default to an empty string
   });
+
+  
+ static Future<Instructor> createInstructor({required String id,required String pwd})async
+  {
+      Instructor instructor=Instructor(insId: id, password: pwd);
+      instructor.joinDate=DateTime.now();
+      instructor.dob=DateTime.parse('1998-07-24 15:44:00');
+      instructor.schoolId=User.docId;
+
+      final doc=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+      add(instructor.toMap());
+      instructor.objectId=doc.id;
+      DrivingSchool ds=User.getDS();
+      ds.instructorIds.add(doc.id);
+      User.setDS(ds);
+
+      return instructor;
+
+  }
 
   factory Instructor.fromMap(Map<String, dynamic> map) {
     return Instructor(
       name: map['name'] as String? ?? '',
-      id: map['id'] as String? ?? '',
+      insId: map['insId'] as String? ?? '',
       mobileNumber: map['mobileNumber'] as String? ?? '',
       email: map['email'] as String? ?? '',
       joinDate: DateTime.fromMillisecondsSinceEpoch((map['joinDate'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch),
@@ -60,7 +86,7 @@ class Instructor {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'id': id,
+      'insId': insId,
       'mobileNumber': mobileNumber,
       'email': email,
       'joinDate': joinDate,

@@ -59,7 +59,7 @@ class Examples
 
    static final Instructor INSTRUCTOR = Instructor(
     name: 'John Doe',
-    id: 'instructor123',
+    insId: 'instructor123',
     mobileNumber: '9876543210',
     email: 'johndoe@example.com',
     joinDate: DateTime(2023, 1, 1),

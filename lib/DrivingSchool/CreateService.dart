@@ -16,12 +16,12 @@ class CreateService extends StatelessWidget {
   TextEditingController serviceFeeController=TextEditingController();
   TextEditingController descriptionController=TextEditingController();
   List<String> requiredDocuments=[];
-  String dsId='w42tQh0oLjlD0LsEGxPs';
+  //String dsId='w42tQh0oLjlD0LsEGxPs';
 
 String? validateName(dynamic st)=> (st==null || st.isEmpty)? 'Enter a valid Service Name':null;
 
 String? validateInsId(dynamic insId)=>
-User.currentSchool.serviceIds.contains(insId)? null:'Invalid Id';
+User.getDS().serviceIds.contains(insId)? null:'Invalid Id';
 
 bool isNumeric(String str) {
   final numericRegex = RegExp(r'^[0-9]+$');
@@ -36,23 +36,15 @@ String? validateFee(dynamic fee)=>(isNumeric(fee??'a'))?null:'Enter only digits'
 void onSubmit() async
 {
 
+final insrefs=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+where('insId',isEqualTo: instructorIdController.text).get();
   Service service=Service(name: serviceController.text, 
   fee: double.parse(serviceFeeController.text),
    description: descriptionController.text, 
-   instructorId: instructorIdController.text, requiredDocuments: requiredDocuments);
+   instructorId: insrefs.docs.first.id, requiredDocuments: requiredDocuments);
 
-   await service.setIds();
-   print(service.toMap());
-   final doc= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
-   final dsref=FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc(dsId);
-   await dsref.get().then((snap)
-   {
-     DrivingSchool ds= DrivingSchool.fromMap(snap.data()!);
-     ds.serviceIds.add(doc.id);
-     dsref.set(ds.toMap());
-   });
-
-   print(User.currentSchool.toMap());
+  Service.createService(service); 
+   print(User.getDS().toMap());
 
     
 }

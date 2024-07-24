@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/test.dart';
 import 'package:fp3/Models/Application.dart';
@@ -29,7 +30,7 @@ void main() async{
 
   await User.initialize('w42tQh0oLjlD0LsEGxPs');
   print('hello');
-  print(User.currentSchool.description);
+  print(User.getDS().description);
 
   // db.collection('Test').doc('t1').get().then((value) {
   //   Vehicle r=Vehicle.fromMap(value.data()!);
