@@ -37,7 +37,7 @@ void onSubmit() async
 {
 
 final insrefs=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-where('insId',isEqualTo: instructorIdController.text).get();
+where('insId',isEqualTo: instructorIdController.text).where('schoolId',isEqualTo: User.docId).get();
   Service service=Service(name: serviceController.text, 
   fee: double.parse(serviceFeeController.text),
    description: descriptionController.text, 
