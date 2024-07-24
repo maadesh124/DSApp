@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
 
@@ -9,8 +10,8 @@ class Service {
   final List<String> requiredDocuments;
   final List<String> studentObjectIds;
   final List<String> applicationObjectIds;
-  final String ratingObjectId;
-  final String reviewObjectId;
+  String ratingObjectId;
+  String reviewObjectId;
 
   Service({
     required this.name,
@@ -20,11 +21,19 @@ class Service {
     required this.requiredDocuments,
     this.studentObjectIds = const [], // Default to an empty list
     this.applicationObjectIds = const [], // Default to an empty list
-    this.ratingObjectId = '',
-    this.reviewObjectId = '',
+    this.ratingObjectId = 'ratingid1',
+    this.reviewObjectId = 'reviewid1',
   });
 
   Instructor getInstructor() => Examples.INSTRUCTOR;
+
+  Future<void> setIds()async
+  {
+   await FirebaseFirestore.instance.collection(DataBase.RATINGS_COLLECTION).add({}).
+   then((docref)=>ratingObjectId=docref.id);
+   await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({}).
+   then((value) => reviewObjectId=value.id);
+  }
 
   factory Service.fromMap(Map<String, dynamic> map) {
     return Service(

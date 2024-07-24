@@ -40,6 +40,9 @@ void onSubmit() async
   fee: double.parse(serviceFeeController.text),
    description: descriptionController.text, 
    instructorId: instructorIdController.text, requiredDocuments: requiredDocuments);
+
+   await service.setIds();
+   print(service.toMap());
    final doc= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
    final dsref=FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc(dsId);
    await dsref.get().then((snap)
