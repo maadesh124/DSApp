@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
+import 'package:fp3/DrivingSchool/CreateVehicle.dart';
 import 'package:fp3/DrivingSchool/test.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         //ppBar: AppBar(title: Text('Checkbox Example')),
-        body:CreateService(),
+        body:CreateVehicle(),
       ),
     );
   }

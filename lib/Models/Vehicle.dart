@@ -1,31 +1,43 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/Examples.dart';
+import 'package:fp3/User.dart';
+
 class Vehicle {
   final String vehicleNumber;
-  final String type;
+  final String name;
   final String vehicleId;
-  final DateTime lastServiceDate;
-  final DateTime nextServiceDate;
+  final String description;
   final int numberOfCoursesUsing;
   final Map<String, Map<String, String>> timeTable;
   final List<String> courseObjectIds;
 
   Vehicle({
     required this.vehicleNumber,
-    required this.type,
+    required this.name,
     required this.vehicleId,
-    required this.lastServiceDate,
-    required this.nextServiceDate,
+    required this.description,
     this.numberOfCoursesUsing = 0, // Default to 0
     this.timeTable = const {}, // Default to an empty map
     this.courseObjectIds = const [], // Default to an empty list
   });
 
+  static Future<Vehicle> create(Vehicle vehicle)async{
+    
+    final docref= await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).add(vehicle.toMap());
+    var ds=User.getDS();
+    ds.vehicleIds.add(docref.id);
+    User.setDS(ds);
+    return vehicle;
+  }
+
   factory Vehicle.fromMap(Map<String, dynamic> map) {
     return Vehicle(
       vehicleNumber: map['vehicleNumber'] as String? ?? '',
-      type: map['type'] as String? ?? '',
+      description: map['description'],
+      name: map['type'] as String? ?? '',
       vehicleId: map['vehicleId'] as String? ?? '',
-      lastServiceDate: DateTime.parse(map['lastServiceDate'] as String),
-      nextServiceDate: DateTime.parse(map['nextServiceDate'] as String),
       numberOfCoursesUsing: map['numberOfCoursesUsing'] as int? ?? 0,
       timeTable: (map['timeTable'] as Map<String, dynamic>? ?? {}).map((key, value) => MapEntry(
         key,
@@ -38,10 +50,9 @@ class Vehicle {
   Map<String, dynamic> toMap() {
     return {
       'vehicleNumber': vehicleNumber,
-      'type': type,
+      'name': name,
       'vehicleId': vehicleId,
-      'lastServiceDate': lastServiceDate.toIso8601String(),
-      'nextServiceDate': nextServiceDate.toIso8601String(),
+      'description':description,
       'numberOfCoursesUsing': numberOfCoursesUsing,
       'timeTable': timeTable.map((key, value) => MapEntry(
         key,

@@ -148,11 +148,10 @@ class Examples
 
  static final Vehicle VEHICLE = Vehicle(
     vehicleNumber: 'DL1CA1234',
-    type: 'Car',
+    name: 'Car',
     vehicleId: 'vehicle123',
-    lastServiceDate: DateTime(2023, 1, 1),
-    nextServiceDate: DateTime(2024, 1, 1),
     numberOfCoursesUsing: 2,
+    description: 'Vehicle Description',
     timeTable: {
       'Monday':
       {
