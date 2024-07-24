@@ -120,9 +120,8 @@ class VehicleOverview extends StatelessWidget {
     children: [
         Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
         Text("Vehicle Number: "+vehicle.vehicleNumber),
-        Text("Vehicle Type: "+vehicle.type),
-        Text('Last serviced on: ${vehicle.lastServiceDate.day}-${
-          vehicle.lastServiceDate.month}-${vehicle.lastServiceDate.year}'),
+        Text("Vehicle name: "+vehicle.vehicleNumber),
+        Text("Vehicle description: "+vehicle.description),
           Text('Used in ${vehicle.numberOfCoursesUsing}')
     ],),
     );
