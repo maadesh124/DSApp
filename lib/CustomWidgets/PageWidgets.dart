@@ -99,19 +99,20 @@ class BottomNavigation extends StatelessWidget {
 
 class InputBox extends StatelessWidget {
   final double width,height;
+  FormFieldValidator? validator;
   bool obscureText;
   BoxDecoration? decoration;
   String? text;
   String? label; 
   TextEditingController? textEditingController;
   InputBox({super.key,required this.width,required this.height,this.text,this.decoration,
-  this.textEditingController,this.label,this.obscureText=false});
+  this.textEditingController,this.label,this.obscureText=false,this.validator});
 
   @override
   Widget build(BuildContext context) {
     return Container(width:width,decoration: decoration,
     height: height,
-     child:TextField(style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500),
+     child:TextFormField(validator: validator,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500),
       controller: textEditingController,
       cursorColor: PageConstants.BLACK50,
       obscureText: obscureText,
