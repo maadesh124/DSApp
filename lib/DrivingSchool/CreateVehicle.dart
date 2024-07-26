@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/Models/Vehicle.dart';
+import 'package:fp3/User.dart';
 
 class CreateVehicle extends StatelessWidget {
   CreateVehicle({super.key});
@@ -14,7 +15,7 @@ class CreateVehicle extends StatelessWidget {
 
 void createClicked()
 {
-  Vehicle vehicle=Vehicle(vehicleNumber: number.text,
+  Vehicle vehicle=Vehicle( schoolId: User.docId ,vehicleNumber: number.text,
    name: name.text, vehicleId: id.text, description: des.text);
    Vehicle.create(vehicle);
 }

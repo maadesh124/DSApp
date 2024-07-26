@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
+import 'package:fp3/Models/Reviews.dart';
 import 'package:fp3/User.dart';
 
 class Service {
@@ -31,13 +32,15 @@ class Service {
   static Future<Service> createService(Service service)async
   {
     //add rating and review id
-   await FirebaseFirestore.instance.collection(DataBase.RATINGS_COLLECTION).add({}).
-   then((docref)=>service.ratingObjectId=docref.id);
-   await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({}).
-   then((value) => service.reviewObjectId=value.id);
+  
+  final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
+  service.reviewObjectId=revref.id;
 
-   //add service
+      //add service
    final docref= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
+  Review review=Review(receiver: 'Service',receiverId: docref.id);
+  revref.set(review.toMap());
+  
   //add to ds
   final ds=User.getDS();
   ds.serviceIds.add(docref.id);

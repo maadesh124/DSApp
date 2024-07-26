@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Application.dart';
@@ -102,7 +104,7 @@ class Examples
     courseId: 'C001',
     startDate: DateTime(2023, 1, 1),
     endDate: DateTime(2023, 12, 31),
-    courseDuration: Duration(days: 90),
+    courseDuration:'90 days',
     courseFee: 20000,
     startTime: TimeOfDay(hour: 9, minute: 0),
     endTime: TimeOfDay(hour: 12, minute: 0),
@@ -118,6 +120,9 @@ class Examples
     progress: [
       Progress(lessonName: 'PreRequisites', lessonDescription: 'Pre requisites for course', isCompleted: true),
       Progress(lessonName: 'Introduction', lessonDescription: 'Basic concepts', isCompleted: false),
+      Progress(lessonName: 'Lsson n',lessonDescription: '''lesson description lesson description 
+      lesson description lesson description lesson description lesson description lesson description 
+      lesson description lesson description ''',isCompleted: true)
       // ... other progress items
     ],
     learnerObjectIds: ['learner1', 'learner2'],
@@ -147,6 +152,7 @@ class Examples
 
 
  static final Vehicle VEHICLE = Vehicle(
+  schoolId: 'schoolId',
     vehicleNumber: 'DL1CA1234',
     name: 'Car',
     vehicleId: 'vehicle123',

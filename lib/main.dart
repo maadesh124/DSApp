@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
@@ -25,9 +27,9 @@ void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
- //FirebaseFirestore db=FirebaseFirestore.instance;
-  // var docs= await db.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc('w42tQh0oLjlD0LsEGxPs').
-  // set(Examples.DRIVINGSCHOOL.toMap());//.then((qurysnap)
+//  FirebaseFirestore db=FirebaseFirestore.instance;
+//   var docs= await db.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc('w42tQh0oLjlD0LsEGxPs').
+//   set(Examples.DRIVINGSCHOOL.toMap());//.then((qurysnap)
 
   await User.initialize('w42tQh0oLjlD0LsEGxPs');
   print('hello');
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         //ppBar: AppBar(title: Text('Checkbox Example')),
-        body:CreateVehicle(),
+        body:CreateCourse(),
       ),
     );
   }

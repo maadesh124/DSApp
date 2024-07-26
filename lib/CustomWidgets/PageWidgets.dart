@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:fp3/Models/Course.dart';
 
 class Top extends StatelessWidget
 {
@@ -68,7 +69,7 @@ class PageConstants
    static const Color BLACK20=Color.fromARGB(51,0,0,0);
    static const BoxDecoration PAGEBACKGROUND=BoxDecoration(gradient: 
     LinearGradient(begin: Alignment.topCenter,end: Alignment.bottomCenter,  
-    colors:<Color>[PageConstants.LIGHTGREEN,Colors.white]));
+    colors:<Color>[PageConstants.LIGHTGREEN,Color.fromARGB(255, 196, 236, 212)]));
 }
 
 
@@ -193,5 +194,120 @@ class DefaultImage extends StatelessWidget {
      child:  FittedBox(
                 fit:BoxFit.cover ,
                 child: Image.asset('D:/Flutter Projects/fp1/assets/images/img.png'),));
+  }
+}
+
+class ProgressView extends StatefulWidget {
+
+List<Progress> list=[];
+
+ProgressView({super.key,required this.list});
+
+
+  @override
+  State<ProgressView> createState() => _ProgressViewState();
+}
+
+
+
+class _ProgressViewState extends State<ProgressView> {
+List<Progress> progressList=[];
+TextEditingController name=TextEditingController();
+TextEditingController des=TextEditingController();
+
+@override
+void initState()
+{
+  super.initState();
+  progressList=widget.list;
+
+}
+
+void addLesson()
+  {
+    showDialog(context: context, builder: (context) 
+    {
+      return AlertDialog(title: Text("Add Lesson"),content:Container(
+        height: 100, child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        InputBox(height: 30,width: 200,
+      text: "Lesson Name",
+      textEditingController: name,),
+      SizedBox(height: 10,),
+      InputBox(height: 30,width: 200,
+      text: "Lesson Description",
+      textEditingController: des,)
+      ])), 
+      actions: [
+        InkWell(splashColor: PageConstants.BLACK20,  onTap: ()
+        {
+          Navigator.of(context).pop();
+        }, 
+        child: Text("CANCEL",style: TextStyle(color: Colors.black),)),
+      
+        SizedBox(width: 10,),
+        InkWell(
+          onTap: ()
+      {
+        
+        print(progressList);
+        setState(() {
+          progressList.add(Progress(lessonName: name.text, lessonDescription: des.text, isCompleted: 
+          false));
+          
+        });
+        name.clear();
+        des.clear();
+        Navigator.of(context).pop();
+
+      }, child: Text("OK",style: TextStyle(color: Colors.black),))],);
+    } );
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final sw=MediaQuery.of(context).size.width;
+    int len=progressList.length<=3?progressList.length:3;
+    return   Container(width: sw*0.95,height: 150,
+    decoration: BoxDecoration(color: Colors.white,
+    borderRadius: BorderRadius.circular(15)),
+    child: Column(children: [
+      Row(children: [
+        SizedBox(width: 0.025*sw,),
+        Text('Lessons'),
+      Spacer(flex: 1,),
+      InkWell( onTap: addLesson, child: Container(child: Row(children: [
+        Icon(Icons.add,size: 20,),
+        Text('Add Lesson'),
+        SizedBox(width: 0.025*sw,)
+      ],),),)
+      ],),
+      Container(width: sw*0.90,height: 130,padding: EdgeInsets.all(0)
+      ,   child: ListView.builder(itemCount: progressList.length,
+      itemBuilder: (_,inex)=>SingleProgress(p: progressList[inex], index: inex+1),),)
+      
+    ],),);
+  }
+}
+
+
+class SingleProgress extends StatelessWidget {
+
+  Progress p;
+  int index;
+  SingleProgress({required this.p,required this.index ,super.key});
+
+  @override
+  Widget build(BuildContext context) {
+     final sw=MediaQuery.of(context).size.width;
+    return Column(children: [ Container(padding: EdgeInsets.all(10), width:0.95*sw ,
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+    color: (p.isCompleted)?PageConstants.LIGHTGREEN:PageConstants.BLACK20),
+    child: Text('${index}.${p.lessonName}:${p.lessonDescription}',textAlign: TextAlign.left,
+    softWrap: true,textDirection: TextDirection.ltr,)),
+    SizedBox(height: 5,)]);
   }
 }

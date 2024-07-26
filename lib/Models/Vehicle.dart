@@ -5,6 +5,7 @@ import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/User.dart';
 
 class Vehicle {
+  final String schoolId;
   final String vehicleNumber;
   final String name;
   final String vehicleId;
@@ -14,12 +15,14 @@ class Vehicle {
   final List<String> courseObjectIds;
 
   Vehicle({
+    required this.schoolId,
     required this.vehicleNumber,
     required this.name,
     required this.vehicleId,
     required this.description,
     this.numberOfCoursesUsing = 0, // Default to 0
-    this.timeTable = const {}, // Default to an empty map
+    this.timeTable =const {'Monday':{},'Tuesday':{},
+      'Wednesday':{},'Thursday':{},'Friday':{},'Saturday':{},'Sunday':{}} ,// Default to an empty map
     this.courseObjectIds = const [], // Default to an empty list
   });
 
@@ -34,6 +37,7 @@ class Vehicle {
 
   factory Vehicle.fromMap(Map<String, dynamic> map) {
     return Vehicle(
+      schoolId: map['schoolId'],
       vehicleNumber: map['vehicleNumber'] as String? ?? '',
       description: map['description'],
       name: map['type'] as String? ?? '',
@@ -49,6 +53,7 @@ class Vehicle {
 
   Map<String, dynamic> toMap() {
     return {
+      'schoolId':schoolId,
       'vehicleNumber': vehicleNumber,
       'name': name,
       'vehicleId': vehicleId,

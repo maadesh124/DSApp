@@ -33,7 +33,8 @@ class Instructor {
     this.gender='',
     this.specialization='',
     this.schoolId = '', // Default to an empty string
-    this.timeTable = const {}, // Default to an empty map
+    this.timeTable =const {'Monday':{},'Tuesday':{},
+      'Wednesday':{},'Thursday':{},'Friday':{},'Saturday':{},'Sunday':{}} , // Default to an empty map
     this.courseIds = const [], // Default to an empty list
     this.serviceIds = const [], // Default to an empty list
     this.objectId = '', // Default to an empty string
