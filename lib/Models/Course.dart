@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/CourseAttendance.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
@@ -203,6 +204,15 @@ User.setDS(ds);
       'currentRating': currentRating,
     };
   }
+
+  List<Application> getApplications()
+  {
+    
+    return [];
+  }
+
+
+
 }
 
 class Progress {

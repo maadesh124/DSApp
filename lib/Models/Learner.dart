@@ -3,6 +3,7 @@ class Learner {
   final String mobileNumber;
   final String email;
   final DateTime dob;
+  final int age;
   final String address;
   final String gender;
   final List<String> courseObjectIds;
@@ -17,7 +18,7 @@ class Learner {
     required this.gender,
     this.courseObjectIds = const [], // Default to an empty list
     this.serviceObjectIds = const [], // Default to an empty list
-  });
+  }):this.age=calculateAge(dob);
 
   factory Learner.fromMap(Map<String, dynamic> map) {
     return Learner(
@@ -34,6 +35,7 @@ class Learner {
 
   Map<String, dynamic> toMap() {
     return {
+      'age':age,
       'name': name,
       'mobileNumber': mobileNumber,
       'email': email,
@@ -44,4 +46,18 @@ class Learner {
       'serviceObjectIds': serviceObjectIds,
     };
   }
+}
+
+
+
+int calculateAge(DateTime birthDate) {
+  DateTime currentDate = DateTime.now();
+  int age = currentDate.year - birthDate.year;
+  int monthDiff = currentDate.month - birthDate.month;
+
+  if (monthDiff < 0 || (monthDiff == 0 && currentDate.day < birthDate.day)) {
+    age--;
+  }
+
+  return age;
 }

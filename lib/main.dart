@@ -27,18 +27,20 @@ void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//  FirebaseFirestore db=FirebaseFirestore.instance;
-//   var docs= await db.collection(DataBase.DRIVINGSCHOOL_COLLECTION).doc('w42tQh0oLjlD0LsEGxPs').
-//   set(Examples.DRIVINGSCHOOL.toMap());//.then((qurysnap)
+ FirebaseFirestore db=FirebaseFirestore.instance;
 
-  await User.initialize('w42tQh0oLjlD0LsEGxPs');
-  print('hello');
-  print(User.getDS().description);
+    final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
+    final learner=Learner.fromMap(leref.data()!);
 
-  // db.collection('Test').doc('t1').get().then((value) {
-  //   Vehicle r=Vehicle.fromMap(value.data()!);
-  //   print(r.timeTable.runtimeType);
-  // },);
+ await Enquiry.create('w42tQh0oLjlD0LsEGxPs',learner,'XiTB0DaQwd1Lqnz9MpNa');
+
+  //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
+  //   final course=Course.fromMap(coref.data()!);
+  //  final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
+  //   final learner=Learner.fromMap(leref.data()!);
+
+
+
 
 
   runApp(const MyApp());

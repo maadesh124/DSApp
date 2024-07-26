@@ -32,6 +32,8 @@ class DataBase
   static const String SERVICE_COLLECTION='Service';
   static const String VEHICLE_COLLECTION='Vehicle';
 
+
+
 }
 
 
@@ -212,6 +214,9 @@ class Examples
   );
 
 static final Application APPLICATION = Application(
+  learnerAddress: 'Adress ',
+  learnerAge: 20,
+  isMale: true,
     schoolId: 'shoolid1',
     serviceId: 'not applicable',
     courseName: '2 wheeler driving',
@@ -224,9 +229,12 @@ static final Application APPLICATION = Application(
   );
 
 
-
-
-static final Enquiry ENQUIRY=Enquiry(enquiryNo: 'enqid12', 
+static final Enquiry ENQUIRY=Enquiry(
+  learnerName: 'Learner name',
+  learnerAge: 21,
+  learnerAddress: '123 South street',
+  isMale: true,
+  enquiryNo: 'enqid12', 
 learnerId: 'studid1', messages: [Message( message: 'Hello',
     dateTime: DateTime.now(),
     sender: 'learner',)
