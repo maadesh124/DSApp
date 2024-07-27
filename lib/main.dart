@@ -7,6 +7,7 @@ import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
+import 'package:fp3/DrivingSchool/InstructorView.dart';
 import 'package:fp3/DrivingSchool/ServiceView.dart';
 import 'package:fp3/DrivingSchool/test.dart';
 import 'package:fp3/Models/Application.dart';
@@ -28,6 +29,7 @@ import 'package:fp3/firebase_options.dart';
 
  Course? gcourse;
  Service? gservice;
+ Instructor? ginstructor;
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +37,9 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  User.initialize('w42tQh0oLjlD0LsEGxPs');
 
-   final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
-    gcourse=Course.fromMap(coref.data()!);
+
+  //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
+  //   gcourse=Course.fromMap(coref.data()!);
 
     //   final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
     // final learner=Learner.fromMap(leref.data()!);
@@ -60,12 +63,15 @@ void main() async{
   //  final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
   //   final learner=Learner.fromMap(leref.data()!);
 
-final servref=await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).
-doc('ShkFj4H1djYVJkiznHJH').get();
- gservice=Service.fromMap(servref.data()!);
+// final servref=await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).
+// doc('ShkFj4H1djYVJkiznHJH').get();
+//  gservice=Service.fromMap(servref.data()!);
 //  final ins= await service!.getInstructor();
 //  print(ins.toMap());
 
+final insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+doc('rI2UWWwSz85LBnmbz1Ig').get();
+ginstructor=Instructor.fromMap(insref.data()!);
 
 
   runApp(const MyApp());
@@ -81,8 +87,29 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
        // body:CourseView(course: course!),
-        body:ServiceView(service: gservice!,),
+        body:InstructorView(instructor: ginstructor!,),
       ),
     );
   }
+}
+
+
+
+TimeOfDay parseTimeOfDay(String time) {
+  // Split the string into hour and minute components
+  final parts = time.split(':');
+  if (parts.length != 2) {
+    throw FormatException('Invalid time format. Expected HH:MM');
+  }
+
+  // Parse the hour and minute components
+  final hour = int.tryParse(parts[0]);
+  final minute = int.tryParse(parts[1]);
+
+  if (hour == null || minute == null) {
+    throw FormatException('Invalid hour or minute');
+  }
+
+  // Construct and return a TimeOfDay instance
+  return TimeOfDay(hour: hour, minute: minute);
 }

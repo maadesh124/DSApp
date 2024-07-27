@@ -25,7 +25,7 @@ class CourseOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(//color: Colors.red,
+      decoration: BoxDecoration(color: Colors.white,
       borderRadius: BorderRadius.circular(10)),
       width: screenWidth*0.95,
       height: 130,

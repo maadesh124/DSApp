@@ -90,15 +90,21 @@ class Examples
     specialization: '4-wheeler driving',
     timeTable: {
       'Monday': 
-      {
-          '9-10':'2-wheeler driving|avcdd32',
-          '17-18':'4-wheeler driving|ertyu12'
+      {   
+          '13:23-14:56':'Scooty driving|c001',
+          '09:00-10:00':'2-wheeler driving|avcdd32',
+          '17:30-18:40':'4-wheeler driving|ertyu12'
       },
       'Tuesday': 
       {
-          '9-10':'2-wheeler driving|avcdd32',
-          '17-18':'4-wheeler driving|ertyu12'
+          '9:34-10:32':'2-wheeler driving|avcdd32',
+          '17:09-18:32':'4-wheeler driving|ertyu12'
       },
+      'Thursday':
+      {
+        '10:45-11:50':'course1|c0001'
+        
+      }
     },
     schoolId:  "school789",
     courseIds: ['avcdd32', 'ertyu12'],
