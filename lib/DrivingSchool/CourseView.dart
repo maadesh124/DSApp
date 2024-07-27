@@ -138,6 +138,7 @@ Future<void> initialize()async
 
   current=1;
 List<Map<String,dynamic>> temp=[];
+
   temp =await DataBase.getAllDocuments(widget.applicationIds, DataBase.APPLICATION_COLLECTION);
   temp.forEach((element) {applications.add(Application.fromMap(element)); });
   temp=await DataBase.getAllDocuments(widget.learnerIds, DataBase.LEARNER_COLLECTION);
@@ -169,6 +170,7 @@ void showLearners()
 void initState() 
 {
   super.initState();
+  
   initialize();
 }
 

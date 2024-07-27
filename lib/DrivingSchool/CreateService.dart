@@ -92,7 +92,7 @@ where('insId',isEqualTo: instructorIdController.text).where('schoolId',isEqualTo
       ),
 
       SizedBox(height: 30,),
-      DocumentList(reqDocs: requiredDocuments,),
+      DocumentList(reqDocs: requiredDocuments,editable: true,),
       SizedBox(height: 40,),
 InkWell(onTap: onSubmit,
   splashColor: Colors.black,
@@ -125,7 +125,8 @@ InkWell(onTap: onSubmit,
 class DocumentList extends StatefulWidget {
 
   List<String> reqDocs;
-  DocumentList({super.key,required this.reqDocs});
+  bool editable;
+  DocumentList({super.key,required this.reqDocs,this.editable=false});
 
   @override
   State<DocumentList> createState() => _DocumentListState();
@@ -183,12 +184,12 @@ class _DocumentListState extends State<DocumentList> {
       Container( height: 35.0*documentList.length, width: screenWidth*0.9, 
       child: ListView.builder(physics: NeverScrollableScrollPhysics(), itemCount: documentList.length,
       itemBuilder: (context, index) => documentList[index],)),
-      InkWell(splashColor: PageConstants.BLACK50,        onTap: onPressed, child: Container(width: screenWidth*0.9,height: 25,
+     widget.editable?  InkWell(splashColor: PageConstants.BLACK50,        onTap: onPressed, child: Container(width: screenWidth*0.9,height: 25,
        decoration: BoxDecoration(borderRadius: 
       BorderRadius.circular(5),color: PageConstants.BLACK20),
       
-       child:Row(mainAxisAlignment: MainAxisAlignment.center,  children: [Icon(Icons.add,size: 20,color: Colors.black,),
-      Text("Add Docuent")],),))
+       child:  Row(mainAxisAlignment: MainAxisAlignment.center,  children: [Icon(Icons.add,size: 20,color: Colors.black,),
+      Text("Add Docuent")],),)):SizedBox()
     ]),
 
     );

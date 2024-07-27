@@ -35,12 +35,15 @@ class DataBase
 
   static  Future<List<Map<String,dynamic>>> getAllDocuments(List<String> ids,String model,)async
   {
-
+List<Map<String,dynamic>> list=[];
+if(ids.length==0)
+return list;
 final documents = await FirebaseFirestore.instance
       .collection(model)
       .where(FieldPath.documentId, whereIn: ids)
       .get();
-      List<Map<String,dynamic>> list=[];
+
+      
 documents.docs.forEach((element) { list.add(element.data());});
       return list;
   }

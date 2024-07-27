@@ -7,6 +7,7 @@ import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
+import 'package:fp3/DrivingSchool/ServiceView.dart';
 import 'package:fp3/DrivingSchool/test.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
@@ -25,7 +26,8 @@ import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
 
- Course? course;
+ Course? gcourse;
+ Service? gservice;
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +36,17 @@ void main() async{
  User.initialize('w42tQh0oLjlD0LsEGxPs');
 
    final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
-    course=Course.fromMap(coref.data()!);
+    gcourse=Course.fromMap(coref.data()!);
+
+    //   final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
+    // final learner=Learner.fromMap(leref.data()!);
+
+    // Application.createCourse(course!, learner, '3ls1508zatxqMzCx0VIY');
+  //  final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+  //  doc('rI2UWWwSz85LBnmbz1Ig').get();
+  //  print(insref.data()!);
+
+
 //   final l=  await DataBase.getAllDocuments(ids,DataBase.APPLICATION_COLLECTION);
 //   List<Application> list=[];
 //   l.forEach((doc)=>list.add(Application.fromMap(doc)));
@@ -48,7 +60,11 @@ void main() async{
   //  final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
   //   final learner=Learner.fromMap(leref.data()!);
 
-
+final servref=await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).
+doc('ShkFj4H1djYVJkiznHJH').get();
+ gservice=Service.fromMap(servref.data()!);
+//  final ins= await service!.getInstructor();
+//  print(ins.toMap());
 
 
 
@@ -64,8 +80,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        //ppBar: AppBar(title: Text('Checkbox Example')),
-        body:CreateCourse(),
+       // body:CourseView(course: course!),
+        body:ServiceView(service: gservice!,),
       ),
     );
   }

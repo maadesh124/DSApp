@@ -5,6 +5,7 @@ import 'package:fp3/Models/Reviews.dart';
 import 'package:fp3/User.dart';
 
 class Service {
+  String instructorName;
   final String name;
   final double fee;
   final String description;
@@ -16,6 +17,7 @@ class Service {
   String reviewObjectId;
 
   Service({
+    this.instructorName='',
     required this.name,
     required this.fee,
     required this.description,
@@ -27,34 +29,55 @@ class Service {
     this.reviewObjectId = 'reviewid1',
   });
 
-  Instructor getInstructor() => Examples.INSTRUCTOR;
+  Instructor getInstructor1() => Examples.INSTRUCTOR;
+
+  Future<Instructor> getInstructor()async
+  {
+    final insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+    doc(instructorId).get();
+    return Instructor.fromMap(insref.data()!);
+  }
 
   static Future<Service> createService(Service service)async
   {
-    //add rating and review id
-  
-  final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
-  service.reviewObjectId=revref.id;
-
-      //add service
-   final docref= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
-  Review review=Review(receiver: 'Service',receiverId: docref.id);
-  revref.set(review.toMap());
-  
-  //add to ds
-  final ds=User.getDS();
-  ds.serviceIds.add(docref.id);
-  User.setDS(ds);
 
   //add to ins
   var insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
   doc(service.instructorId).get();
   print(insref.data());
   var ins=Instructor.fromMap(insref.data()!);
+  service.instructorName=ins.name;
+
+    //add rating and review id
+  
+  final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
+  service.reviewObjectId=revref.id;
+
+
+      //add service
+   final docref= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
+  Review review=Review(receiver: 'Service',receiverId: docref.id);
+  revref.set(review.toMap());
+
+
   ins.serviceIds.add(docref.id);
   print(ins.toMap());
   await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).doc(service.instructorId).
   set(ins.toMap());
+
+
+
+
+
+
+
+
+  
+  //add to ds
+  final ds=User.getDS();
+  ds.serviceIds.add(docref.id);
+  User.setDS(ds);
+
 
   
 
@@ -69,6 +92,7 @@ class Service {
 
   factory Service.fromMap(Map<String, dynamic> map) {
     return Service(
+      instructorName: map['instructorName'],
       name: map['name'] as String? ?? '',
       fee: map['fee'] as double? ?? 0.0,
       description: map['description'] as String? ?? '',
@@ -83,6 +107,7 @@ class Service {
 
   Map<String, dynamic> toMap() {
     return {
+      'instructorName':instructorName,
       'name': name,
       'fee': fee,
       'description': description,

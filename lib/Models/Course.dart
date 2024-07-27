@@ -80,7 +80,7 @@ class Course {
   Vehicle getVehicle1()=>Examples.VEHICLE;
 
 
-  static Future<Course> create(Course course,String vehNum)async
+  static Future<Course> create(Course course)async
   {
 
    final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
@@ -88,7 +88,7 @@ class Course {
    final insrefs=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
 where('insId',isEqualTo: course.instructorId).where('schoolId',isEqualTo: User.docId).get();
    final vehrefs=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-where('vehicleNumber',isEqualTo: vehNum).where('schoolId',isEqualTo: User.docId).get();
+where('vehicleNumber',isEqualTo: course.vehicleNumber).where('schoolId',isEqualTo: User.docId).get();
 
 
 Instructor instructor=Instructor.fromMap(insrefs.docs.first.data());
@@ -98,7 +98,6 @@ course.attendanceObjectId=attref.id;
 course.instructorObjectId=insrefs.docs.first.id;
 course.instructorName=instructor.name;
 course.vehicleObjectId=vehrefs.docs.first.id;
-course.vehicleNumber=vehicle.vehicleNumber;
 course.reviewsObjectId=revref.id;
 
 final coref=  await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).add(course.toMap());
@@ -141,9 +140,12 @@ User.setDS(ds);
 
   Future<Instructor> getInstructor() async
   {
+    print('in get ins');
+    print(instructorObjectId);
    final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-   doc(instructorObjectId).get();
-   return Instructor.fromMap(insref.data()!);
+   get();
+   print('co');
+   return Instructor.fromMap(insref.docs.first.data()!);
   }
 
 

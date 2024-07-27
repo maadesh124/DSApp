@@ -68,7 +68,7 @@ class ServiceOverview extends StatelessWidget {
     return Container(width: 0.95*screenWidth,
     height: 45,
     decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-    child:Center(child: Text('Service Name:${service.name} | Instructor Name :${service.getInstructor().name}',
+    child:Center(child: Text('Service Name:${service.name} | Instructor Name :${service.instructorName}',
     style: TextStyle(fontSize: 18),),
     ));
   }

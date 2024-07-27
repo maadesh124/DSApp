@@ -59,13 +59,14 @@ final DateTime? picked = await showDatePicker(
     startTime: startTime,
     endTime: endTime,
     totalSeats: int.parse(totalSeats.text),
+    vehicleNumber: vehNum.text,
     courseDescription: des.text,
     instructorId: insId.text,
     progress: progList,
     );
 
     print(progList);
-    Course.create(course, vehNum.text);
+    Course.create(course);
   }
 
 
