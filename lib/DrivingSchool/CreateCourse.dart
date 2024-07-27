@@ -25,7 +25,7 @@ class _CreateCourseState extends State<CreateCourse> {
   TextEditingController fee=TextEditingController();
   TextEditingController totalSeats=TextEditingController();
   TextEditingController insId=TextEditingController();
-  TextEditingController vehId=TextEditingController();
+  TextEditingController vehNum=TextEditingController();
   TextEditingController des=TextEditingController();
 
  Future<DateTime?> pickDate() async
@@ -65,7 +65,7 @@ final DateTime? picked = await showDatePicker(
     );
 
     print(progList);
-    Course.create(course, vehId.text);
+    Course.create(course, vehNum.text);
   }
 
 
@@ -144,15 +144,14 @@ final DateTime? picked = await showDatePicker(
             InputBox(width: 150, height: 30,text: 'Course Duration',textEditingController: duration,),
             InputBox(width: 150, height: 30,text: 'Course Fee',textEditingController: fee,),
             InputBox(width: 150, height: 30,text: 'Total Seats',textEditingController: totalSeats,),
-            InputBox(width: 150, height: 30,text: 'Course Duration',textEditingController: duration,),
             InputBox(width: 150, height: 30,text: 'Instructor Id',textEditingController: insId,),
-            InputBox(width: 150, height: 30,text: 'Vehicle Id',textEditingController: vehId,),
+            InputBox(width: 150, height: 30,text: 'Vehicle Number',textEditingController: vehNum,),
             InputBox(width: 0.8*sw, height: 30,text: 'Course Description',textEditingController: des,),
           
         ],),)
       ]),),
       SizedBox(height: 20,),
-      ProgressView(list: progList,),
+      ProgressView(list: progList,editable: true,height: 150,),
       SizedBox(height: 30,),
 
       Container(width: 0.8*sw,height: 40, decoration: BoxDecoration(

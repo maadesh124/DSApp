@@ -8,9 +8,9 @@ class Vehicle {
   final String schoolId;
   final String vehicleNumber;
   final String name;
-  final String vehicleId;
+  // final String vehicleId;
   final String description;
-  final int numberOfCoursesUsing;
+  // final int numberOfCoursesUsing;
   final Map<String, Map<String, String>> timeTable;
   final List<String> courseObjectIds;
 
@@ -18,9 +18,9 @@ class Vehicle {
     required this.schoolId,
     required this.vehicleNumber,
     required this.name,
-    required this.vehicleId,
+    // required this.vehicleId,
     required this.description,
-    this.numberOfCoursesUsing = 0, // Default to 0
+    // this.numberOfCoursesUsing = 0, // Default to 0
     this.timeTable =const {'Monday':{},'Tuesday':{},
       'Wednesday':{},'Thursday':{},'Friday':{},'Saturday':{},'Sunday':{}} ,// Default to an empty map
     this.courseObjectIds = const [], // Default to an empty list
@@ -41,8 +41,8 @@ class Vehicle {
       vehicleNumber: map['vehicleNumber'] as String? ?? '',
       description: map['description'],
       name: map['type'] as String? ?? '',
-      vehicleId: map['vehicleId'] as String? ?? '',
-      numberOfCoursesUsing: map['numberOfCoursesUsing'] as int? ?? 0,
+      // vehicleId: map['vehicleId'] as String? ?? '',
+      // numberOfCoursesUsing: map['numberOfCoursesUsing'] as int? ?? 0,
       timeTable: (map['timeTable'] as Map<String, dynamic>? ?? {}).map((key, value) => MapEntry(
         key,
         (value as Map<String, dynamic>).map((k, v) => MapEntry(k, v as String)),
@@ -56,9 +56,9 @@ class Vehicle {
       'schoolId':schoolId,
       'vehicleNumber': vehicleNumber,
       'name': name,
-      'vehicleId': vehicleId,
+      // 'vehicleId': vehicleId,
       'description':description,
-      'numberOfCoursesUsing': numberOfCoursesUsing,
+      // 'numberOfCoursesUsing': numberOfCoursesUsing,
       'timeTable': timeTable.map((key, value) => MapEntry(
         key,
         value.map((k, v) => MapEntry(k, v)),

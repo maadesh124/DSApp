@@ -33,6 +33,20 @@ class DataBase
   static const String VEHICLE_COLLECTION='Vehicle';
 
 
+  static  Future<List<Map<String,dynamic>>> getAllDocuments(List<String> ids,String model,)async
+  {
+
+final documents = await FirebaseFirestore.instance
+      .collection(model)
+      .where(FieldPath.documentId, whereIn: ids)
+      .get();
+      List<Map<String,dynamic>> list=[];
+documents.docs.forEach((element) { list.add(element.data());});
+      return list;
+  }
+
+
+
 
 }
 
@@ -157,8 +171,8 @@ class Examples
   schoolId: 'schoolId',
     vehicleNumber: 'DL1CA1234',
     name: 'Car',
-    vehicleId: 'vehicle123',
-    numberOfCoursesUsing: 2,
+    // vehicleId: 'vehicle123',
+    // numberOfCoursesUsing: 2,
     description: 'Vehicle Description',
     timeTable: {
       'Monday':

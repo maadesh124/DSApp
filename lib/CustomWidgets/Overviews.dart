@@ -17,8 +17,8 @@ class CourseOverview extends StatelessWidget {
   Vehicle vehicle;
   
   CourseOverview({super.key,required this.course}): 
-  instructor = course.getInstructor(),
-  vehicle = course.getVehicle();
+  instructor = course.getInstructor1(),
+  vehicle = course.getVehicle1();
 
   
   @override
@@ -122,7 +122,7 @@ class VehicleOverview extends StatelessWidget {
         Text("Vehicle Number: "+vehicle.vehicleNumber),
         Text("Vehicle name: "+vehicle.vehicleNumber),
         Text("Vehicle description: "+vehicle.description),
-          Text('Used in ${vehicle.numberOfCoursesUsing}')
+          Text('Used in ${vehicle.courseObjectIds.length}')
     ],),
     );
   }
@@ -190,26 +190,26 @@ class LearnerOverview extends StatelessWidget {
 
 
   Learner learner;
-  Course course;
-  LearnerOverview({super.key,required this.learner,required this.course});
+ // Course course;
+  LearnerOverview({super.key,required this.learner});
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
     return Container(
       width:0.95*screenWidth ,
-      height: 120,
+      height: 100,
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(color: Colors.white,
       borderRadius: BorderRadius.circular(10)),
       child: Column(mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Course Name: ${course.name}'),
-        Text('Course Id: ${course.courseId}'),
         Text('Student Name: ${learner.name}'),
-        //Text('Enquiry No.: ${enquiry.enquiryNo}'),
-        Text('Replied: ${learner.address}')
+        Text('Age: ${learner.age}'),
+        // Text('Student Name: ${le}'),
+        Text('Gender: ${learner.gender}'),
+        Text('Address: ${learner.address}')
         
       ],),
     );

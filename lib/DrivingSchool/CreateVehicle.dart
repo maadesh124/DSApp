@@ -16,7 +16,7 @@ class CreateVehicle extends StatelessWidget {
 void createClicked()
 {
   Vehicle vehicle=Vehicle( schoolId: User.docId ,vehicleNumber: number.text,
-   name: name.text, vehicleId: id.text, description: des.text);
+   name: name.text, description: des.text);
    Vehicle.create(vehicle);
 }
 
@@ -41,8 +41,8 @@ void createClicked()
            ,  children: [
             InputBox(width: 200, height:30,text: 'Vehicle Name',
             textEditingController: name,),
-            InputBox(width: 200, height: 30,text: 'Vehicle id',
-            textEditingController: id,),
+            // InputBox(width: 200, height: 30,text: 'Vehicle id',
+            // textEditingController: id,),
             InputBox(width: 200, height: 30,text: 'Number',
             textEditingController: number,),
             InputBox(width: 200, height: 30,text: 'Description',

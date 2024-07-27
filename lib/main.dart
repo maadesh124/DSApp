@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/CourseView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
@@ -23,19 +24,27 @@ import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
+
+ Course? course;
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
+ User.initialize('w42tQh0oLjlD0LsEGxPs');
 
-    final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
-    final learner=Learner.fromMap(leref.data()!);
+   final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
+    course=Course.fromMap(coref.data()!);
+//   final l=  await DataBase.getAllDocuments(ids,DataBase.APPLICATION_COLLECTION);
+//   List<Application> list=[];
+//   l.forEach((doc)=>list.add(Application.fromMap(doc)));
+//   print(list.first.toMap());
 
- await Enquiry.create('w42tQh0oLjlD0LsEGxPs',learner,'XiTB0DaQwd1Lqnz9MpNa');
+  // final leref= await db.collection(DataBase.LEARNER_COLLECTION).add(Examples.LEARNER.toMap());
+//     final learner=Learner.fromMap(leref.data()!);
 
-  //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
-  //   final course=Course.fromMap(coref.data()!);
+//  await Enquiry.create('w42tQh0oLjlD0LsEGxPs',learner,'XiTB0DaQwd1Lqnz9MpNa');
+
   //  final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
   //   final learner=Learner.fromMap(leref.data()!);
 
@@ -47,12 +56,11 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+ const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
+   final double screenWidth=MediaQuery.of(context).size.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

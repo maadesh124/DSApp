@@ -193,15 +193,18 @@ class DefaultImage extends StatelessWidget {
     return Container(height: height,width: width,color: PageConstants.LIGHTGREEN, 
      child:  FittedBox(
                 fit:BoxFit.cover ,
-                child: Image.asset('D:/Flutter Projects/fp1/assets/images/img.png'),));
+                child: Image.asset('D:/Flutter Projects/fp3/assets/images/img.png'),));
   }
 }
+
 
 class ProgressView extends StatefulWidget {
 
 List<Progress> list=[];
+bool editable;
+double height;
 
-ProgressView({super.key,required this.list});
+ProgressView({super.key,required this.list,required this.editable,required this.height});
 
 
   @override
@@ -214,12 +217,14 @@ class _ProgressViewState extends State<ProgressView> {
 List<Progress> progressList=[];
 TextEditingController name=TextEditingController();
 TextEditingController des=TextEditingController();
+double height=150;
 
 @override
 void initState()
 {
   super.initState();
   progressList=widget.list;
+  height=widget.height;
 
 }
 
@@ -271,7 +276,7 @@ void addLesson()
 
     final sw=MediaQuery.of(context).size.width;
     int len=progressList.length<=3?progressList.length:3;
-    return   Container(width: sw*0.95,height: 150,
+    return   Container(width: sw*0.95,height: height,
     decoration: BoxDecoration(color: Colors.white,
     borderRadius: BorderRadius.circular(15)),
     child: Column(children: [
@@ -279,13 +284,14 @@ void addLesson()
         SizedBox(width: 0.025*sw,),
         Text('Lessons'),
       Spacer(flex: 1,),
+      widget.editable?
       InkWell( onTap: addLesson, child: Container(child: Row(children: [
         Icon(Icons.add,size: 20,),
         Text('Add Lesson'),
         SizedBox(width: 0.025*sw,)
-      ],),),)
+      ],),),):SizedBox(),
       ],),
-      Container(width: sw*0.90,height: 130,padding: EdgeInsets.all(0)
+      Container(width: sw*0.90,height:height-20,padding: EdgeInsets.all(0)
       ,   child: ListView.builder(itemCount: progressList.length,
       itemBuilder: (_,inex)=>SingleProgress(p: progressList[inex], index: inex+1),),)
       

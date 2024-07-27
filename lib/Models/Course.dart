@@ -75,21 +75,20 @@ class Course {
         applicationObjectIds = applicationObjectIds ?? [],
         enquiryObjectIds = enquiryObjectIds ?? [];
 
-  Instructor getInstructor() => Examples.INSTRUCTOR;
 
-  Vehicle getVehicle() => Examples.VEHICLE;
+  Instructor getInstructor1()=>Examples.INSTRUCTOR;
+  Vehicle getVehicle1()=>Examples.VEHICLE;
 
-  static Future<Course> create(Course course,String vehId)async
+
+  static Future<Course> create(Course course,String vehNum)async
   {
-  
- 
 
    final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
    final attref=await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).add({});
    final insrefs=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
 where('insId',isEqualTo: course.instructorId).where('schoolId',isEqualTo: User.docId).get();
    final vehrefs=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-where('vehicleId',isEqualTo: vehId).where('schoolId',isEqualTo: User.docId).get();
+where('vehicleNumber',isEqualTo: vehNum).where('schoolId',isEqualTo: User.docId).get();
 
 
 Instructor instructor=Instructor.fromMap(insrefs.docs.first.data());
@@ -136,12 +135,28 @@ doc(course.instructorObjectId).set(vehicle.toMap());
 final ds=User.getDS();
 ds.courseIds.add(coref.id);
 User.setDS(ds);
-
-
-
-
-    return course;
+  return course;
   }
+
+
+  Future<Instructor> getInstructor() async
+  {
+   final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
+   doc(instructorObjectId).get();
+   return Instructor.fromMap(insref.data()!);
+  }
+
+
+  Future<Vehicle> getVehicle()async
+  {
+    final vehref=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
+    doc(vehicleObjectId).get();
+
+    return Vehicle.fromMap(vehref.data()!);
+  }
+
+
+
 
   factory Course.fromMap(Map<String, dynamic> map) {
     return Course(
