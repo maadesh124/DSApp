@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/CourseView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
@@ -9,6 +10,7 @@ import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
 import 'package:fp3/DrivingSchool/InstructorView.dart';
 import 'package:fp3/DrivingSchool/ServiceView.dart';
+import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/DrivingSchool/test.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
@@ -30,6 +32,11 @@ import 'package:fp3/firebase_options.dart';
  Course? gcourse;
  Service? gservice;
  Instructor? ginstructor;
+ Vehicle? gvehicle;
+ List<String> gcourseIds=['3T7477jI3CepWry9vlAo','MTP1d152cEJAbafZjxF6','jMfMnZfxiG1O70RGSqW2'];
+ List<String> gserviceIds=['ShkFj4H1djYVJkiznHJH'];
+ List<String> ginstructorIds=['rI2UWWwSz85LBnmbz1Ig'];
+ List<String> gvehicleIds=['52kIF9TLyv4L7CXPgRAh','rI2UWWwSz85LBnmbz1Ig'];
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
@@ -69,9 +76,9 @@ void main() async{
 //  final ins= await service!.getInstructor();
 //  print(ins.toMap());
 
-final insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-doc('rI2UWWwSz85LBnmbz1Ig').get();
-ginstructor=Instructor.fromMap(insref.data()!);
+final vehref=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
+doc('52kIF9TLyv4L7CXPgRAh').get();
+gvehicle=Vehicle.fromMap(vehref.data()!);
 
 
   runApp(const MyApp());
@@ -87,7 +94,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
        // body:CourseView(course: course!),
-        body:InstructorView(instructor: ginstructor!,),
+        body:AllOverView(drivingSchool: User.getDS(),),
       ),
     );
   }
