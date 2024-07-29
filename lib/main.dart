@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/AllForms.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/ApplicationView.dart';
 import 'package:fp3/DrivingSchool/CourseAttendance.dart';
@@ -11,6 +12,7 @@ import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
 import 'package:fp3/DrivingSchool/InstructorView.dart';
+import 'package:fp3/DrivingSchool/LearnerView.dart';
 import 'package:fp3/DrivingSchool/ServiceView.dart';
 import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/DrivingSchool/test.dart';
@@ -30,7 +32,7 @@ import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
-
+Learner? glearner;
  Course? gcourse;
  Service? gservice;
  Instructor? ginstructor;
@@ -48,11 +50,11 @@ void main() async{
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
 
-  //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
+  //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('jMfMnZfxiG1O70RGSqW2').get();
   //   gcourse=Course.fromMap(coref.data()!);
 
-    //   final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
-    // final learner=Learner.fromMap(leref.data()!);
+      final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
+    glearner=Learner.fromMap(leref.data()!);
 
     // Application.createCourse(course!, learner, '3ls1508zatxqMzCx0VIY');
   //  final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
@@ -71,7 +73,7 @@ void main() async{
 //  await Enquiry.create('w42tQh0oLjlD0LsEGxPs',learner,'XiTB0DaQwd1Lqnz9MpNa');
 
   //  final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('XiTB0DaQwd1Lqnz9MpNa').get();
-  //   final learner=Learner.fromMap(leref.data()!);
+  //    glearner=Learner.fromMap(leref.data()!);
 
 // final servref=await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).
 // doc('ShkFj4H1djYVJkiznHJH').get();
@@ -86,9 +88,12 @@ void main() async{
 // await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).
 // doc('fq7OTP7HZK7KLQNe7viQ').set(Examples.COURSEATTENDANCE.toMap());
 
-final appref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
-doc('9cQ9q9vDK5sm2rpHeVbs').get();
-gapplication=Application.fromMap(appref.data()!);
+// final appref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
+// doc('cDVtUq0FZzu21LogGivo').get();
+// gapplication=Application.fromMap(appref.data()!);
+
+  //User.getDS().getAllLearnerIds().then((value) => print(value));
+  // Application.createCourse(gcourse!, glearner!,'XiTB0DaQwd1Lqnz9MpNa');
 
   runApp(const MyApp());
 }
@@ -104,8 +109,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
        // body:CourseView(course: course!),
        // body:CourseAttendanceView(courseAttendance: Examples.COURSEATTENDANCE,editable: false,),
-      //  body: AllOverView(drivingSchool: User.getDS()),
-      body: ApplicationView(application: gapplication!,),
+       // body: AllFormsView(drivingSchool: User.getDS()),
+      //body: ApplicationView(application: gapplication!,),
+      //body: AllOverView(drivingSchool: User.getDS()),
+      body: LearnerView(learner: glearner!),
       ),
     );
   }

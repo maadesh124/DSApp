@@ -2,6 +2,10 @@
 
 
 
+import 'package:fp3/Models/Application.dart';
+import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/Examples.dart';
+
 class DrivingSchool {
   String schoolName;
   int mobileNumber;
@@ -80,4 +84,37 @@ class DrivingSchool {
       'password': password,
     };
   }
+
+  Future<List<String>> getAllApplicationIds()async
+  {
+    //List<Application> applications=[]; 
+    List<Course> courses=[];
+    List<String> applicationIds=[];
+      final comaps=  await DataBase.getAllDocuments(courseIds,DataBase.COURSE_COLLECTION);
+    comaps.forEach((element)=> courses.add(Course.fromMap(element)));
+    courses.forEach((course)=>applicationIds.addAll(course.applicationObjectIds));
+    // final apprefs=await DataBase.getAllDocuments(applicationIds,DataBase.APPLICATION_COLLECTION);
+    // apprefs.forEach((element) {applications.add(Application.fromMap(element));});
+
+    return applicationIds;
+  }
+
+
+  Future<List<String>> getAllLearnerIds()async
+  {
+    //List<Application> applications=[]; 
+    List<Course> courses=[];
+    List<String> learnerIds=[];
+      final comaps=  await DataBase.getAllDocuments(courseIds,DataBase.COURSE_COLLECTION);
+    comaps.forEach((element)=> courses.add(Course.fromMap(element)));
+    courses.forEach((course)=>learnerIds.addAll(course.learnerObjectIds));
+    // final apprefs=await DataBase.getAllDocuments(applicationIds,DataBase.APPLICATION_COLLECTION);
+    // apprefs.forEach((element) {applications.add(Application.fromMap(element));});
+
+    return learnerIds;
+  }
+
+
+
+
 }

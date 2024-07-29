@@ -37,6 +37,17 @@ void initState()
 }
 
 
+void rejectClicked()async
+{
+
+}
+
+
+void registerClicked()async
+{
+  widget.application.register();
+}
+
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
@@ -64,7 +75,15 @@ void initState()
           Text('Application Nuber:${widget.application.applicationNumber}'),
           Text('Email id: ${learner!.email}'),
           Text('Mobile Number: ${learner!.mobileNumber}'),
-          Text('Date of Birth: ${learner!.mobileNumber}')
+          Text('Date of Birth: ${learner!.mobileNumber}'),
+          SizedBox(height: 20,),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        
+                    InkWell(onTap: registerClicked, child: 
+            Container(padding: EdgeInsets.fromLTRB(10, 5, 10,5), child: Center(child: 
+            Text('Register',style: TextStyle(color: Colors.white),),),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color:PageConstants.DARKGREEN),),)
+          ],)
 
         ],),)
       ],) ,

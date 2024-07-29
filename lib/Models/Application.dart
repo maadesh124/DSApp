@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Learner.dart';
+import 'package:fp3/User.dart';
 
 class Application {
 
@@ -35,7 +36,7 @@ class Application {
     this.learnerName = '', // Default empty string for learnerName
   }):this.dateApplied=dateApplied??DateTime.now();
 
-  Course getCourse() => Examples.CORURSE; // Assuming Examples provides a Course object
+  Course getCourse1() => Examples.CORURSE; // Assuming Examples provides a Course object
 
   Learner getLearner1() => Examples.LEARNER; // Assuming Examples provides a Learner object
 
@@ -81,6 +82,39 @@ class Application {
     doc(learnerObjectId).get();
     return Learner.fromMap(learef.data()!);
   }
+
+  Future<Course> register()async{
+    
+   final coref=await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
+   where('dsObjectId',isEqualTo: schoolId).
+   where('courseId',isEqualTo: courseId).get().then((value) => value.docs.first);
+
+   final aplref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
+   where('schoolId',isEqualTo: schoolId).
+   where('applicationNumber',isEqualTo: applicationNumber).get().then((value) => value.docs.first);
+
+  Course course=Course.fromMap(coref.data());
+  course.applicationObjectIds.remove(aplref.id);
+  course.learnerObjectIds.add(learnerObjectId);
+
+  await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
+  doc(coref.id).set(course.toMap());
+
+
+  await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
+  doc(aplref.id).delete();
+
+ final leref=await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).
+ doc(learnerObjectId).get();
+
+  Learner learner=Learner.fromMap(leref.data()!);
+  learner.courseObjectIds.add(coref.id);
+ await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).doc(leref.id).set(learner.toMap());
+  return course;
+   
+  }
+
+
 
   static Future<Application> createCourse(Course course,Learner learner,String learnerObjectId) async
   {
