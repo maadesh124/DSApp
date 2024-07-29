@@ -37,7 +37,7 @@ class Application {
 
   Course getCourse() => Examples.CORURSE; // Assuming Examples provides a Course object
 
-  Learner getLearner() => Examples.LEARNER; // Assuming Examples provides a Learner object
+  Learner getLearner1() => Examples.LEARNER; // Assuming Examples provides a Learner object
 
   factory Application.fromMap(Map<String, dynamic> map) {
     // Handle potential missing or null values in the map
@@ -73,6 +73,13 @@ class Application {
       'learnerName': learnerName,
       'serviceName':serviceName,
     };
+  }
+
+  Future<Learner> getLearner()async
+  {
+    final learef=await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).
+    doc(learnerObjectId).get();
+    return Learner.fromMap(learef.data()!);
   }
 
   static Future<Application> createCourse(Course course,Learner learner,String learnerObjectId) async

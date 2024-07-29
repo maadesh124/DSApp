@@ -43,29 +43,31 @@ Future<void> initialize()async
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
-    return SingleChildScrollView(child: Container(decoration: PageConstants.PAGEBACKGROUND,
-    child:Column(children: [
-      SizedBox(height: 40,),
-      Top(),
-      SizedBox(height: 20,),
-      Container(width: 0.95*sw,decoration: BoxDecoration(color: Colors.white,
-      borderRadius: BorderRadius.circular(10)),padding: EdgeInsets.all(10),
-      child: Column(mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
-        Text('Service Name: ${widget.service.name}'),
-        Text('Service Fee: ${widget.service.fee}'),
-        Text(widget.service.description),
-      ]),),
-      SizedBox(height: 20,),
-      gotData?InstructorOverview(instructor: instructor!):CircularProgressIndicator(),
-      SizedBox(height: 20,),
-      DocumentList(reqDocs: widget.service.requiredDocuments,editable: false,),
-      SizedBox(height: 20,),
-      Forms(applicationIds: widget.service.applicationObjectIds, learnerIds: widget.service.studentObjectIds)
-
+    return Scaffold(
+      body: SingleChildScrollView(child: Container(decoration: PageConstants.PAGEBACKGROUND,
+      child:Column(children: [
+        SizedBox(height: 40,),
+        Top(),
+        SizedBox(height: 20,),
+        Container(width: 0.95*sw,decoration: BoxDecoration(color: Colors.white,
+        borderRadius: BorderRadius.circular(10)),padding: EdgeInsets.all(10),
+        child: Column(mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
+          Text('Service Name: ${widget.service.name}'),
+          Text('Service Fee: ${widget.service.fee}'),
+          Text(widget.service.description),
+        ]),),
+        SizedBox(height: 20,),
+        gotData?InstructorOverview(instructor: instructor!):CircularProgressIndicator(),
+        SizedBox(height: 20,),
+        DocumentList(reqDocs: widget.service.requiredDocuments,editable: false,),
+        SizedBox(height: 20,),
+        Forms(applicationIds: widget.service.applicationObjectIds, learnerIds: widget.service.studentObjectIds)
       
-    ],),),);
+        
+      ],),),),
+    );
   }
 }

@@ -145,9 +145,9 @@ class ApplicationOverview extends StatelessWidget {
       child: Column(mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Course Name: ${application.getCourse().name}'),
+        Text('Course Name: ${application.courseName}'),
         Text('Course Id: ${application.courseId}'),
-        Text('Student Name: ${application.getLearner().name}'),
+        Text('Student Name: ${application.learnerName}'),
         Text('Application No.: ${application.applicationNumber}'),
         Text('Applied date: ${application.dateApplied!.day}-${application.dateApplied!.month}-${
           application.dateApplied!.year}')

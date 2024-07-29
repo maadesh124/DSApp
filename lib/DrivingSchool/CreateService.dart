@@ -173,25 +173,29 @@ class _DocumentListState extends State<DocumentList> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
-    return Container(width: 0.95*screenWidth,
-    height: 70+documentList.length*35,
-    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
-    child: Column( crossAxisAlignment: CrossAxisAlignment.center, children: [
-
-      Align(alignment:Alignment.topLeft ,child:Row(children: [SizedBox(width: 0.025*screenWidth,),
-      Text("Required Documents")],)),
-      SizedBox(height: 10,),
-      Container( height: 35.0*documentList.length, width: screenWidth*0.9, 
-      child: ListView.builder(physics: NeverScrollableScrollPhysics(), itemCount: documentList.length,
-      itemBuilder: (context, index) => documentList[index],)),
-     widget.editable?  InkWell(splashColor: PageConstants.BLACK50,        onTap: onPressed, child: Container(width: screenWidth*0.9,height: 25,
-       decoration: BoxDecoration(borderRadius: 
-      BorderRadius.circular(5),color: PageConstants.BLACK20),
-      
-       child:  Row(mainAxisAlignment: MainAxisAlignment.center,  children: [Icon(Icons.add,size: 20,color: Colors.black,),
-      Text("Add Docuent")],),)):SizedBox()
-    ]),
-
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(width: 0.95*screenWidth,
+        height: 70+documentList.length*35,
+        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+        child: Column( crossAxisAlignment: CrossAxisAlignment.center, children: [
+        
+          Align(alignment:Alignment.topLeft ,child:Row(children: [SizedBox(width: 0.025*screenWidth,),
+          Text("Required Documents")],)),
+          SizedBox(height: 10,),
+          Container( height: 35.0*documentList.length, width: screenWidth*0.9, 
+          child: ListView.builder(physics: NeverScrollableScrollPhysics(), itemCount: documentList.length,
+          itemBuilder: (context, index) => documentList[index],)),
+         widget.editable?  InkWell(splashColor: PageConstants.BLACK50,        onTap: onPressed, child: Container(width: screenWidth*0.9,height: 25,
+           decoration: BoxDecoration(borderRadius: 
+          BorderRadius.circular(5),color: PageConstants.BLACK20),
+          
+           child:  Row(mainAxisAlignment: MainAxisAlignment.center,  children: [Icon(Icons.add,size: 20,color: Colors.black,),
+          Text("Add Docuent")],),)):SizedBox()
+        ]),
+        
+        ),
+      ),
     );
   }
 }
@@ -203,13 +207,15 @@ class Document extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
-    return Container(width: 0.95*screenWidth,height: 35,color: Colors.white,
-    child: Column(crossAxisAlignment: CrossAxisAlignment.center,  children: [
-      Container(width: 0.9*screenWidth,height: 28,
-      decoration: BoxDecoration(color: PageConstants.BLACK20,
-      borderRadius: BorderRadius.circular(5)),
-      child:Center(child: Text(name)),)
-      ,SizedBox(height: 7,)
-    ],),);
+    return Scaffold(
+      body: Container(width: 0.95*screenWidth,height: 35,color: Colors.white,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center,  children: [
+        Container(width: 0.9*screenWidth,height: 28,
+        decoration: BoxDecoration(color: PageConstants.BLACK20,
+        borderRadius: BorderRadius.circular(5)),
+        child:Center(child: Text(name)),)
+        ,SizedBox(height: 7,)
+      ],),),
+    );
   }
 }

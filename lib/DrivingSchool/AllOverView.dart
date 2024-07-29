@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/Overviews.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/CourseView.dart';
+import 'package:fp3/DrivingSchool/CreateCourse.dart';
+import 'package:fp3/DrivingSchool/CreateInstructor.dart';
+import 'package:fp3/DrivingSchool/CreateService.dart';
+import 'package:fp3/DrivingSchool/CreateVehicle.dart';
+import 'package:fp3/DrivingSchool/InstructorView.dart';
+import 'package:fp3/DrivingSchool/ServiceView.dart';
+import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Service.dart';
 import 'package:fp3/Models/Vehicle.dart';
+import 'package:fp3/User.dart';
 import 'package:fp3/main.dart';
 
 
@@ -22,6 +31,33 @@ class AllOverView extends StatefulWidget {
 }
 
 class _AllOverViewState extends State<AllOverView> {
+
+void goto(int i)
+{
+  Widget widget;
+  switch (i) {
+    case 0:
+    widget=CreateCourse();  
+    break;
+    case 1:
+    widget=CreateService();
+    break;
+    case 2:
+    widget=CreateInstructor();
+    break;
+    case 3:
+    widget=CreateVehicle();
+    break;
+    default:
+    widget=SizedBox();
+    print('wrong index $i');
+
+  }
+
+  Navigator.push(context,
+MaterialPageRoute(builder: (context) =>widget));
+}
+
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
@@ -46,7 +82,25 @@ class _AllOverViewState extends State<AllOverView> {
         ServiceListView(serviceIds: widget.drivingSchool.serviceIds),
         InstructorListView(instructorIds: widget.drivingSchool.instructorIds),
         VehicleListView(vehicleIds: widget.drivingSchool.vehicleIds),
-      ]),),
+      ]),
+      floatingActionButton: Builder(
+              builder: (BuildContext context) {
+                return FloatingActionButton(
+                  foregroundColor: Colors.white,
+                  backgroundColor: PageConstants.DARKGREEN,
+                  splashColor: Colors.black.withOpacity(0.3),
+                  onPressed: () {
+                    final tabController = DefaultTabController.of(context);
+                    if (tabController != null) {
+                      goto(tabController.index);
+                    } else {
+                      print('No TabController found in context');
+                    }
+                  },
+                  child: Row(children: [Icon(Icons.add), Text('Add')],),
+                );
+              },
+            ),),
     ),));
   }
 }
@@ -89,10 +143,16 @@ void initState()
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
     final sh=MediaQuery.of(context).size.height;
+
+
     return gotData? ListView.builder(itemCount: courses.length,itemBuilder: (context, index) {
       return Column(children: [
          SizedBox(height: 10,),
-         CourseOverview(course: courses[index]),
+         InkWell(child: CourseOverview(course: courses[index]),onTap: () {
+            Navigator.push(context,
+MaterialPageRoute(builder: (context) =>CourseView(course: courses[index])),
+);
+         },),
      ]);
     },):Container(width: 50,height: 50,child:
      FittedBox(fit: BoxFit.cover,child: CircularProgressIndicator(),)
@@ -140,7 +200,11 @@ void initState()
     return gotData? ListView.builder(itemCount: services.length,itemBuilder: (context, index) {
       return Column(children: [
          SizedBox(height: 10,),
-         ServiceOverview(service: services[index]),
+         InkWell(child: ServiceOverview(service: services[index]),onTap: () {
+           Navigator.push(context,
+MaterialPageRoute(builder: (context) => ServiceView(service: services[index])),
+);
+         },),
      ]);
     },):Container(width: 50,height: 50,child:
      FittedBox(fit: BoxFit.cover,child: CircularProgressIndicator(),)
@@ -185,7 +249,10 @@ void initState()
     return gotData? ListView.builder(itemCount: instructors.length,itemBuilder: (context, index) {
       return Column(children: [
          SizedBox(height: 10,),
-         InstructorOverview(instructor: instructors[index]),
+         InkWell(child: InstructorOverview(instructor: instructors[index]),onTap: () {
+                      Navigator.push(context,
+MaterialPageRoute(builder: (context) => InstructorView(instructor: instructors[index])));
+         },),
      ]);
     },):Container(width: 50,height: 50,child:
      FittedBox(fit: BoxFit.cover,child: CircularProgressIndicator(),)
@@ -232,7 +299,10 @@ void initState()
     return gotData? ListView.builder(itemCount: vehicles.length,itemBuilder: (context, index) {
       return Column(children: [
          SizedBox(height: 10,),
-         VehicleOverview(vehicle:vehicles[index]),
+         InkWell(child: VehicleOverview(vehicle:vehicles[index]),onTap: () {
+                      Navigator.push(context,
+MaterialPageRoute(builder: (context) => VehicleView(vehicle: vehicles[index])));
+         },),
      ]);
     },):Container(width: 50,height: 50,child:
      FittedBox(fit: BoxFit.cover,child: CircularProgressIndicator(),)

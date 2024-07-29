@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
+import 'package:fp3/DrivingSchool/ApplicationView.dart';
+import 'package:fp3/DrivingSchool/CourseAttendance.dart';
 import 'package:fp3/DrivingSchool/CourseView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
@@ -37,12 +39,13 @@ import 'package:fp3/firebase_options.dart';
  List<String> gserviceIds=['ShkFj4H1djYVJkiznHJH'];
  List<String> ginstructorIds=['rI2UWWwSz85LBnmbz1Ig'];
  List<String> gvehicleIds=['52kIF9TLyv4L7CXPgRAh','rI2UWWwSz85LBnmbz1Ig'];
+ Application? gapplication;
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
- User.initialize('w42tQh0oLjlD0LsEGxPs');
+ await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
 
   //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('3T7477jI3CepWry9vlAo').get();
@@ -76,10 +79,16 @@ void main() async{
 //  final ins= await service!.getInstructor();
 //  print(ins.toMap());
 
-final vehref=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-doc('52kIF9TLyv4L7CXPgRAh').get();
-gvehicle=Vehicle.fromMap(vehref.data()!);
+// final vehref=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
+// doc('52kIF9TLyv4L7CXPgRAh').get();
+// gvehicle=Vehicle.fromMap(vehref.data()!);
 
+// await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).
+// doc('fq7OTP7HZK7KLQNe7viQ').set(Examples.COURSEATTENDANCE.toMap());
+
+final appref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
+doc('9cQ9q9vDK5sm2rpHeVbs').get();
+gapplication=Application.fromMap(appref.data()!);
 
   runApp(const MyApp());
 }
@@ -94,7 +103,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
        // body:CourseView(course: course!),
-        body:AllOverView(drivingSchool: User.getDS(),),
+       // body:CourseAttendanceView(courseAttendance: Examples.COURSEATTENDANCE,editable: false,),
+      //  body: AllOverView(drivingSchool: User.getDS()),
+      body: ApplicationView(application: gapplication!,),
       ),
     );
   }

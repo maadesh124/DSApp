@@ -127,7 +127,7 @@ map.forEach((key, value) {
 await   FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
 doc(course.instructorObjectId).set(instructor.toMap());
 await   FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-doc(course.instructorObjectId).set(vehicle.toMap());
+doc(course.vehicleObjectId).set(vehicle.toMap());
 
 
 //add to course list in ds
@@ -135,6 +135,15 @@ final ds=User.getDS();
 ds.courseIds.add(coref.id);
 User.setDS(ds);
   return course;
+  }
+
+
+  Future<CourseAttendance> getAttendance()async
+  {
+   final attref=await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).
+   doc(attendanceObjectId).get();
+   return CourseAttendance.fromMap(attref.data()!);
+
   }
 
 

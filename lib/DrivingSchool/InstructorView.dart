@@ -42,49 +42,51 @@ bool gotData=false;
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
-    return SingleChildScrollView(child: 
-    Container(decoration: PageConstants.PAGEBACKGROUND,child: Column(children: [
-      SizedBox(height: 40,),
-      Top(),
+    return Scaffold(
+      body: SingleChildScrollView(child: 
+      Container(decoration: PageConstants.PAGEBACKGROUND,child: Column(children: [
+        SizedBox(height: 40,),
+        Top(),
+        SizedBox(height: 20,),
+      Container( padding: EdgeInsets.all(10), width:0.95*sw ,decoration: BoxDecoration(color: Colors.white,
+      borderRadius: BorderRadius.circular(10)),child: Stack(children: [
+        Align(alignment: Alignment.topRight,child:
+         Icon(Icons.person,color:PageConstants.LIGHTGREEN,size: 120,),),
+        Positioned(right: 10,top: 120,  child:Column(children: [ CircularPercentIndicator(radius: 45,
+        percent: 0.95,progressColor: PageConstants.DARKGREEN,
+        center: Text('95%',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400)),lineWidth: 7.5,),
+        Text('Attendance',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400),)
+        ])),
+        Align(alignment: Alignment.topLeft,child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Text(widget.instructor.name),
+          Text(widget.instructor.insId),
+          Text(widget.instructor.mobileNumber),
+          Text(widget.instructor.email),
+          //Text(widget.instructor.address),
+          Text(widget.instructor.joinDate.toString()),
+          Text(widget.instructor.salary.toString()),
+          Text(widget.instructor.dob.toString()),
+          Text(widget.instructor.courseIds.length.toString()+' courses handling'),
+          Text(widget.instructor.gender),
+          Text(widget.instructor.specialization),
+          SizedBox(height: 40,),    
+                 ],),)
+      ],),),
       SizedBox(height: 20,),
-    Container( padding: EdgeInsets.all(10), width:0.95*sw ,decoration: BoxDecoration(color: Colors.white,
-    borderRadius: BorderRadius.circular(10)),child: Stack(children: [
-      Align(alignment: Alignment.topRight,child:
-       Icon(Icons.person,color:PageConstants.LIGHTGREEN,size: 120,),),
-      Positioned(right: 10,top: 120,  child:Column(children: [ CircularPercentIndicator(radius: 45,
-      percent: 0.95,progressColor: PageConstants.DARKGREEN,
-      center: Text('95%',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400)),lineWidth: 7.5,),
-      Text('Attendance',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400),)
-      ])),
-      Align(alignment: Alignment.topLeft,child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        Text(widget.instructor.name),
-        Text(widget.instructor.insId),
-        Text(widget.instructor.mobileNumber),
-        Text(widget.instructor.email),
-        //Text(widget.instructor.address),
-        Text(widget.instructor.joinDate.toString()),
-        Text(widget.instructor.salary.toString()),
-        Text(widget.instructor.dob.toString()),
-        Text(widget.instructor.courseIds.length.toString()+' courses handling'),
-        Text(widget.instructor.gender),
-        Text(widget.instructor.specialization),
-        SizedBox(height: 40,),    
-               ],),)
-    ],),),
-    SizedBox(height: 20,),
-    TimeTable(timeTable: widget.instructor.timeTable),
-    SizedBox(height: 20,),
-    Container(width: sw*0.95,height: 25,child: 
-    Text('Courses Handling',style: TextStyle(fontWeight: FontWeight.w600),),),
-   gotData? Container(width: sw*0.95,height: 250,child: 
-    ListView.builder(itemCount: courses.length,itemBuilder:(context, index) {
-      return Column(children: [
-        CourseOverview(course: courses[index]),
-        SizedBox(height: 10,)
-      ],);
-    },),):CircularProgressIndicator()
-    ],),),);
+      TimeTable(timeTable: widget.instructor.timeTable),
+      SizedBox(height: 20,),
+      Container(width: sw*0.95,height: 25,child: 
+      Text('Courses Handling',style: TextStyle(fontWeight: FontWeight.w600),),),
+         gotData? Container(width: sw*0.95,height: 250,child: 
+      ListView.builder(itemCount: courses.length,itemBuilder:(context, index) {
+        return Column(children: [
+          CourseOverview(course: courses[index]),
+          SizedBox(height: 10,)
+        ],);
+      },),):CircularProgressIndicator()
+      ],),),),
+    );
   }
 }
 

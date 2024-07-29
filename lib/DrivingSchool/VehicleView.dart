@@ -49,35 +49,37 @@ bool gotData=false;
   Widget build(BuildContext context) {
 
     final sw=MediaQuery.of(context).size.width;
-    return SingleChildScrollView(child: 
-    Container(decoration: PageConstants.PAGEBACKGROUND,child: Column(children: [
-      SizedBox(height: 40,),
-      Top(),
+    return Scaffold(
+      body: SingleChildScrollView(child: 
+      Container(decoration: PageConstants.PAGEBACKGROUND,child: Column(children: [
+        SizedBox(height: 40,),
+        Top(),
+        SizedBox(height: 20,),
+      Container( padding: EdgeInsets.all(10), width:0.95*sw ,decoration: BoxDecoration(color: Colors.white,
+      borderRadius: BorderRadius.circular(10)),child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
+          Text(widget.vehicle.name),
+          Text(widget.vehicle.vehicleNumber),
+          Text('Used in '+widget.vehicle.courseObjectIds.length.toString()+' courses'),
+      
+          SizedBox(height: 40,),    
+           
+      ],),),
       SizedBox(height: 20,),
-    Container( padding: EdgeInsets.all(10), width:0.95*sw ,decoration: BoxDecoration(color: Colors.white,
-    borderRadius: BorderRadius.circular(10)),child: Column( crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-      Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
-        Text(widget.vehicle.name),
-        Text(widget.vehicle.vehicleNumber),
-        Text('Used in '+widget.vehicle.courseObjectIds.length.toString()+' courses'),
-
-        SizedBox(height: 40,),    
-         
-    ],),),
-    SizedBox(height: 20,),
-    TimeTable(timeTable: widget.vehicle.timeTable),
-    SizedBox(height: 20,),
-    Container(width: sw*0.95,height: 25,child: 
-    Text('Courses Using this Vehicle',style: TextStyle(fontWeight: FontWeight.w600),),),
-   gotData? Container(width: sw*0.95,height: 250,child: 
-    ListView.builder(itemCount: courses.length,itemBuilder:(context, index) {
-      return Column(children: [
-        CourseOverview(course: courses[index]),
-        SizedBox(height: 10,)
-      ],);
-    },),):CircularProgressIndicator()
-    ],),),);
+      TimeTable(timeTable: widget.vehicle.timeTable),
+      SizedBox(height: 20,),
+      Container(width: sw*0.95,height: 25,child: 
+      Text('Courses Using this Vehicle',style: TextStyle(fontWeight: FontWeight.w600),),),
+         gotData? Container(width: sw*0.95,height: 250,child: 
+      ListView.builder(itemCount: courses.length,itemBuilder:(context, index) {
+        return Column(children: [
+          CourseOverview(course: courses[index]),
+          SizedBox(height: 10,)
+        ],);
+      },),):CircularProgressIndicator()
+      ],),),),
+    );
   }
 }
 

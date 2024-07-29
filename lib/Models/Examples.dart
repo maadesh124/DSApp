@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Application.dart';
@@ -204,7 +202,7 @@ class Examples
     courseId: 'C001',
     courseName:'Course NAme',
     attendance:{
-      '24|07|24':
+      '29|7|2024':
       [SingleAttendance(name: 'Name1',id: 'id1',status: false),
       SingleAttendance(name: 'Name2',id: 'id2',status: false),
       SingleAttendance(name: 'Name3',id: 'id3',status: false)
@@ -245,7 +243,7 @@ static final Application APPLICATION = Application(
     courseName: '2 wheeler driving',
     learnerName: 'Learner Name',
     dateApplied: DateTime.now(),
-    learnerObjectId: 'learner123',
+    learnerObjectId: '3ls1508zatxqMzCx0VIY',
     applicationNumber: 'APP001',
     courseId: 'course123', // For course application
     // serviceId: 'service123', // For service application

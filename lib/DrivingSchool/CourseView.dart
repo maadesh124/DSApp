@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/Overviews.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/CourseAttendance.dart';
+import 'package:fp3/DrivingSchool/InstructorView.dart';
+import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Enquiry.dart';
@@ -50,58 +53,81 @@ void initState()
 
 }
 
+void goToIns(Instructor ins)
+{
+Navigator.push(context,
+MaterialPageRoute(builder: (context) => InstructorView(instructor:ins ,)));
+}
+
+void goToVeh(Vehicle vehicle)
+{
+  Navigator.push(context,
+MaterialPageRoute(builder: (context) => VehicleView(vehicle: vehicle)));
+}
+
+void gotToAtt()async
+{
+  final att=await widget.course.getAttendance();
+    Navigator.push(context,
+MaterialPageRoute(builder: (context) => CourseAttendanceView(courseAttendance:att, editable:false)));
+}
 
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
-    return SingleChildScrollView(child:Container(decoration: PageConstants.PAGEBACKGROUND ,child: 
-    Column(children: [
-      SizedBox(height: 40,),
-      Top(),
-      SizedBox(height: 20,),
-      Row(children: [
-        SizedBox(width: 0.025*sw,),
-        Text(widget.course.name,style: TextStyle(fontSize: 20),),
-        Spacer(flex: 1,),
-        RatingWidget(rating: widget.course.currentRating, size: 20),
-        SizedBox(width: 0.025*sw,),
-      ],),
-      Container(width: sw*0.95,//height: 400,
-      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
-         children: [
-        Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
-        Text('Start and End Date: ${widget.course.startDate.toString()} to ${widget.course.endDate}'),
-        Text('Course Duration :${widget.course.courseDuration}'),
-        Text('Start and End Time: ${formatTimeOfDay(widget.course.startTime)} - ${formatTimeOfDay(widget.course.endTime)}'),
-        Text('${widget.course.availableSeats}/${widget.course.totalSeats} seats available'),
-        Text(widget.course.courseDescription)
-
-      ],)),
-      SizedBox(height: 30,),
-
-      gotData?InstructorOverview(instructor: instructor!):CircularProgressIndicator(),
-      SizedBox(height: 20,),
-      gotData==true?VehicleOverview(vehicle: vehicle!):CircularProgressIndicator(),
-      SizedBox(height: 20,),
-      ProgressView(list:widget.course.progress, editable: false,height: 200,),
-      SizedBox(height: 20,),
-      Container(width: 0.95*sw,height: 40,
-      padding: EdgeInsets.all(10), decoration:
-      BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child: 
-      Stack( 
-        children: [Center(child: Text('Student Attendance Details'),),
-     // Spacer(flex: 1,),
-     Align( alignment: Alignment.centerRight, child: Icon(Icons.arrow_forward_ios_rounded),),
-      SizedBox(width: 20,)
-      ],)),
-      SizedBox(height: 20,),
-      Forms(applicationIds: widget.course.applicationObjectIds, learnerIds: widget.course.learnerObjectIds),
-      SizedBox(height: 20,),
-
-    ],),));
+    return Scaffold(
+      body: SingleChildScrollView(child:Container(decoration: PageConstants.PAGEBACKGROUND ,child: 
+      Column(children: [
+        SizedBox(height: 40,),
+        Top(),
+        SizedBox(height: 20,),
+        Row(children: [
+          SizedBox(width: 0.025*sw,),
+          Text(widget.course.name,style: TextStyle(fontSize: 20),),
+          Spacer(flex: 1,),
+          RatingWidget(rating: widget.course.currentRating, size: 20),
+          SizedBox(width: 0.025*sw,),
+        ],),
+        Container(width: sw*0.95,//height: 400,
+        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+        padding: EdgeInsets.all(10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+          Align(alignment: Alignment.topCenter, child:Image.asset('assets/images/img.png')),
+          Text('Start and End Date: ${widget.course.startDate.toString()} to ${widget.course.endDate}'),
+          Text('Course Duration :${widget.course.courseDuration}'),
+          Text('Start and End Time: ${formatTimeOfDay(widget.course.startTime)} - ${formatTimeOfDay(widget.course.endTime)}'),
+          Text('${widget.course.availableSeats}/${widget.course.totalSeats} seats available'),
+          Text(widget.course.courseDescription)
+      
+        ],)),
+        SizedBox(height: 30,),
+      
+        gotData?InkWell(child: InstructorOverview(instructor: instructor!),
+        onTap:()=>goToIns(instructor!),):CircularProgressIndicator(),
+        SizedBox(height: 20,),
+        gotData==true?InkWell(child: VehicleOverview(vehicle: vehicle!),
+        onTap: () => goToVeh(vehicle!),):CircularProgressIndicator(),
+        SizedBox(height: 20,),
+        ProgressView(list:widget.course.progress, editable: false,height: 200,),
+        SizedBox(height: 20,),
+        Container(width: 0.95*sw,height: 40,
+        padding: EdgeInsets.all(10), decoration:
+        BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child: 
+        Stack( 
+          children: [InkWell(onTap: gotToAtt,
+            child: Center(child: Text('Student Attendance Details'),)),
+       // Spacer(flex: 1,),
+       Align( alignment: Alignment.centerRight, child: Icon(Icons.arrow_forward_ios_rounded),),
+        SizedBox(width: 20,)
+        ],)),
+        SizedBox(height: 20,),
+        Forms(applicationIds: widget.course.applicationObjectIds, learnerIds: widget.course.learnerObjectIds),
+        SizedBox(height: 20,),
+      
+      ],),)),
+    );
   }
 }
 
