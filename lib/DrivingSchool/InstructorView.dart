@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/Overviews.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/DrivingSchool/CourseView.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
@@ -20,6 +23,7 @@ class InstructorView extends StatefulWidget {
 
 class _InstructorViewState extends State<InstructorView> {
 
+
 List<Course> courses=[];
 bool gotData=false;
   Future<void> initialize()async
@@ -37,6 +41,21 @@ bool gotData=false;
     initialize();
     super.initState();
   }
+
+
+Course? getCourse(String docId)
+{
+  print('docId is $docId');
+  print(widget.instructor.courseIds);
+ int index= widget.instructor.courseIds.indexOf(docId);
+  print(index);
+ if(index==-1)
+ return null;
+ if(gotData)
+ return courses[index];
+}
+
+
 
 
   @override
@@ -74,7 +93,7 @@ bool gotData=false;
                  ],),)
       ],),),
       SizedBox(height: 20,),
-      TimeTable(timeTable: widget.instructor.timeTable),
+      TimeTable(timeTable: widget.instructor.timeTable,getC: getCourse,),
       SizedBox(height: 20,),
       Container(width: sw*0.95,height: 25,child: 
       Text('Courses Handling',style: TextStyle(fontWeight: FontWeight.w600),),),
@@ -99,7 +118,8 @@ class TimeTable extends StatefulWidget {
 
   Map<String,Map<String,String>> timeTable;
  static const List<String> days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-  TimeTable({super.key,required this.timeTable});
+ Function getC;
+  TimeTable({super.key,required this.timeTable,required this.getC});
 
   @override
   State<TimeTable> createState() => _TimeTableState();
@@ -161,19 +181,28 @@ Widget getDay(int index)
 
 }
 
+
+
 Widget getOne(String key,String val)
 {
  
   final sw=MediaQuery.of(context).size.width;
-  return  Container(height: 55,width: sw*0.95,child: 
-  Column(children: [
-    Container(width:sw*0.95 ,height: 50,padding: EdgeInsets.fromLTRB(20,0,10,0), decoration: 
-  BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child:
- Stack(children: [ Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(val,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
-  Text(key,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16))],),
-  Align(alignment: Alignment.centerRight,child: Icon(Icons.arrow_forward_ios_rounded),)])),
-  SizedBox(height: 0,),
-  ],),);
+  return  InkWell(onTap: () async{
+ final course= widget.getC(val.split('|')[1].trim());
+ Navigator.push(context,
+MaterialPageRoute(builder: (context) =>CourseView(course:course! )),);
+
+  },
+    child: Container(height: 55,width: sw*0.95,child: 
+    Column(children: [
+      Container(width:sw*0.95 ,height: 50,padding: EdgeInsets.fromLTRB(20,0,10,0), decoration: 
+    BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child:
+     Stack(children: [ Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(val,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
+    Text(key,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16))],),
+    Align(alignment: Alignment.centerRight,child: Icon(Icons.arrow_forward_ios_rounded),)])),
+    SizedBox(height: 0,),
+    ],),),
+  );
 }
 
 }

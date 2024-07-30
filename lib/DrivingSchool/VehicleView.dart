@@ -45,6 +45,21 @@ bool gotData=false;
     super.initState();
   }
 
+
+
+  Course? getCourse(String docId)
+{
+  print('docId is $docId');
+  print(widget.vehicle.courseObjectIds);
+ int index= widget.vehicle.courseObjectIds.indexOf(docId);
+  print(index);
+ if(index==-1)
+ return null;
+ if(gotData)
+ return courses[index];
+}
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -67,7 +82,7 @@ bool gotData=false;
            
       ],),),
       SizedBox(height: 20,),
-      TimeTable(timeTable: widget.vehicle.timeTable),
+      TimeTable(timeTable: widget.vehicle.timeTable,getC: getCourse),
       SizedBox(height: 20,),
       Container(width: sw*0.95,height: 25,child: 
       Text('Courses Using this Vehicle',style: TextStyle(fontWeight: FontWeight.w600),),),

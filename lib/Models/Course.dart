@@ -231,11 +231,12 @@ User.setDS(ds);
     };
   }
 
-  List<Application> getApplications()
-  {
-    
-    return [];
-  }
+static Future<Course> getCourse(String docId)async
+{
+  final coref=await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
+  doc(docId).get();
+  return Course.fromMap(coref.data()!);
+}
 
 
 

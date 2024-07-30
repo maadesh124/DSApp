@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/CourseAttendance.dart';
-import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/User.dart';
 
