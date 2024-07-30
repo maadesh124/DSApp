@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/Overviews.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
@@ -24,6 +25,7 @@ class AllOverView extends StatefulWidget {
 class _AllOverViewState extends State<AllOverView> {
   @override
   Widget build(BuildContext context) {
+    print(FirebaseAuth.instance.currentUser!.uid);
     final sw=MediaQuery.of(context).size.width;
     final sh=MediaQuery.of(context).size.height;
     return MaterialApp(theme: ThemeData(

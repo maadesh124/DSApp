@@ -77,6 +77,25 @@ class Enquiry {
       'messages': messages.map((message) => message.toMap()).toList(),
     };
   }
+
+Future<Enquiry> addMessage(Message message,String objectId) async
+{
+  messages.add(message);
+  await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+  doc(objectId).set(this.toMap());
+
+  return this;
+}   
+
+Future<String> getEnquiryObjectId()async
+{
+  final ref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+  where('enquiryNo',isEqualTo: enquiryNo).get();
+
+  return ref.docs.first.id;
+}
+
+
 }
 
 class Message {
@@ -87,7 +106,7 @@ class Message {
   Message({
     this.message = '', // Default value
     required this.dateTime,
-    this.sender = '', // Default value
+    this.sender = '', // Default valuep
   });
 
   factory Message.fromMap(Map<String, dynamic> map) {

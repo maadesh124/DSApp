@@ -258,11 +258,11 @@ static final Enquiry ENQUIRY=Enquiry(
   enquiryNo: 'enqid12', 
 learnerId: 'studid1', messages: [Message( message: 'Hello',
     dateTime: DateTime.now(),
-    sender: 'learner',)
+    sender: DataBase.LEARNER_COLLECTION,)
     ,Message(
     message: 'Message from school',
     dateTime: DateTime.now(),
-    sender: 'school',
+    sender: DataBase.DRIVINGSCHOOL_COLLECTION,
   )
     ]);
 

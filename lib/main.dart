@@ -11,6 +11,7 @@ import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
+import 'package:fp3/DrivingSchool/EnquiryView.dart';
 import 'package:fp3/DrivingSchool/InstructorView.dart';
 import 'package:fp3/DrivingSchool/LearnerView.dart';
 import 'package:fp3/DrivingSchool/ServiceView.dart';
@@ -32,6 +33,7 @@ import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
+Enquiry? genquiry;
 Learner? glearner;
  Course? gcourse;
  Service? gservice;
@@ -50,11 +52,17 @@ void main() async{
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
 
+
+ final enqref=   await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+doc('MZtY3CiBVUDGfiTb67Mh').get();
+genquiry=Enquiry.fromMap(enqref.data()!);
+
   //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('jMfMnZfxiG1O70RGSqW2').get();
   //   gcourse=Course.fromMap(coref.data()!);
 
-      final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
-    glearner=Learner.fromMap(leref.data()!);
+    //   final leref= await db.collection(DataBase.LEARNER_COLLECTION).doc('3ls1508zatxqMzCx0VIY').get();
+    // glearner=Learner.fromMap(leref.data()!);
+
 
     // Application.createCourse(course!, learner, '3ls1508zatxqMzCx0VIY');
   //  final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
@@ -110,9 +118,10 @@ class MyApp extends StatelessWidget {
        // body:CourseView(course: course!),
        // body:CourseAttendanceView(courseAttendance: Examples.COURSEATTENDANCE,editable: false,),
        // body: AllFormsView(drivingSchool: User.getDS()),
-      //body: ApplicationView(application: gapplication!,),
-      //body: AllOverView(drivingSchool: User.getDS()),
-      body: LearnerView(learner: glearner!),
+       //body: ApplicationView(application: gapplication!,),
+       //body: AllOverView(drivingSchool: User.getDS()),
+       // body: MessageView(messages: Examples.ENQUIRY.messages),
+     body: EnquiryView(temp: genquiry!),
       ),
     );
   }
