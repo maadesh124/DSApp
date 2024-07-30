@@ -55,65 +55,67 @@ where('insId',isEqualTo: instructorIdController.text).where('schoolId',isEqualTo
     final double screenWidth=MediaQuery.of(context).size.width;
     return 
     
-     SingleChildScrollView(child:
-     Container(decoration: PageConstants.PAGEBACKGROUND,
-    child: Column(children: [
-      SizedBox(height: 40,),
-      Top(),
-      SizedBox(height: 20,),
-      Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white,),
-        width:0.95*screenWidth ,
-      height: 230,
-      child: Stack(children: [
-        Positioned(top: 10,left: 0,right: 0, child:Center(child: Text("New Service",style:
-         TextStyle(fontSize: 20,fontWeight: FontWeight.w500))),),
-
-        Positioned(left: 20,bottom: 20,  child:Form(child: Column( crossAxisAlignment: CrossAxisAlignment.start,  children: [
-        InputBox(width: 150, height: 30, text: "Service Name",textEditingController: serviceController,
-        validator: validateName,),
-        InputBox(width: 150, height: 30, text: "Instructor id",textEditingController: instructorIdController,
-        validator: validateInsId,),
-        InputBox(width: 150, height: 30, text: "Service Fee",textEditingController: serviceFeeController,
-        validator: validateFee,),
-        InputBox(width: 400, height: 30, text: "Service Description",textEditingController: descriptionController,),
-        //InputBox(width: 400, height: 30, text: "")
-      ],)),),
-
-      Positioned(right: 40,top:50,  child:Align(alignment: Alignment.center, child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-       children: [
-        Icon(Icons.add,size: 40,color: Colors.black,),
-        Text("Add Image",style: TextStyle(fontWeight: FontWeight.w900),)
-      ],)))
-
-
-      ]),
-      ),
-
-      SizedBox(height: 30,),
-      DocumentList(reqDocs: requiredDocuments,editable: true,),
-      SizedBox(height: 40,),
-InkWell(onTap: onSubmit,
-  splashColor: Colors.black,
-  child: Container(
-    decoration: BoxDecoration(
-      color: PageConstants.DARKGREEN,
-      borderRadius: BorderRadius.circular(5),
-    ),
-    width: 100,
-    height: 40,
-    child: Center(
-      child: Text(
-        "Create",
-        style: TextStyle(color: Colors.white),
-      ),
-    ),
-  ),
-)
-
-    ],),
-    ));
+     Scaffold(
+       body: SingleChildScrollView(child:
+       Container(decoration: PageConstants.PAGEBACKGROUND,
+           child: Column(children: [
+        SizedBox(height: 40,),
+        Top(),
+        SizedBox(height: 20,),
+        Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white,),
+          width:0.95*screenWidth ,
+        height: 230,
+        child: Stack(children: [
+          Positioned(top: 10,left: 0,right: 0, child:Center(child: Text("New Service",style:
+           TextStyle(fontSize: 20,fontWeight: FontWeight.w500))),),
+       
+          Positioned(left: 20,bottom: 20,  child:Form(child: Column( crossAxisAlignment: CrossAxisAlignment.start,  children: [
+          InputBox(width: 150, height: 30, text: "Service Name",textEditingController: serviceController,
+          validator: validateName,),
+          InputBox(width: 150, height: 30, text: "Instructor id",textEditingController: instructorIdController,
+          validator: validateInsId,),
+          InputBox(width: 150, height: 30, text: "Service Fee",textEditingController: serviceFeeController,
+          validator: validateFee,),
+          InputBox(width: 400, height: 30, text: "Service Description",textEditingController: descriptionController,),
+          //InputBox(width: 400, height: 30, text: "")
+        ],)),),
+       
+        Positioned(right: 40,top:50,  child:Align(alignment: Alignment.center, child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+         children: [
+          Icon(Icons.add,size: 40,color: Colors.black,),
+          Text("Add Image",style: TextStyle(fontWeight: FontWeight.w900),)
+        ],)))
+       
+       
+        ]),
+        ),
+       
+        SizedBox(height: 30,),
+        DocumentList(reqDocs: requiredDocuments,editable: true,),
+        SizedBox(height: 40,),
+       InkWell(onTap: onSubmit,
+         splashColor: Colors.black,
+         child: Container(
+           decoration: BoxDecoration(
+        color: PageConstants.DARKGREEN,
+        borderRadius: BorderRadius.circular(5),
+           ),
+           width: 100,
+           height: 40,
+           child: Center(
+        child: Text(
+          "Create",
+          style: TextStyle(color: Colors.white),
+        ),
+           ),
+         ),
+       )
+       
+           ],),
+           )),
+     );
   }
 }
 
@@ -173,9 +175,8 @@ class _DocumentListState extends State<DocumentList> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(width: 0.95*screenWidth,
+    return
+       Container(width: 0.95*screenWidth,
         height: 70+documentList.length*35,
         decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
         child: Column( crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -194,9 +195,7 @@ class _DocumentListState extends State<DocumentList> {
           Text("Add Docuent")],),)):SizedBox()
         ]),
         
-        ),
-      ),
-    );
+        );
   }
 }
 
@@ -207,15 +206,15 @@ class Document extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Container(width: 0.95*screenWidth,height: 35,color: Colors.white,
+    return 
+      Container(width: 0.95*screenWidth,height: 35,color: Colors.white,
       child: Column(crossAxisAlignment: CrossAxisAlignment.center,  children: [
         Container(width: 0.9*screenWidth,height: 28,
         decoration: BoxDecoration(color: PageConstants.BLACK20,
         borderRadius: BorderRadius.circular(5)),
         child:Center(child: Text(name)),)
         ,SizedBox(height: 7,)
-      ],),),
-    );
+      ],),)
+    ;
   }
 }

@@ -33,6 +33,7 @@ import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
+DrivingSchool? gds;
 Enquiry? genquiry;
 Learner? glearner;
  Course? gcourse;
@@ -53,9 +54,9 @@ void main() async{
 
 
 
- final enqref=   await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-doc('MZtY3CiBVUDGfiTb67Mh').get();
-genquiry=Enquiry.fromMap(enqref.data()!);
+ final dsref=   await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
+doc('w42tQh0oLjlD0LsEGxPs').get();
+gds=DrivingSchool.fromMap(dsref.data()!);
 
   //  final coref= await db.collection(DataBase.COURSE_COLLECTION).doc('jMfMnZfxiG1O70RGSqW2').get();
   //   gcourse=Course.fromMap(coref.data()!);
@@ -119,9 +120,9 @@ class MyApp extends StatelessWidget {
        // body:CourseAttendanceView(courseAttendance: Examples.COURSEATTENDANCE,editable: false,),
        // body: AllFormsView(drivingSchool: User.getDS()),
        //body: ApplicationView(application: gapplication!,),
-       //body: AllOverView(drivingSchool: User.getDS()),
+       body: AllOverView(drivingSchool: User.getDS()!),
        // body: MessageView(messages: Examples.ENQUIRY.messages),
-     body: EnquiryView(temp: genquiry!),
+    // body: EnquiryView(temp: genquiry!),
       ),
     );
   }
@@ -129,21 +130,3 @@ class MyApp extends StatelessWidget {
 
 
 
-TimeOfDay parseTimeOfDay(String time) {
-  // Split the string into hour and minute components
-  final parts = time.split(':');
-  if (parts.length != 2) {
-    throw FormatException('Invalid time format. Expected HH:MM');
-  }
-
-  // Parse the hour and minute components
-  final hour = int.tryParse(parts[0]);
-  final minute = int.tryParse(parts[1]);
-
-  if (hour == null || minute == null) {
-    throw FormatException('Invalid hour or minute');
-  }
-
-  // Construct and return a TimeOfDay instance
-  return TimeOfDay(hour: hour, minute: minute);
-}

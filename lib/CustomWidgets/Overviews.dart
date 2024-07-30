@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/ApplicationView.dart';
 import 'package:fp3/DrivingSchool/CourseView.dart';
+import 'package:fp3/DrivingSchool/EnquiryView.dart';
 import 'package:fp3/DrivingSchool/InstructorView.dart';
+import 'package:fp3/DrivingSchool/LearnerView.dart';
 import 'package:fp3/DrivingSchool/ServiceView.dart';
 import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/Models/Application.dart';
@@ -77,8 +79,8 @@ class ServiceOverview extends StatelessWidget {
   Widget build(BuildContext context) {
    final double screenWidth=MediaQuery.of(context).size.width;
     return InkWell(onTap: () {
-//       Navigator.push(context,
-// MaterialPageRoute(builder: (context) =>ServiceView(service: service, )),);
+      Navigator.push(context,
+MaterialPageRoute(builder: (context) =>ServiceView(service: service, )),);
 
     },
       child: Container(width: 0.95*screenWidth,
@@ -200,23 +202,28 @@ class EnquiryOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     Learner learner=enquiry.getLearner();
      final double screenWidth=MediaQuery.of(context).size.width;
-   return Container(
-      width:0.95*screenWidth ,
-      height: 120,
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(color: Colors.white,
-      borderRadius: BorderRadius.circular(10)),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Name: ${learner.name}'),
-        Text('Address: ${learner.address}'),
-        Text('Mobile No.: ${learner.mobileNumber}'),
-        Text('Enquiry No.: ${enquiry.enquiryNo}'),
-        Text('Replied: ${enquiry.getStatus()}')
-        
-      ],),
-    );
+   return InkWell(onTap: () {
+           Navigator.push(context,
+MaterialPageRoute(builder: (context) =>EnquiryView(temp: enquiry)),);
+   },
+     child: Container(
+        width:0.95*screenWidth ,
+        height: 120,
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.white,
+        borderRadius: BorderRadius.circular(10)),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Name: ${learner.name}'),
+          Text('Address: ${learner.address}'),
+          Text('Mobile No.: ${learner.mobileNumber}'),
+          Text('Enquiry No.: ${enquiry.enquiryNo}'),
+          Text('Replied: ${enquiry.getStatus()}')
+          
+        ],),
+      ),
+   );
   }
 }
 
@@ -230,22 +237,27 @@ class LearnerOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
-    return Container(
-      width:0.95*screenWidth ,
-      height: 100,
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(color: Colors.white,
-      borderRadius: BorderRadius.circular(10)),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Student Name: ${learner.name}'),
-        Text('Age: ${learner.age}'),
-        // Text('Student Name: ${le}'),
-        Text('Gender: ${learner.gender}'),
-        Text('Address: ${learner.address}')
-        
-      ],),
+    return InkWell(onTap: () {
+            Navigator.push(context,
+MaterialPageRoute(builder: (context) =>LearnerView(learner: learner)),);
+    },
+      child: Container(
+        width:0.95*screenWidth ,
+        height: 100,
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(color: Colors.white,
+        borderRadius: BorderRadius.circular(10)),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Student Name: ${learner.name}'),
+          Text('Age: ${learner.age}'),
+          // Text('Student Name: ${le}'),
+          Text('Gender: ${learner.gender}'),
+          Text('Address: ${learner.address}')
+          
+        ],),
+      ),
     );
   }
 }

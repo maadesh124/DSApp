@@ -1,5 +1,3 @@
-
-import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -118,10 +116,15 @@ class _MessageViewState extends State<MessageView> {
     color: Colors.white,child: ListView.builder(itemCount: widget.messages.length,
     itemBuilder: (context, index) {
       bool isSchool=widget.messages[index].sender==DataBase.DRIVINGSCHOOL_COLLECTION;
-    return  BubbleSpecialThree(text: widget.messages[index].message,
-      color: isSchool?PageConstants.LIGHTGREEN:PageConstants.BLACK20,
-      tail:widget.messages.length-1==index,
-      isSender: isSchool);
+    return  Column(
+      children: [
+        BubbleSpecialThree(text: widget.messages[index].message,
+          color: isSchool?PageConstants.LIGHTGREEN:PageConstants.BLACK20,
+          tail:widget.messages.length-1==index,
+          isSender: isSchool),
+          SizedBox(height:widget.messages.length-1==index?60:0 ,)
+      ],
+    );
     },),);
   }
 }
