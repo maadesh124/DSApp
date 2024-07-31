@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Model.dart';
+import 'package:fp3/User.dart';
 
 class Instructor extends Model {
   String name;
@@ -15,7 +17,6 @@ class Instructor extends Model {
   Map<String, Map<String, String>> timeTable;
   List<String> courseIds;
   List<String> serviceIds;
-  String objectId;
   String password;
 
   Instructor({super.collectionType=Model.INSTRUCTOR,
@@ -32,30 +33,27 @@ class Instructor extends Model {
     this.timeTable =const {'Monday':{},'Tuesday':{},
       'Wednesday':{},'Thursday':{},'Friday':{},'Saturday':{},'Sunday':{}} , // Default to an empty map
     this.courseIds = const [], // Default to an empty list
-    this.serviceIds = const [], // Default to an empty list
-    this.objectId = '', // Default to an empty string
+    this.serviceIds = const [], // Default to an empty list// Default to an empty string
     this.password='', // Default to an empty string
   }):this.joinDate=joinDate1??DateTime(200),
   this.dob=dob1??DateTime(220);
 
   
-//  static Future<Instructor> createInstructor({required String id,required String pwd})async
-//   {
-//       Instructor instructor=Instructor(insId: id, password: pwd);
-//       instructor.joinDate=DateTime.now();
-//       instructor.dob=DateTime.parse('1998-07-24 15:44:00');
-//       instructor.schoolId=User.docId;
+ static Future<Instructor> createInstructor({required String id,required String pwd})async
+  {
+      Instructor instructor=Instructor(insId: id, password: pwd);
+      instructor.joinDate=DateTime.now();
+      instructor.dob=DateTime.parse('1998-07-24 15:44:00');
+      instructor.schoolId=User.getDS().getDocId();
 
-//       final doc=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-//       add(instructor.toMap());
-//       instructor.objectId=doc.id;
-//       DrivingSchool ds=User.getDS();
-//       ds.instructorIds.add(doc.id);
-//       User.setDS(ds);
+      instructor.setToDB();
+      DrivingSchool ds=User.getDS();
+      ds.instructorIds.add(instructor.getDocId());
+      User.setDS(ds);
 
-//       return instructor;
+      return instructor;
 
-//   }
+  }
 
   @override
   void fromSnapShot(DocumentSnapshot snapshot) {
@@ -79,7 +77,6 @@ setDocId(snapshot.id);
           ));
   courseIds= List<String>.from(map['courseIds'] ?? []);
   serviceIds= List<String>.from(map['serviceIds'] ?? []);
-  objectId= map['objectId'] as String? ?? '';
   password= map['password'] as String? ?? '';
 } on Exception catch (e,s) {
   print('$e\n$s');
@@ -105,7 +102,6 @@ setDocId(snapshot.id);
           )),
       'courseIds': courseIds,
       'serviceIds': serviceIds,
-      'objectId': objectId,
       'password': password,
     };
   }

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
+import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/DrivingSchool.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
       //  body: AllOverView(drivingSchool: User.getDS()!),
        // body: MessageView(messages: Examples.ENQUIRY.messages),
     // body: EnquiryView(temp: genquiry!),
-    body: CreateCourse(),
+    body: CreateInstructor(),
       ),
     );
   }

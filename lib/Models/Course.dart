@@ -179,7 +179,7 @@ return course;
    void fromSnapShot(DocumentSnapshot snapshot) {
 
     Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
-    
+    setDocId(snapshot.id);
       try {
   reviewObjectId=map['reviewObjectId'];
   dsObjectId= map['dsObjectId'] ?? '';

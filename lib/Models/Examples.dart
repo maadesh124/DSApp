@@ -174,7 +174,6 @@ class Examples
   static final SingleAttendance SINGLEATTENDANCE=SingleAttendance(name: 'Name1',id: 'id1',status: false);
 
   static final CourseAttendance COURSEATTENDANCE = CourseAttendance(
-    courseId: 'C001',
     courseName:'Course NAme',
     attendance:{
       '29|7|2024':
