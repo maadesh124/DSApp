@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/Models/Model.dart';
 import 'Application.dart';
 import 'CourseAttendance.dart';
 import 'DrivingSchool.dart';
@@ -7,7 +8,6 @@ import 'Enquiry.dart';
 import 'Learner.dart';
 import 'Instructor.dart';
 import 'Course.dart';
-import 'Ratings.dart';
 import 'Reviews.dart';
 import 'SchoolAttendance.dart';
 import 'Service.dart';
@@ -16,20 +16,6 @@ import 'Vehicle.dart';
 
 class DataBase
 {
-
-  static const String COURSE_COLLECTION='Course';
-  static const String APPLICATION_COLLECTION='Application';
-  static const String COURSE_ATTENDANCE_COLLECTION='CourseAttendance';
-  static const String DRIVINGSCHOOL_COLLECTION='DrivingSchool';
-  static const String ENQUIRY_COLLECTION='Enquiry';
-  static const String INSTRUCTOR_COLLECTION='Instructor';
-  static const String LEARNER_COLLECTION='Learner';
-  static const String RATINGS_COLLECTION='Ratings';
-  static const String REVIEWS_COLLECTION='Reviews';
-  static const String SCHOOL_ATTENDANCE_COLLECTION='SchoolAttendance';
-  static const String SERVICE_COLLECTION='Service';
-  static const String VEHICLE_COLLECTION='Vehicle';
-
 
   static  Future<List<Map<String,dynamic>>> getAllDocuments(List<String> ids,String model,)async
   {
@@ -45,9 +31,6 @@ final documents = await FirebaseFirestore.instance
 documents.docs.forEach((element) { list.add(element.data());});
       return list;
   }
-
-
-
 
 }
 
@@ -69,10 +52,6 @@ class Examples
   serviceIds: ['service1', 'service2', 'service3'],
   vehicleIds: ['vehicle1', 'vehicle2'],
   enquiryIds: ['enquiry1', 'enquiry2'],
-  ratingIds: 'rating123',
-  reviewIds: 'review456',
-  schoolId: 'school789',
-  password: 'securepassword123',
 );
 
 
@@ -81,9 +60,9 @@ class Examples
     insId: 'instructor123',
     mobileNumber: '9876543210',
     email: 'johndoe@example.com',
-    joinDate: DateTime(2023, 1, 1),
+    joinDate1: DateTime(2023, 1, 1),
     salary: 50000.0,
-    dob: DateTime(1990, 1, 1),
+    dob1: DateTime(1990, 1, 1),
     gender: 'Male',
     specialization: '4-wheeler driving',
     timeTable: {
@@ -115,7 +94,7 @@ class Examples
     name: 'John Doe',
     mobileNumber: '1234567890',
     email: 'johndoe@example.com',
-    dob: DateTime(1990, 1, 1),
+    dob1: DateTime(1990, 1, 1),
     address: '123 Main Street',
     gender: 'Male',
     courseObjectIds: ['course1', 'course2'],
@@ -131,7 +110,6 @@ class Examples
     courseFee: 20000,
     startTime: TimeOfDay(hour: 9, minute: 0),
     endTime: TimeOfDay(hour: 12, minute: 0),
-    attendanceObjectId: 'attendance123',
     totalSeats: 50,
     availableSeats: 45,
     courseDescription: '2-wheeler driving course description',
@@ -151,9 +129,6 @@ class Examples
     learnerObjectIds: ['learner1', 'learner2'],
     applicationObjectIds: ['application1', 'application2'],
     enquiryObjectIds: ['enquiry1', 'enquiry2'],
-    reviewsObjectId: 'reviews123',
-    currentRating: 4.5,
-    numberOfRatings: 100,
     dsName: 'DSNAme',
     dsObjectId: 'dsobj1'
 
@@ -258,19 +233,15 @@ static final Enquiry ENQUIRY=Enquiry(
   enquiryNo: 'enqid12', 
 learnerId: 'studid1', messages: [Message( message: 'Hello',
     dateTime: DateTime.now(),
-    sender: DataBase.LEARNER_COLLECTION,)
+    sender:Model.LEARNER,)
     ,Message(
     message: 'Message from school',
     dateTime: DateTime.now(),
-    sender: DataBase.DRIVINGSCHOOL_COLLECTION,
+    sender: Model.DRIVINGSCHOOL,
   )
     ]);
 
-static final Ratings RATINGS=Ratings(
-    receiver: 'Driving School',
-    receiverId: 'ds123',
-    numberOfRatings: 10,
-    currentRating: 4.5,);
+
 
 static final Review REVIEW=Review(
     receiver: 'Instructor',

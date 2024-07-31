@@ -10,8 +10,6 @@ import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Service.dart';
 import 'package:fp3/Models/Vehicle.dart';
-import 'package:fp3/NModels/NVehicle.dart';
-import 'package:fp3/NModels/Nservice.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
@@ -34,12 +32,6 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
-NVehicle nVehicle=NVehicle();
-// nVehicle.description='check Description';
-// nVehicle.setToDB();
-nVehicle.setDocId('41SFh8onu8ZhNYHPiCdS');
-await nVehicle.getFromDB();
-print(nVehicle.toMap());
 
 
   //runApp(const MyApp());

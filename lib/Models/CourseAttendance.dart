@@ -1,15 +1,21 @@
-class CourseAttendance {
-  final String courseId;
-  final String courseName;
-  final Map<String, List<SingleAttendance>> attendance; // Map of date to student attendance
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/Model.dart';
 
-  CourseAttendance({
-    required this.courseId, // Made non-nullable
-    required this.courseName, // Made non-nullable
+class CourseAttendance extends Model{
+
+  String courseId;
+  String courseName;
+  Map<String, List<SingleAttendance>> attendance; // Map of date to student attendance
+
+  CourseAttendance({super.collectionType=Model.COURSE_ATTENDANCE,
+    this.courseId='', // Made non-nullable
+    this.courseName='', // Made non-nullable
     this.attendance = const {}, // Default empty map for attendance
   });
 
-   factory CourseAttendance.fromMap(Map<String, dynamic> map) {
+   void fromSnapShot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> map=snapshot.data()! as Map<String, dynamic> ;
+    setDocId(snapshot.id);
     // Handle potential missing or invalid values in the map
     final attendanceMap = (map['attendance'] as Map<String, dynamic>?)?.cast<String, List<dynamic>>();
 
@@ -21,11 +27,11 @@ class CourseAttendance {
       )
     );
 
-    return CourseAttendance(
-      courseId: map['courseId'] as String,
-      courseName: map['courseName'] as String,
-      attendance: processedAttendance ?? const {}, // Ensure non-null attendance map
-    );
+  
+      courseId= map['courseId'] as String;
+      courseName= map['courseName'] as String;
+      attendance= processedAttendance ?? const {}; // Ensure non-null attendance map
+    
   }
 
   Map<String, dynamic> toMap() {
@@ -41,6 +47,10 @@ class CourseAttendance {
     };
   }
 }
+
+
+
+
 
 class SingleAttendance {
   final String name;

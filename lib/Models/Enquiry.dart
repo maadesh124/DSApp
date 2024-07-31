@@ -1,71 +1,71 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fp3/Models/DrivingSchool.dart';
-import 'package:fp3/Models/Examples.dart';
-import 'package:fp3/Models/Learner.dart';
+import 'package:fp3/Models/Model.dart';
 
-class Enquiry {
-  final String learnerName;
-  final double learnerAge;
-  final bool isMale;
-  final String learnerAddress;
-  final String enquiryNo;
-  final String learnerId;
-  final List<Message> messages;
+class Enquiry extends Model {
+   String learnerName;
+   double learnerAge;
+   bool isMale;
+   String learnerAddress;
+   String enquiryNo;
+   String learnerId;
+   List<Message> messages;
 
-  Enquiry({
-    required this.enquiryNo,
-    required this.learnerId,
+  Enquiry({super.collectionType=Model.ENQUIRY,
+     this.enquiryNo='Not Mentioned',
+     this.learnerId='Not Mentioned',
     this.messages = const [], 
-   required this.isMale,
-   required this.learnerAddress,
-   required this.learnerAge,
-   required this.learnerName,
+    this.isMale=true,
+    this.learnerAddress='Not Mentioned',
+    this.learnerAge=20,
+    this.learnerName='Not Mentioned',
     // Default to an empty list
   });
 
-  Learner getLearner() => Examples.LEARNER;
+  // Learner getLearner() => Examples.LEARNER;
 
-  bool getStatus() {
-    if (messages.isNotEmpty && messages.last.sender == 'DrivingSchool') {
-      return true;
-    }
-    return false;
+  // bool getStatus() {
+  //   if (messages.isNotEmpty && messages.last.sender == 'DrivingSchool') {
+  //     return true;
+  //   }
+  //   return false;
 
 
-  }
+  // }
 
-  static Future<Enquiry> create(String dsObjectId,Learner learner,String learnerObjectId)async
-  {
-    final dsref=await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
-    doc(dsObjectId).get();
-    DrivingSchool ds=DrivingSchool.fromMap(dsref.data()!);
+  // static Future<Enquiry> create(String dsObjectId,Learner learner,String learnerObjectId)async
+  // {
+  //   final dsref=await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
+  //   doc(dsObjectId).get();
+  //   DrivingSchool ds=DrivingSchool.fromMap(dsref.data()!);
     
-    Enquiry enquiry=Enquiry(enquiryNo: dsObjectId+ds.enquiryIds.length.toString(), learnerId:learnerObjectId ,
-    learnerAge: learner.age+0.0,isMale: (learner.gender=='Male'),
-    learnerName:learner.name,learnerAddress: learner.address, );
+  //   Enquiry enquiry=Enquiry(enquiryNo: dsObjectId+ds.enquiryIds.length.toString(), learnerId:learnerObjectId ,
+  //   learnerAge: learner.age+0.0,isMale: (learner.gender=='Male'),
+  //   learnerName:learner.name,learnerAddress: learner.address, );
 
-    final enqref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-    add(enquiry.toMap());
-    ds.enquiryIds.add(enqref.id);
-    await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
-    doc(dsObjectId).set(ds.toMap());
-    return enquiry;
-  }
+  //   final enqref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+  //   add(enquiry.toMap());
+  //   ds.enquiryIds.add(enqref.id);
+  //   await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
+  //   doc(dsObjectId).set(ds.toMap());
+  //   return enquiry;
+  // }
 
-  factory Enquiry.fromMap(Map<String, dynamic> map) {
-    return Enquiry(
-      learnerName: map['learnerName'],
-      learnerAge: map['learnerAge'],
-      learnerAddress:map['learnerAddress'] ,
-      isMale: map['isMale'],
-      enquiryNo: map['enquiryNo'] as String? ?? '',
-      learnerId: map['learnerId'] as String? ?? '',
-      messages: (map['messages'] as List<dynamic>?)
+  @override
+  void fromSnapShot(DocumentSnapshot snapshot) {
+Map<String, dynamic> map=snapshot.data()! as Map<String, dynamic>;
+setDocId(snapshot.id);
+      learnerName= map['learnerName'];
+      learnerAge= map['learnerAge'];
+      learnerAddress=map['learnerAddress'] ;
+      isMale= map['isMale'];
+      enquiryNo= map['enquiryNo'] as String? ?? '';
+      learnerId= map['learnerId'] as String? ?? '';
+      messages= (map['messages'] as List<dynamic>?)
           ?.map((messageMap) => Message.fromMap(messageMap as Map<String, dynamic>))
-          .toList() ?? [],
-    );
+          .toList() ?? [];
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'learnerName':learnerName,
@@ -78,22 +78,22 @@ class Enquiry {
     };
   }
 
-Future<Enquiry> addMessage(Message message,String objectId) async
-{
-  messages.add(message);
-  await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-  doc(objectId).set(this.toMap());
+// Future<Enquiry> addMessage(Message message,String objectId) async
+// {
+//   messages.add(message);
+//   await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+//   doc(objectId).set(this.toMap());
 
-  return this;
-}   
+//   return this;
+// }   
 
-Future<String> getEnquiryObjectId()async
-{
-  final ref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-  where('enquiryNo',isEqualTo: enquiryNo).get();
+// Future<String> getEnquiryObjectId()async
+// {
+//   final ref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
+//   where('enquiryNo',isEqualTo: enquiryNo).get();
 
-  return ref.docs.first.id;
-}
+//   return ref.docs.first.id;
+// }
 
 
 }
