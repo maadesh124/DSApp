@@ -48,7 +48,7 @@ final DateTime? picked = await showDatePicker(
   Future<void> onCreateClicked() async
   {
     DrivingSchool ds=User.getDS();
-    Course course=Course(dsObjectId: User.docId,
+    Course course=Course(dsObjectId: User.getDS().getDocId(),
     dsName: ds.schoolName,
     name: name.text,
     courseId: id.text,

@@ -36,6 +36,7 @@ this.timeTable =const {'Monday':{},'Tuesday':{},
 
   void fromSnapShot(DocumentSnapshot snapshot) {
 Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
+setDocId(snapshot.id);
       schoolId= map['schoolId'];
       vehicleNumber= map['vehicleNumber'] as String? ?? '';
       description= map['description'];

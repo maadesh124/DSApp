@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/Models/CourseAttendance.dart';
+import 'package:fp3/Models/CourseMessage.dart';
+import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Model.dart';
+import 'package:fp3/Models/Reviews.dart';
+import 'package:fp3/Models/Vehicle.dart';
+import 'package:fp3/User.dart';
 
 class Course extends Model {
   String dsObjectId;
@@ -21,10 +27,11 @@ class Course extends Model {
   String instructorName;
   String vehicleObjectId;
   String vehicleNumber;
+  String reviewObjectId;
   List<Progress> progress;
   List<String> learnerObjectIds;
   List<String> applicationObjectIds;
-  //Attendance,Review,Message have same document id as course
+  //Attendance,Message have same document id as course
 
 
 
@@ -48,6 +55,7 @@ class Course extends Model {
     this.instructorName = '',
     this.vehicleObjectId = '',
     this.vehicleNumber = '',
+    this.reviewObjectId='',
     List<Progress>? progress,
     List<String>? learnerObjectIds,
     List<String>? applicationObjectIds,
@@ -66,62 +74,75 @@ class Course extends Model {
 
 
 
-//   static Future<Course> create(Course course)async
-//   {
+  static Future<Course> create(Course course)async
+  {
 
 //    final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
 //    final attref=await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).add({});
-//    final insrefs=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-// where('insId',isEqualTo: course.instructorId).where('schoolId',isEqualTo: User.docId).get();
-//    final vehrefs=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-// where('vehicleNumber',isEqualTo: course.vehicleNumber).where('schoolId',isEqualTo: User.docId).get();
+Review review=Review();
+await review.autoDocId();
+   final insrefs=await FirebaseFirestore.instance.collection(Model.INSTRUCTOR).
+where('insId',isEqualTo: course.instructorId).where('schoolId',isEqualTo: User.getDS().getDocId()).get();
+   final vehrefs=await FirebaseFirestore.instance.collection(Model.VEHICLE).
+where('vehicleNumber',isEqualTo: course.vehicleNumber).
+where('schoolId',isEqualTo: User.getDS().getDocId()).get();
+
+Instructor instructor=Instructor();
+instructor.fromSnapShot(insrefs.docs.first);
+Vehicle vehicle=Vehicle();
+vehicle.fromSnapShot(vehrefs.docs.first);
 
 
-// Instructor instructor=Instructor.fromMap(insrefs.docs.first.data());
-// Vehicle vehicle=Vehicle.fromMap(vehrefs.docs.first.data());
 
-// course.attendanceObjectId=attref.id;
-// course.instructorObjectId=insrefs.docs.first.id;
-// course.instructorName=instructor.name;
-// course.vehicleObjectId=vehrefs.docs.first.id;
-// course.reviewsObjectId=revref.id;
+course.instructorObjectId=instructor.getDocId();
+course.instructorName=instructor.name;
+course.vehicleObjectId=vehicle.getDocId();
+course.reviewObjectId=review.getDocId();
+await course.setToDB();
 
-// final coref=  await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).add(course.toMap());
-//  CourseAttendance courseAttendance=CourseAttendance(courseId: coref.id, courseName: course.name);
-//  Review review=Review(receiver: 'Course',receiverId: coref.id);
+review.receiver=Model.COURSE;
+review.receiverId=course.getDocId();
+await review.setToDB();
 
-//  await revref.set(review.toMap());
-//  await attref.set(courseAttendance.toMap());
+CourseAttendance courseAttendance=CourseAttendance( courseName: course.name);
+courseAttendance.setDocId(course.getDocId());
+await courseAttendance.setToDB();
+
+CourseMessage courseMessage=CourseMessage();
+courseMessage.setDocId(course.getDocId());
+courseMessage.setToDB();
 
 
-// //add to timetable and courseids list
-// instructor.courseIds.add(coref.id);
-// Map<String,Map<String,String>> map=instructor.timeTable;
-// map.forEach((key, value) {
-//   Map<String,String> dayTimeTable=map[key]!;
-//   dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${coref.id}';
-// });
 
-// //add to timetable and couse list 
-// vehicle.courseObjectIds.add(coref.id);
-// map=vehicle.timeTable;
-// map.forEach((key, value) {
-//   Map<String,String> dayTimeTable=map[key]!;
-//   dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${coref.id}';
-// });
+//add to timetable and courseids list
+instructor.courseIds.add(course.getDocId());
+Map<String,Map<String,String>> map=instructor.timeTable;
+map.forEach((key, value) {
+  Map<String,String> dayTimeTable=map[key]!;
+  dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${course.getDocId()}';
+});
+
+//add to timetable and couse list 
+vehicle.courseObjectIds.add(course.getDocId());
+map=vehicle.timeTable;
+map.forEach((key, value) {
+  Map<String,String> dayTimeTable=map[key]!;
+  dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${course.getDocId()}';
+});
 
 // await   FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
 // doc(course.instructorObjectId).set(instructor.toMap());
 // await   FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
 // doc(course.vehicleObjectId).set(vehicle.toMap());
+instructor.setToDB();
+vehicle.setToDB();
 
-
-// //add to course list in ds
-// final ds=User.getDS();
-// ds.courseIds.add(coref.id);
-// User.setDS(ds);
-//   return course;
-//   }
+//add to course list in ds
+final ds=User.getDS();
+ds.courseIds.add(course.getDocId());
+User.setDS(ds);
+return course;
+  }
 
 
   // Future<CourseAttendance> getAttendance()async
@@ -160,6 +181,7 @@ class Course extends Model {
     Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
     
       try {
+  reviewObjectId=map['reviewObjectId'];
   dsObjectId= map['dsObjectId'] ?? '';
   dsName= map['dsName'] ?? '';
   name= map['name'] ?? '';
@@ -211,6 +233,7 @@ class Course extends Model {
       'progress': progress.map((progressItem) => progressItem.toMap()).toList(),
       'learnerObjectIds': learnerObjectIds,
       'applicationObjectIds': applicationObjectIds,
+      'reviewObjectId':reviewObjectId,
 
     };
   }

@@ -63,7 +63,7 @@ final DateTime? picked = await showDatePicker(
                   Center(
                     child: Column(mainAxisAlignment: MainAxisAlignment.center ,children: [Text(date.toString(),
                     style: TextStyle(color: Colors.white,fontSize: 14),),
-                    Text("${widget.courseAttendance.courseName} | ${widget.courseAttendance.courseId}",
+                    Text("${widget.courseAttendance.courseName} | ${widget.courseAttendance.getDocId()}",
                     style: TextStyle(color: Colors.white,fontSize: 14))]),
                   ),
                   Align(alignment: Alignment.centerRight,  

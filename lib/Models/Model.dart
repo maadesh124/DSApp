@@ -64,14 +64,16 @@ Future<Model> autoDocId()async
     fromSnapShot(docref);
   }
 
-  // Future<List<Map<String,dynamic>>> getAllDocuments<T extends Model>(List<String> docIds,String collection)async
-  // {
-  // final refs=  await FirebaseFirestore.instance.collection(collection).
-  //     where(FieldPath.documentId,whereIn: docIds).get();
-  //     List<Map<String,dynamic>> list=[];
-  //     refs.docs.forEach((element)=>list.add(element.data()));
-  //     return list;
-  // }
+ static Future<void> getAllModels(List<String> docIds,List<Model> result)async
+  {
+  final refs=  await FirebaseFirestore.instance.collection(result.first.collectionType).
+      where(FieldPath.documentId,whereIn: docIds).get();
+      for (int i = 0; i < docIds.length; i++) {
+        result[i].fromSnapShot(refs.docs[i]);
+        print(i);
+      }
+   
+  }
 
 }
 

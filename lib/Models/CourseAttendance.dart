@@ -3,12 +3,10 @@ import 'package:fp3/Models/Model.dart';
 
 class CourseAttendance extends Model{
 
-  String courseId;
   String courseName;
   Map<String, List<SingleAttendance>> attendance; // Map of date to student attendance
 
   CourseAttendance({super.collectionType=Model.COURSE_ATTENDANCE,
-    this.courseId='', // Made non-nullable
     this.courseName='', // Made non-nullable
     this.attendance = const {}, // Default empty map for attendance
   });
@@ -28,7 +26,6 @@ class CourseAttendance extends Model{
     );
 
   
-      courseId= map['courseId'] as String;
       courseName= map['courseName'] as String;
       attendance= processedAttendance ?? const {}; // Ensure non-null attendance map
     
@@ -41,7 +38,6 @@ class CourseAttendance extends Model{
     );
 
     return {
-      'courseId': courseId,
       'courseName': courseName,
       'attendance': attendanceMap,
     };
