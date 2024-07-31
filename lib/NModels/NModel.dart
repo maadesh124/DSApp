@@ -1,20 +1,39 @@
-// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
+// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures, constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class Model {
-  String _docId='not set';
-  String collectionType;
+
+
+  static const String COURSE='Course';
+  static const String APPLICATION='Application';
+  static const String COURSE_ATTENDANCE='CourseAttendance';
+  static const String DRIVINGSCHOOL='DrivingSchool';
+  static const String ENQUIRY='Enquiry';
+  static const String INSTRUCTOR='Instructor';
+  static const String LEARNER='Learner';
+  static const String RATINGS='Ratings';
+  static const String REVIEWS='Reviews';
+  static const String SCHOOL_ATTENDANCE='SchoolAttendance';
+  static const String SERVICE='Service';
+  static const String VEHICLE='Vehicle';
+  static const String COURSE_MESSAGE='CourseMessage';
+
+
+
+
+
+String _docId='not set';
+String collectionType;
 
 Model({required this.collectionType});
-static String TYPE1='Test1';
+
 
 
 Map<String, dynamic> toMap();
-void fromMap(Map<String, dynamic> map);
+void fromSnapShot(DocumentSnapshot snapshot);
 
 String getDocId()=>_docId;
-
 void setDocId(String docId)=>_docId=docId;
 
 
@@ -39,22 +58,30 @@ Future<Model> autoDocId()async
   Future<void> getFromDB()async
   {
     if(_docId=='not set')
-   Error.throwError('docId NotSet');
+    Error.throwError('docId NotSet');
     
     final docref=await FirebaseFirestore.instance.collection(collectionType).doc(_docId).get();
-    fromMap(docref.data()!);
+    fromSnapShot(docref);
   }
 
+  // Future<List<Map<String,dynamic>>> getAllDocuments<T extends Model>(List<String> docIds,String collection)async
+  // {
+  // final refs=  await FirebaseFirestore.instance.collection(collection).
+  //     where(FieldPath.documentId,whereIn: docIds).get();
+  //     List<Map<String,dynamic>> list=[];
+  //     refs.docs.forEach((element)=>list.add(element.data()));
+  //     return list;
+  // }
 
 }
 
 
-class DB
-{
+// class DB
+// {
 
-static Map<String,dynamic> map={};
+// static Map<String,dynamic> map={};
 
-}
+// }
 
 
 
@@ -62,23 +89,21 @@ static Map<String,dynamic> map={};
 class A extends Model
 {
   String st;
-    A({this.st='no st'}):super(collectionType: Model.TYPE1);
+    A({this.st='no st'}):super(collectionType: 'Test1');
 
     Map<String,dynamic> toMap()
     {
       return {
         'st':st,
-        'id':_docId,
-        'type':collectionType
       };
     }
 
 
-void fromMap(Map<String, dynamic> map) 
+void fromSnapShot(DocumentSnapshot snapshot) 
 {
+  Map<String,dynamic>  map=snapshot.data()! as Map<String,dynamic>;
   st=map['st'];
-  _docId=map['id'];
-  collectionType=map['type'];
+  _docId=snapshot.id;
 
 }
 

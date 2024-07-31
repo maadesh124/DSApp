@@ -6,12 +6,12 @@ import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Enquiry.dart';
-import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Service.dart';
 import 'package:fp3/Models/Vehicle.dart';
-import 'package:fp3/NModels/NModel.dart';
+import 'package:fp3/NModels/NVehicle.dart';
+import 'package:fp3/NModels/Nservice.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
@@ -34,19 +34,13 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
+NVehicle nVehicle=NVehicle();
+// nVehicle.description='check Description';
+// nVehicle.setToDB();
+nVehicle.setDocId('41SFh8onu8ZhNYHPiCdS');
+await nVehicle.getFromDB();
+print(nVehicle.toMap());
 
-
-//  final dsref=   await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
-// doc('w42tQh0oLjlD0LsEGxPs').get();
-// gds=DrivingSchool.fromMap(dsref.data()!);
-
-// A a=A();
-// a.st='hellowrld';
-// await a.setToDB();
-A a2=A();
-a2.setDocId('gKFUfeX8V4BYRCWNB12N');
-await a2.getFromDB();
-print(a2.toMap());
 
   //runApp(const MyApp());
 }
