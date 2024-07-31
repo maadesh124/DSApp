@@ -110,7 +110,7 @@ await courseAttendance.setToDB();
 
 CourseMessage courseMessage=CourseMessage();
 courseMessage.setDocId(course.getDocId());
-courseMessage.setToDB();
+await courseMessage.setToDB();
 
 
 
@@ -134,8 +134,8 @@ map.forEach((key, value) {
 // doc(course.instructorObjectId).set(instructor.toMap());
 // await   FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
 // doc(course.vehicleObjectId).set(vehicle.toMap());
-instructor.setToDB();
-vehicle.setToDB();
+await instructor.setToDB();
+await vehicle.setToDB();
 
 //add to course list in ds
 final ds=User.getDS();

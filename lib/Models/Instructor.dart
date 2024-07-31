@@ -46,7 +46,7 @@ class Instructor extends Model {
       instructor.dob=DateTime.parse('1998-07-24 15:44:00');
       instructor.schoolId=User.getDS().getDocId();
 
-      instructor.setToDB();
+      await instructor.setToDB();
       DrivingSchool ds=User.getDS();
       ds.instructorIds.add(instructor.getDocId());
       User.setDS(ds);
