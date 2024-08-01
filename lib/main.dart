@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/DrivingSchool/AllForms.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
@@ -35,14 +36,8 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
-List<String> ids=['A1HlVLFhilcSwMn28LKT','o1e8L1s2VouUqLcsken2','qrZThCy7S8Duf7VSjcoR'];
-List<Application> list=List.filled(ids.length, Application());
-await Model.getAllModels(ids,list);
-print(list.last.toMap());
-// Application application=Application();
-// application.learnerName='check Name';
-// application.setToDB();
-// print(application.toMap());
+
+
 
   runApp(const MyApp());
 }
@@ -63,7 +58,7 @@ class MyApp extends StatelessWidget {
       //  body: AllOverView(drivingSchool: User.getDS()!),
        // body: MessageView(messages: Examples.ENQUIRY.messages),
     // body: EnquiryView(temp: genquiry!),
-    body: CreateInstructor(),
+    body: AllFormsView(drivingSchool: User.getDS()),
       ),
     );
   }

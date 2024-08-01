@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fp3/Models/Model.dart';
+import 'package:fp3/User.dart';
 
 
 class Vehicle extends Model {
@@ -25,14 +26,14 @@ this.timeTable =const {'Monday':{},'Tuesday':{},
     this.courseObjectIds = const [], // Default to an empty list
   });
 
-  // static Future<Vehicle> create(Vehicle vehicle)async{
+  static Future<Vehicle> create(Vehicle vehicle)async{
     
-  //   final docref= await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).add(vehicle.toMap());
-  //   var ds=User.getDS();
-  //   ds.vehicleIds.add(docref.id);
-  //   User.setDS(ds);
-  //   return vehicle;
-  // }
+    await vehicle.setToDB();
+    var ds=User.getDS();
+    ds.vehicleIds.add(vehicle.getDocId());
+    User.setDS(ds);
+    return vehicle;
+  }
 
   void fromSnapShot(DocumentSnapshot snapshot) {
 Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;

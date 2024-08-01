@@ -31,6 +31,7 @@ class Course extends Model {
   List<Progress> progress;
   List<String> learnerObjectIds;
   List<String> applicationObjectIds;
+  double currentRating;
   //Attendance,Message have same document id as course
 
 
@@ -48,6 +49,7 @@ class Course extends Model {
     TimeOfDay? startTime,
     TimeOfDay? endTime,
     this.totalSeats = 0,
+    this.currentRating=4.5,
     this.availableSeats = 0,
     this.courseDescription = '',
     this.instructorObjectId = '',
@@ -145,33 +147,32 @@ return course;
   }
 
 
-  // Future<CourseAttendance> getAttendance()async
-  // {
-  //  final attref=await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).
-  //  doc(attendanceObjectId).get();
-  //  return CourseAttendance.fromMap(attref.data()!);
+  Future<CourseAttendance> getAttendance()async
+  {
+    CourseAttendance courseAttendance=CourseAttendance();
+    courseAttendance.setDocId(getDocId());
+    await courseAttendance.getFromDB();
+    return courseAttendance;
 
-  // }
-
-
-  // Future<Instructor> getInstructor() async
-  // {
-  //   print('in get ins');
-  //   print(instructorObjectId);
-  //  final insref= await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-  //  get();
-  //  print('co');
-  //  return Instructor.fromMap(insref.docs.first.data()!);
-  // }
+  }
 
 
-  // Future<Vehicle> getVehicle()async
-  // {
-  //   final vehref=await FirebaseFirestore.instance.collection(DataBase.VEHICLE_COLLECTION).
-  //   doc(vehicleObjectId).get();
+  Future<Instructor> getInstructor() async
+  {
+    Instructor instructor=Instructor();
+    instructor.setDocId(instructorObjectId);
+    await instructor.getFromDB();
+    return instructor;
+  }
 
-  //   return Vehicle.fromMap(vehref.data()!);
-  // }
+
+  Future<Vehicle> getVehicle()async
+  {
+    Vehicle vehicle=Vehicle();
+    vehicle.setDocId(vehicleObjectId);
+   await  vehicle.getFromDB();
+    return vehicle;
+  }
 
 
 
@@ -181,6 +182,7 @@ return course;
     Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
     setDocId(snapshot.id);
       try {
+  currentRating=map['currentRating'];
   reviewObjectId=map['reviewObjectId'];
   dsObjectId= map['dsObjectId'] ?? '';
   dsName= map['dsName'] ?? '';
@@ -212,6 +214,7 @@ return course;
 
   Map<String, dynamic> toMap() {
     return {
+      'currentRating':currentRating,
       'dsObjectId': dsObjectId,
       'dsName': dsName,
       'name': name,
@@ -237,14 +240,6 @@ return course;
 
     };
   }
-
-// static Future<Course> getCourse(String docId)async
-// {
-//   final coref=await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
-//   doc(docId).get();
-//   return Course.fromMap(coref.data()!);
-// }
-
 
 
 }

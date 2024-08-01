@@ -1,4 +1,8 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Model.dart';
 
 
@@ -75,75 +79,72 @@ class Application extends Model {
     };
   }
 
-  // Future<Learner> getLearner()async
-  // {
-  //   final learef=await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).
-  //   doc(learnerObjectId).get();
-  //   return Learner.fromMap(learef.data()!);
-  // }
+  Future<Learner> getLearner()async
+  {
+    Learner learner=Learner();
+    learner.setDocId(learnerObjectId);
+   await learner.getFromDB();
+    return learner;
+  }
 
-//   Future<Course> register()async{
+  Future<Course> register()async{
     
-//    final coref=await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
-//    where('dsObjectId',isEqualTo: schoolId).
-//    where('courseId',isEqualTo: courseId).get().then((value) => value.docs.first);
+   final coref=await FirebaseFirestore.instance.collection(Model.COURSE).
+   where('dsObjectId',isEqualTo: schoolId).
+   where('courseId',isEqualTo: courseId).get().then((value) => value.docs.first);
 
-//    final aplref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
-//    where('schoolId',isEqualTo: schoolId).
-//    where('applicationNumber',isEqualTo: applicationNumber).get().then((value) => value.docs.first);
+  //  final aplref=await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
+  //  where('schoolId',isEqualTo: schoolId).
+  //  where('applicationNumber',isEqualTo: applicationNumber).get().then((value) => value.docs.first);
 
-//   Course course=Course.fromMap(coref.data());
-//   course.applicationObjectIds.remove(aplref.id);
-//   course.learnerObjectIds.add(learnerObjectId);
+  Course course=Course();
+  course.fromSnapShot(coref);
+  course.applicationObjectIds.remove(this.getDocId());
+  course.learnerObjectIds.add(learnerObjectId);
 
-//   await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
-//   doc(coref.id).set(course.toMap());
+await course.setToDB();
 
 
-//   await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
-//   doc(aplref.id).delete();
+  await FirebaseFirestore.instance.collection(Model.APPLICATION).
+  doc(getDocId()).delete();
 
-//  final leref=await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).
-//  doc(learnerObjectId).get();
-
-//   Learner learner=Learner.fromMap(leref.data()!);
-//   learner.courseObjectIds.add(coref.id);
-//  await FirebaseFirestore.instance.collection(DataBase.LEARNER_COLLECTION).doc(leref.id).set(learner.toMap());
-//   return course;
+  Learner learner=await this.getLearner();
+  learner.courseObjectIds.add(coref.id);
+  await learner.setToDB();
+  return course;
    
-//   }
+  }
 
 
 
-  // static Future<Application> createCourse(Course course,Learner learner,String learnerObjectId) async
-  // {
+  static Future<Application> createCourse({required Course course,required Learner learner}) async
+  {
     
-  //   Application application=Application(learnerAddress: learner.address, 
-  //   courseName: course.name,
-  //   learnerName: learner.name,
-  //   learnerAge: learner.age+0.0,
-  //    isMale: (learner.gender=='Male'),
-  //     learnerObjectId: learnerObjectId,
-  //      applicationNumber: course.dsObjectId+course.applicationObjectIds.length.toString(), 
-  //      courseId: course.courseId,
-  //       schoolId: course.dsObjectId);
+    Application application=Application(learnerAddress: learner.address, 
+    courseName: course.name,
+    learnerName: learner.name,
+    learnerAge: learner.age+0.0,
+     isMale: (learner.gender=='Male'),
+      learnerObjectId: learner.getDocId(),
+       applicationNumber: course.dsObjectId+course.applicationObjectIds.length.toString(), 
+       courseId: course.courseId,
+        schoolId: course.dsObjectId);
 
-  //  final appref= await FirebaseFirestore.instance.collection(DataBase.APPLICATION_COLLECTION).
-  //  add(application.toMap());
+await application.setToDB();
 
-  // final corefs= await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).
+  // final corefs= await FirebaseFirestore.instance.collection(Model.COURSE).
   //  where('dsObjectId',isEqualTo: course.dsObjectId).
   //  where('courseId',isEqualTo: course.courseId).get();
-  //  print(corefs.docs.first.id);
 
-  // course.applicationObjectIds.add(appref.id);
-  // print(course.toMap());
+  // course.applicationObjectIds.add(application.getDocId());
+
   //  await FirebaseFirestore.instance.collection(DataBase.COURSE_COLLECTION).doc((corefs.docs.first.id)).
   // set(course.toMap());
+  course.applicationObjectIds.add(application.getDocId());
+ await  course.setToDB();
 
 
-
-  //      return application;
-  // }
+       return application;
+  }
 
 }

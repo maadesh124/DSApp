@@ -1,4 +1,8 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
+import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Model.dart';
 
 class Enquiry extends Model {
@@ -23,32 +27,32 @@ class Enquiry extends Model {
 
   // Learner getLearner() => Examples.LEARNER;
 
-  // bool getStatus() {
-  //   if (messages.isNotEmpty && messages.last.sender == 'DrivingSchool') {
-  //     return true;
-  //   }
-  //   return false;
+  bool getStatus() {
+
+for (Message message in messages)
+if(message.sender==Model.DRIVINGSCHOOL)
+return true;
+    return false;
 
 
-  // }
+  }
 
-  // static Future<Enquiry> create(String dsObjectId,Learner learner,String learnerObjectId)async
-  // {
-  //   final dsref=await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
-  //   doc(dsObjectId).get();
-  //   DrivingSchool ds=DrivingSchool.fromMap(dsref.data()!);
+  static Future<Enquiry> create(String dsObjectId,Learner learner,String learnerObjectId)async
+  {
+
+DrivingSchool ds=DrivingSchool();
+ds.setDocId(dsObjectId);
+await ds.getFromDB();
     
-  //   Enquiry enquiry=Enquiry(enquiryNo: dsObjectId+ds.enquiryIds.length.toString(), learnerId:learnerObjectId ,
-  //   learnerAge: learner.age+0.0,isMale: (learner.gender=='Male'),
-  //   learnerName:learner.name,learnerAddress: learner.address, );
+    Enquiry enquiry=Enquiry(enquiryNo: dsObjectId+ds.enquiryIds.length.toString(), learnerId:learnerObjectId ,
+    learnerAge: learner.age+0.0,isMale: (learner.gender=='Male'),
+    learnerName:learner.name,learnerAddress: learner.address, );
 
-  //   final enqref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-  //   add(enquiry.toMap());
-  //   ds.enquiryIds.add(enqref.id);
-  //   await FirebaseFirestore.instance.collection(DataBase.DRIVINGSCHOOL_COLLECTION).
-  //   doc(dsObjectId).set(ds.toMap());
-  //   return enquiry;
-  // }
+await enquiry.setToDB();
+    ds.enquiryIds.add(enquiry.getDocId());
+await ds.setToDB();
+    return enquiry;
+  }
 
   @override
   void fromSnapShot(DocumentSnapshot snapshot) {
@@ -78,23 +82,20 @@ setDocId(snapshot.id);
     };
   }
 
-// Future<Enquiry> addMessage(Message message,String objectId) async
-// {
-//   messages.add(message);
-//   await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-//   doc(objectId).set(this.toMap());
+Future<Enquiry> addMessage(Message message,String objectId) async
+{
+  messages.add(message);
+  await setToDB();
 
-//   return this;
-// }   
+  return this;
+}   
 
-// Future<String> getEnquiryObjectId()async
-// {
-//   final ref=await FirebaseFirestore.instance.collection(DataBase.ENQUIRY_COLLECTION).
-//   where('enquiryNo',isEqualTo: enquiryNo).get();
-
-//   return ref.docs.first.id;
-// }
-
+Future<void> getLearner()async
+{
+  Learner learner=Learner();
+  learner.setDocId(learnerId);
+  await learner.getFromDB();
+}
 
 }
 

@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Model.dart';
+import 'package:fp3/Models/Reviews.dart';
+import 'package:fp3/User.dart';
 
 
 
@@ -12,77 +15,72 @@ String instructorId;
 List<String> requiredDocuments;
 List<String> studentObjectIds;
 List<String> applicationObjectIds;
-String ratingObjectId;
+String schoolName;
+String schoolObjectId;
 String reviewObjectId;
+String instructorObjectId;
 
   Service({super.collectionType=Model.SERVICE,
+    this.schoolName='not mentioned',
+    this.schoolObjectId='not mentioned',
     this.instructorName='',
     this.name='',
     this.fee=1500,
     this.description='',
     this.instructorId='',
+    this.instructorObjectId='',
     this.requiredDocuments=const [],
     this.studentObjectIds = const [], // Default to an empty list
     this.applicationObjectIds = const [], // Default to an empty list
-    this.ratingObjectId = 'ratingid1',
     this.reviewObjectId = 'reviewid1',
   });
 
 
 
-  // Future<Instructor> getInstructor()async
-  // {
-  //   final insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-  //   doc(instructorId).get();
-  //   return Instructor.fromMap(insref.data()!);
-  // }
+  Future<Instructor> getInstructor()async
+  {
+    Instructor instructor=Instructor();
+    instructor.setDocId(instructorObjectId);
+    await instructor.getFromDB();
+    return instructor;
+  }
 
-  // static Future<Service> createService(Service service)async
-  // {
+  static Future<Service> createService(Service service)async
+  {
 
-  // //add to ins
-  // var insref=await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
-  // doc(service.instructorId).get();
-  // print(insref.data());
-  // var ins=Instructor.fromMap(insref.data()!);
-  // service.instructorName=ins.name;
+  //get instructor
+  var insref=await FirebaseFirestore.instance.collection(Model.INSTRUCTOR).
+  where('insId',isEqualTo: service.instructorId).
+  where('schoolId',isEqualTo: service.schoolObjectId).get();
+  Instructor instructor=Instructor();
+  instructor.fromSnapShot(insref.docs.first);
 
-  //   //add rating and review id
-  
-  // final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
-  // service.reviewObjectId=revref.id;
+//get Review
+Review review=Review();
+await review.autoDocId();
 
+//set fields and update to db
+service.reviewObjectId=review.getDocId();
+service.instructorName=instructor.name;
+service.instructorObjectId=insref.docs.first.id;
+await service.setToDB();
 
-  //     //add service
-  //  final docref= await FirebaseFirestore.instance.collection(DataBase.SERVICE_COLLECTION).add(service.toMap());
-  // Review review=Review(receiver: 'Service',receiverId: docref.id);
-  // revref.set(review.toMap());
+//set and update review fields
+review.receiverId=service.getDocId();
+await review.setToDB();
 
+//update instructor
+instructor.serviceIds.add(service.getDocId());
+await instructor.setToDB();
 
-  // ins.serviceIds.add(docref.id);
-  // print(ins.toMap());
-  // await FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).doc(service.instructorId).
-  // set(ins.toMap());
+//update school
+final ds=User.getDS();
+ds.serviceIds.add(service.getDocId());
+User.setDS(ds);
 
+    return service;
 
-
-
-
-
-
-
-  
-  // //add to ds
-  // final ds=User.getDS();
-  // ds.serviceIds.add(docref.id);
-  // User.setDS(ds);
-
-
-  
-
-  //   return service;
-
-  // }
+  }
 
   // Future<void> setIds()async
   // {
@@ -102,8 +100,10 @@ setDocId(snapshot.id);
       requiredDocuments= List<String>.from(map['requiredDocuments'] ?? []);
       studentObjectIds= List<String>.from(map['studentObjectIds'] ?? []);
       applicationObjectIds= List<String>.from(map['applicationObjectIds'] ?? []);
-      ratingObjectId= map['ratingObjectId'] as String? ?? '';
+      schoolName= map['schoolName'] as String? ?? '';
+      schoolObjectId=map['schoolObjectId'] as String? ?? 'not mentioned'; 
       reviewObjectId= map['reviewObjectId'] as String? ?? '';
+      instructorObjectId=map['instructorObjectId'] as String? ?? 'not mentioned';
 
   }
 
@@ -117,8 +117,10 @@ setDocId(snapshot.id);
       'requiredDocuments': requiredDocuments,
       'studentObjectIds': studentObjectIds,
       'applicationObjectIds': applicationObjectIds,
-      'ratingObjectId': ratingObjectId,
+      'schoolObjectId':schoolObjectId,
+      'schoolName0':schoolName,
       'reviewObjectId': reviewObjectId,
+      'instructorObjectId':instructorObjectId,
     };
   }
 }

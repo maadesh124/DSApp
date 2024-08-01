@@ -14,25 +14,6 @@ import 'Service.dart';
 import 'Vehicle.dart';
 
 
-class DataBase
-{
-
-  static  Future<List<Map<String,dynamic>>> getAllDocuments(List<String> ids,String model,)async
-  {
-List<Map<String,dynamic>> list=[];
-if(ids.length==0)
-return list;
-final documents = await FirebaseFirestore.instance
-      .collection(model)
-      .where(FieldPath.documentId, whereIn: ids)
-      .get();
-
-      
-documents.docs.forEach((element) { list.add(element.data());});
-      return list;
-  }
-
-}
 
 
 
@@ -86,7 +67,6 @@ class Examples
     schoolId:  "school789",
     courseIds: ['avcdd32', 'ertyu12'],
     serviceIds: ['serviceid1', 'serviceid2'],
-    objectId: 'uniqueObjectId',
     password: 'strongPassword',
   );
 
@@ -144,7 +124,6 @@ class Examples
     requiredDocuments: ['Driving License', 'Identity Proof'],
     studentObjectIds: ['student1', 'student2'],
     applicationObjectIds: ['application1', 'application2'],
-    ratingObjectId: 'rating123',
     reviewObjectId: 'review123',
   );
 

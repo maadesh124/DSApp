@@ -1,6 +1,8 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Model.dart';
 
 class Learner extends Model{
@@ -54,16 +56,16 @@ class Learner extends Model{
     };
   }
 
-  // Future<List<Course>> getCoursesRegisteredInSchool(DrivingSchool drivingSchool)async
-  // {
-  //   List<Course> courses=[];
-  //   Set<String> set1=courseObjectIds.toSet();
-  //   Set<String> set2=drivingSchool.courseIds.toSet();
-  //  List<String> interCourseIds= set1.intersection(set2).toList();
-  // final comaps= await DataBase.getAllDocuments(interCourseIds,DataBase.COURSE_COLLECTION);
-  // comaps.forEach((element) {courses.add(Course.fromMap(element));});
-  // return courses;
-  // }
+  Future<List<Course>> getCoursesRegisteredInSchool(DrivingSchool drivingSchool)async
+  {
+    
+    Set<String> set1=courseObjectIds.toSet();
+    Set<String> set2=drivingSchool.courseIds.toSet();
+   List<String> interCourseIds= set1.intersection(set2).toList();
+   List<Course> courses=List.filled(interCourseIds.length,Course());
+  await Model.getAllModels(interCourseIds,courses);
+  return courses;
+  }
 
 
 
