@@ -5,6 +5,8 @@ import 'package:fp3/DrivingSchool/AllForms.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
+import 'package:fp3/DrivingSchool/CreateService.dart';
+import 'package:fp3/DrivingSchool/CreateVehicle.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/DrivingSchool.dart';
@@ -17,18 +19,18 @@ import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
 import 'package:fp3/firebase_options.dart';
 
-DrivingSchool? gds;
-Enquiry? genquiry;
-Learner? glearner;
- Course? gcourse;
- Service? gservice;
- Instructor? ginstructor;
- Vehicle? gvehicle;
- List<String> gcourseIds=['3T7477jI3CepWry9vlAo','MTP1d152cEJAbafZjxF6','jMfMnZfxiG1O70RGSqW2'];
- List<String> gserviceIds=['ShkFj4H1djYVJkiznHJH'];
- List<String> ginstructorIds=['rI2UWWwSz85LBnmbz1Ig'];
- List<String> gvehicleIds=['52kIF9TLyv4L7CXPgRAh','rI2UWWwSz85LBnmbz1Ig'];
- Application? gapplication;
+DrivingSchool gds=DrivingSchool();
+Enquiry genuiry=Enquiry();
+Learner glearner=Learner();
+ Course gcourse=Course();
+ Service gservice=Service();
+ Instructor ginstructor=Instructor();
+ Vehicle gvehicle=Vehicle();
+ List<String> gcourseIds=[];
+ List<String> gserviceIds=[];
+ List<String> ginstructorIds=[];
+ List<String> gvehicleIds=[];
+ Application gapplication=Application();
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,9 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  await User.initialize('w42tQh0oLjlD0LsEGxPs');
 
+
+
+// await Application.createCourse(course: gcourse,learner: glearner);
 
 
 
@@ -57,8 +62,8 @@ class MyApp extends StatelessWidget {
        //body: ApplicationView(application: gapplication!,),
       //  body: AllOverView(drivingSchool: User.getDS()!),
        // body: MessageView(messages: Examples.ENQUIRY.messages),
-    // body: EnquiryView(temp: genquiry!),
-    body: AllFormsView(drivingSchool: User.getDS()),
+    // body: CreateService(),
+       body: AllOverView(drivingSchool: User.getDS()),
       ),
     );
   }

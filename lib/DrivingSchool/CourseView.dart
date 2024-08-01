@@ -165,10 +165,10 @@ Future<void> initialize()async
 
   current=1;
 
-applications=List.filled(widget.applicationIds.length,Application());
+applications=List.generate(widget.applicationIds.length,(_)=>Application());
 await Model.getAllModels(widget.applicationIds,applications);
 
-learners=List.filled(widget.applicationIds.length,Learner());
+learners=List.generate(widget.applicationIds.length,(_)=>Learner());
 await Model.getAllModels(widget.learnerIds,learners);
 
 

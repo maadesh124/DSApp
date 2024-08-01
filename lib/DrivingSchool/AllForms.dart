@@ -91,7 +91,7 @@ List<Application> applications=[];
 
 Future<void> initialize()async
   {
-applications=List.filled(widget.applicationIds.length,Application());
+applications=List.generate(widget.applicationIds.length,(_)=>Application());
 Model.getAllModels(widget.applicationIds,applications);
     setState(() {
       gotData=true;
@@ -142,7 +142,7 @@ List<Learner> learners=[];
 
 Future<void> initialize()async
   {
-      learners=List.filled(widget.learnerIds.length,Learner());
+      learners=List.generate(widget.learnerIds.length,(_)=>Learner());
       Model.getAllModels(widget.learnerIds,learners);
     setState(() {
       gotData=true;
@@ -191,7 +191,7 @@ List<Enquiry> enquiries=[];
 
 Future<void> initialize()async
   {
-enquiries=List.filled(widget.enquiryIds.length,Enquiry());
+enquiries=List.generate(widget.enquiryIds.length,(_)=>Enquiry());
 Model.getAllModels(widget.enquiryIds,enquiries);
     setState(() {
       gotData=true;

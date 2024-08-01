@@ -33,7 +33,7 @@ bool gotData=false;
   {
     gotData=false;
 
-    courses=List.filled(widget.vehicle.courseObjectIds.length,Course());
+    courses=List.generate(widget.vehicle.courseObjectIds.length,(_)=>Course());
     await Model.getAllModels(widget.vehicle.courseObjectIds,courses);
    
     setState(() {

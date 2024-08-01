@@ -29,7 +29,7 @@ List<Course> courses=[];
 bool gotData=false;
   Future<void> initialize()async
   {
-courses=List.filled(widget.instructor.courseIds.length,Course());
+courses=List.generate(widget.instructor.courseIds.length,(_)=>Course());
 await Model.getAllModels(widget.instructor.courseIds,courses);
     setState(() {
       gotData=true;

@@ -37,6 +37,7 @@ Future<void> initialize()async
     gotData=false;
     initialize();
     super.initState();
+    print('init completed');
   }
 
 
