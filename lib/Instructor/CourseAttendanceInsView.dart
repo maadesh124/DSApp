@@ -9,9 +9,10 @@ import 'package:fp3/Models/Model.dart';
 class CourseAttendanceView extends StatefulWidget {
 
   bool editable;
-  CourseAttendance courseAttendance;
+  CourseAttendance courseAttendance=CourseAttendance();
+  Course course;
   
-  CourseAttendanceView({super.key,required this.courseAttendance,required this.editable});
+  CourseAttendanceView({super.key,required this.course,required this.editable});
 
   @override
   State<CourseAttendanceView> createState() => _CourseAttendanceViewState();
@@ -19,6 +20,7 @@ class CourseAttendanceView extends StatefulWidget {
 
 class _CourseAttendanceViewState extends State<CourseAttendanceView> {
 
+bool gotData=false;
 DateTime date=DateTime.now();
 List<Learner> learners=[];
 bool gotLearnes=false;
@@ -41,11 +43,9 @@ final DateTime? picked = await showDatePicker(
 Future<void> initialize()async
 {
   if(!gotLearnes){
-  Course course=Course();
-  course.setDocId(widget.courseAttendance.getDocId());
- await  course.getFromDB();
- learners=List.generate(course.learnerObjectIds.length, (index) => Learner());
- await Model.getAllModels(course.learnerObjectIds,learners);
+ widget.courseAttendance=await widget.course.getAttendance();
+ learners=List.generate(widget.course.learnerObjectIds.length, (index) => Learner());
+ await Model.getAllModels(widget.course.learnerObjectIds,learners);
  gotLearnes=true;
   }
 
@@ -66,7 +66,6 @@ print('initialize completed');
 
  void initState()
  {
-
   initialize();
   super.initState();
  }

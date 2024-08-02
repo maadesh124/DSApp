@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
             home: Scaffold(
-       body: CourseMessageView(course: gcourse,),
+       body: CourseAttendanceView(course: gcourse, editable: true),
        //body: AllOverView(drivingSchool: User.getDS()),
       ),
     );
