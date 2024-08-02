@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/Overviews.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/Instructor/CourseAttendanceInsView.dart';
+import 'package:fp3/Instructor/CourseMessage.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Instructor.dart';
@@ -108,7 +110,27 @@ void gotToAtt()async
           Text('Course Duration :${widget.course.courseDuration}'),
           Text('Start and End Time: ${formatTimeOfDay(widget.course.startTime)} - ${formatTimeOfDay(widget.course.endTime)}'),
           Text('${widget.course.availableSeats}/${widget.course.totalSeats} seats available'),
-          Text(widget.course.courseDescription)
+          Text(widget.course.courseDescription),
+          Container(width: sw*0.95,padding: EdgeInsets.fromLTRB(20,20,20,20),
+            child: Row(children: [
+               InkWell(onTap: () {
+              Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>CourseMessageView(course: widget.course,)),);
+            },
+              child: Container(width: 120,height: 30, padding: EdgeInsets.fromLTRB(7,3,7,3), decoration: BoxDecoration(
+                color: PageConstants.INS_DARK,borderRadius: BorderRadius.circular(7)
+              ),child: Row(children: [Text('Messages'),Spacer(flex: 1,),Icon(Icons.message_rounded)],),),
+            ),
+            Spacer(flex: 1,),           InkWell(onTap: () {
+                    Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>CourseAttendanceView (course: widget.course,editable: true,)),);
+            },
+              child: Container(width: 120,height: 30, padding: EdgeInsets.fromLTRB(7,3,7,3), decoration: BoxDecoration(
+                color: PageConstants.INS_DARK,borderRadius: BorderRadius.circular(7)
+              ),child: Row(children: [Text('Attendance'),Spacer(flex: 1,),Icon(Icons.calendar_month_rounded)],),),
+            )
+            ],),
+          )
       
         ],)),
         SizedBox(height: 30,),
@@ -117,20 +139,20 @@ void gotToAtt()async
         SizedBox(height: 20,),
         ProgressView(list:widget.course.progress, editable: true,height: 200,),
         SizedBox(height: 20,),
-        Container(width: 0.95*sw,height: 40,
-        padding: EdgeInsets.all(10), decoration:
-        BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child: 
-        Stack( 
-          children: [InkWell(onTap: gotToAtt,
-            child: Center(child: Text('Student Attendance Details'),)),
-       // Spacer(flex: 1,),
-       Align( alignment: Alignment.centerRight, child: Icon(Icons.arrow_forward_ios_rounded),),
-        SizedBox(width: 20,)
-        ],)),
+      //   Container(width: 0.95*sw,height: 40,
+      //   padding: EdgeInsets.all(10), decoration:
+      //   BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),child: 
+      //   Stack( 
+      //     children: [InkWell(onTap: gotToAtt,
+      //       child: Center(child: Text('Student Attendance Details'),)),
+      //  // Spacer(flex: 1,),
+      //  Align( alignment: Alignment.centerRight, child: Icon(Icons.arrow_forward_ios_rounded),),
+      //   SizedBox(width: 20,)
+      //   ],)),
         SizedBox(height: 20,),
         // Forms(applicationIds: widget.course.applicationObjectIds, learnerIds: widget.course.learnerObjectIds),
         SizedBox(height: 20,),
-        Text('Registered Students'),
+        Container(width: sw*0.95, child: Text('Registered Students')),
         Container(width: sw*0.95,height: 250,child: 
      !gotData?Center(child: CircularProgressIndicator(),): ListView.builder(itemCount: learners.length,itemBuilder:(context, index) {
         return Column(children: [

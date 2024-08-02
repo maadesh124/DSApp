@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fp3/CustomWidgets/PageWidgets.dart';
-import 'package:fp3/DrivingSchool/AllForms.dart';
-import 'package:fp3/DrivingSchool/AllOverView.dart';
-import 'package:fp3/DrivingSchool/CreateCourse.dart';
-import 'package:fp3/DrivingSchool/CreateInstructor.dart';
-import 'package:fp3/DrivingSchool/CreateService.dart';
-import 'package:fp3/DrivingSchool/CreateVehicle.dart';
-import 'package:fp3/Instructor/CourseAttendanceInsView.dart';
-import 'package:fp3/Instructor/CourseMessage.dart';
-import 'package:fp3/Instructor/Home.dart';
+import 'package:fp3/Instructor/CourseOverViews.dart';
+import 'package:fp3/Instructor/CourseViewIns.dart';
+import 'package:fp3/Instructor/OverView.dart';
+import 'package:fp3/Instructor/ServiceOverViews.dart';
+
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/CourseAttendance.dart';
@@ -44,7 +39,7 @@ void main() async{
  FirebaseFirestore db=FirebaseFirestore.instance;
  await User.initializeIns('rdd5DRrEQNawdDpyjaZK');
 
-gcourse.setDocId('lO1qsZCxc4yz6RDghR9n');
+gcourse.setDocId('wq0bvtGWAhtOtmb4Lco0');
 await gcourse.getFromDB();
 
 
@@ -64,7 +59,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
             home: Scaffold(
-       body: CourseAttendanceView(course: gcourse, editable: true),
+       body: CourseViewIns(course: gcourse,),
        //body: AllOverView(drivingSchool: User.getDS()),
       ),
     );
