@@ -18,7 +18,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class VehicleView extends StatefulWidget {
   Vehicle vehicle;
-  VehicleView({required this.vehicle ,super.key});
+  String type;
+  VehicleView({required this.vehicle ,super.key,required this.type});
 
   @override
   State<VehicleView> createState() => _VehicleViewState();
@@ -26,7 +27,7 @@ class VehicleView extends StatefulWidget {
 
 class _VehicleViewState extends State<VehicleView> {
 
-
+BoxDecoration background=BoxDecoration();
 List<Course> courses=[];
 bool gotData=false;
   Future<void> initialize()async
@@ -44,6 +45,8 @@ bool gotData=false;
 @override
  void initState()
   {
+
+   background =(widget.type==Model.DRIVINGSCHOOL)? PageConstants.PAGEBACKGROUND:PageConstants.INSTRUCTOR_BACKGROUND;
     initialize();
     super.initState();
   }
@@ -69,7 +72,7 @@ bool gotData=false;
     final sw=MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(child: 
-      Container(decoration: PageConstants.PAGEBACKGROUND,child: Column(children: [
+      Container(decoration:background,child: Column(children: [
         SizedBox(height: 40,),
         Top(),
         SizedBox(height: 20,),

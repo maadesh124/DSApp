@@ -49,9 +49,9 @@ class CourseAttendance extends Model{
 
 
 class SingleAttendance {
-  final String name;
-  final String id;
-  final bool status;
+  String name;
+  String id;
+  bool status;
 
   SingleAttendance({
     this.name = 'exampleName', // Default value

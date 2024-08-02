@@ -67,9 +67,14 @@ class PageConstants
    static const Color LIGHTGREEN=Color.fromARGB(255, 122, 245, 171);
    static const Color BLACK50=Color.fromARGB(128,0,0,0);
    static const Color BLACK20=Color.fromARGB(51,0,0,0);
+   static const Color INS_DARK=Color.fromARGB(255,2550,199,1);
    static const BoxDecoration PAGEBACKGROUND=BoxDecoration(gradient: 
     LinearGradient(begin: Alignment.topCenter,end: Alignment.bottomCenter,  
     colors:<Color>[PageConstants.LIGHTGREEN,Color.fromARGB(255, 196, 236, 212)]));
+       static const BoxDecoration INSTRUCTOR_BACKGROUND=BoxDecoration(gradient: 
+    LinearGradient(begin: Alignment.topCenter,end: Alignment.bottomCenter,  
+    colors:<Color>[Color.fromARGB(255, 247, 210, 65),Color.fromARGB(255, 255, 225, 116)]));
+    static Color INSCOLOR=Color.fromARGB(255, 255, 224,116);
 }
 
 

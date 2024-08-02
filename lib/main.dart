@@ -1,14 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/AllForms.dart';
 import 'package:fp3/DrivingSchool/AllOverView.dart';
 import 'package:fp3/DrivingSchool/CreateCourse.dart';
 import 'package:fp3/DrivingSchool/CreateInstructor.dart';
 import 'package:fp3/DrivingSchool/CreateService.dart';
 import 'package:fp3/DrivingSchool/CreateVehicle.dart';
+import 'package:fp3/Instructor/CourseAttendanceInsView.dart';
+import 'package:fp3/Instructor/CourseMessage.dart';
+import 'package:fp3/Instructor/Home.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/CourseAttendance.dart';
 import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Enquiry.dart';
 import 'package:fp3/Models/Instructor.dart';
@@ -31,13 +36,16 @@ Learner glearner=Learner();
  List<String> ginstructorIds=[];
  List<String> gvehicleIds=[];
  Application gapplication=Application();
+ CourseAttendance gCourseAttenance=CourseAttendance();
 void main() async{
 
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
- await User.initialize('w42tQh0oLjlD0LsEGxPs');
+ await User.initializeIns('rdd5DRrEQNawdDpyjaZK');
 
+gcourse.setDocId('lO1qsZCxc4yz6RDghR9n');
+await gcourse.getFromDB();
 
 
 // await Application.createCourse(course: gcourse,learner: glearner);
@@ -55,15 +63,9 @@ class MyApp extends StatelessWidget {
    final double screenWidth=MediaQuery.of(context).size.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-       // body:CourseView(course: course!),
-       // body:CourseAttendanceView(courseAttendance: Examples.COURSEATTENDANCE,editable: false,),
-       // body: AllFormsView(drivingSchool: User.getDS()),
-       //body: ApplicationView(application: gapplication!,),
-      //  body: AllOverView(drivingSchool: User.getDS()!),
-       // body: MessageView(messages: Examples.ENQUIRY.messages),
-    // body: CreateService(),
-       body: AllOverView(drivingSchool: User.getDS()),
+            home: Scaffold(
+       body: CourseMessageView(course: gcourse,),
+       //body: AllOverView(drivingSchool: User.getDS()),
       ),
     );
   }

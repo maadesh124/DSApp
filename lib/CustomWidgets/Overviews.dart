@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/ApplicationView.dart';
@@ -12,6 +14,7 @@ import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Enquiry.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Learner.dart';
+import 'package:fp3/Models/Model.dart';
 import 'package:fp3/Models/Service.dart';
 import 'package:fp3/Models/Vehicle.dart';
 
@@ -128,14 +131,15 @@ MaterialPageRoute(builder: (context) =>InstructorView(instructor: instructor)),)
 
 class VehicleOverview extends StatelessWidget {
   Vehicle vehicle;
-  VehicleOverview({super.key,required this.vehicle});
+  String type;
+  VehicleOverview({super.key,required this.vehicle,this.type=Model.DRIVINGSCHOOL});
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth=MediaQuery.of(context).size.width;
     return InkWell(onTap: () {
             Navigator.push(context,
-MaterialPageRoute(builder: (context) =>VehicleView(vehicle: vehicle)),);
+MaterialPageRoute(builder: (context) =>VehicleView(vehicle: vehicle,type: type,)),);
     },
       child: Container(width: 0.95*screenWidth,
       height: 331,

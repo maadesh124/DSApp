@@ -41,7 +41,8 @@ dependencies:
   percent_indicator: ^4.2.3
   firebase_auth: ^4.17.8
   get: ^4.6.6
-  chat_bubbles: ^1.6.0
+  chat_bubbles: ^1.1.0
+  dash_chat_2: ^0.0.15
 
 dev_dependencies:
   flutter_test:

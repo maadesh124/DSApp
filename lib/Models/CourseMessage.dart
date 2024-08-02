@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:fp3/Models/Model.dart';
 
 
@@ -60,4 +61,19 @@ class Message {
       'sender': sender,
     };
   }
+
+  static Message fromChatMessage(ChatMessage chatMessage)
+  {
+    String sender='${chatMessage.user.firstName}|${chatMessage.user.id}';
+   return Message(dateTime: chatMessage.createdAt,sender: sender,message: chatMessage.text);
+  }
+
+  ChatMessage toChatMessage()
+  {
+    ChatUser user=ChatUser(id: sender.split('|')[1],firstName: sender.split('|')[0]);
+    return ChatMessage(user: user, createdAt: dateTime,text: message);
+  }
+
+
+
 }

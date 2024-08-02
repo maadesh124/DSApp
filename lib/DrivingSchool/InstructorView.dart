@@ -44,16 +44,21 @@ await Model.getAllModels(widget.instructor.courseIds,courses);
   }
 
 
-Course? getCourse(String docId)
+void getCourse(String docId)
 {
+
+ Course? course;//= widget.getC(val.split('|')[1].trim());
   print('docId is $docId');
   print(widget.instructor.courseIds);
  int index= widget.instructor.courseIds.indexOf(docId);
   print(index);
  if(index==-1)
- return null;
+ course= null;
  if(gotData)
- return courses[index];
+ course= courses[index];
+
+  Navigator.push(context,
+MaterialPageRoute(builder: (context) =>CourseView(course:course! )),);
 }
 
 
@@ -189,10 +194,7 @@ Widget getOne(String key,String val)
  
   final sw=MediaQuery.of(context).size.width;
   return  InkWell(onTap: () async{
- final course= widget.getC(val.split('|')[1].trim());
- Navigator.push(context,
-MaterialPageRoute(builder: (context) =>CourseView(course:course! )),);
-
+        widget.getC(val.split('|')[1].trim());
   },
     child: Container(height: 55,width: sw*0.95,child: 
     Column(children: [

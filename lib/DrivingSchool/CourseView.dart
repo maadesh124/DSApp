@@ -63,7 +63,7 @@ MaterialPageRoute(builder: (context) => InstructorView(instructor:ins ,)));
 void goToVeh(Vehicle vehicle)
 {
   Navigator.push(context,
-MaterialPageRoute(builder: (context) => VehicleView(vehicle: vehicle)));
+MaterialPageRoute(builder: (context) => VehicleView(vehicle: vehicle,type: Model.DRIVINGSCHOOL,)));
 }
 
 void gotToAtt()async
@@ -167,18 +167,19 @@ Future<void> initialize()async
 
 applications=List.generate(widget.applicationIds.length,(_)=>Application());
 await Model.getAllModels(widget.applicationIds,applications);
+applications.forEach((element) =>print(element.toMap()));
 
-learners=List.generate(widget.applicationIds.length,(_)=>Learner());
+
+learners=List.generate(widget.learnerIds.length,(_)=>Learner());
 await Model.getAllModels(widget.learnerIds,learners);
-
+learners.forEach((element) => print(element.toMap()),);
 
 
   setState(() {
     isInitialized=true;
   });
   itemCount=applications.length;
-  print(widget.learnerIds.length);
-  print(learners.length);
+
 }
 
 void showApplictions()
