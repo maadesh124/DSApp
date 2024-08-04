@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:fp3/CustomWidgets/PageWidgets.dart';
 import 'package:fp3/DrivingSchool/InstructorView.dart';
+import 'package:fp3/Instructor/CourseOverViews.dart';
 import 'package:fp3/Instructor/CourseViewIns.dart';
+import 'package:fp3/Instructor/ServiceOverViews.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Model.dart';
@@ -22,11 +24,13 @@ List<Course> courses=[];
 bool gotData=false;
 
   void goToCourseListView(){
-
+            Navigator.push(context,
+MaterialPageRoute(builder: (context) =>AllCourseView(instructor: instructor)),);
   }
   void goToServiceListView()
   {
-
+            Navigator.push(context,
+MaterialPageRoute(builder: (context) =>AllServiceView(instructor: instructor)),);
   }
 
 void getCourse(String docId)

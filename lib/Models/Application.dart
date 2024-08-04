@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fp3/Models/Course.dart';
 import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Model.dart';
+import 'package:fp3/Models/Service.dart';
 
 
 class Application extends Model {
@@ -143,8 +144,37 @@ await application.setToDB();
   course.applicationObjectIds.add(application.getDocId());
  await  course.setToDB();
 
-
+  learner.applications[course.getDocId()]=application.getDocId();
+  await learner.setToDB();
+  
        return application;
+  }
+
+  static Future<Application> createService(Service service,Learner learner)async
+   {
+      Application application=Application(learnerAddress: learner.address, 
+    courseName: 'not applicable',
+    learnerName: learner.name,
+    learnerAge: learner.age+0.0,
+     isMale: (learner.gender=='Male'),
+      learnerObjectId: learner.getDocId(),
+       applicationNumber: service.getDocId()+service.applicationObjectIds.length.toString(), 
+       courseId: 'not applicable',
+       serviceName: service.name,
+       serviceId: service.getDocId(),
+        schoolId: service.schoolObjectId);
+
+        await application.setToDB();
+
+        service.applicationObjectIds.add(application.getDocId());
+        await service.setToDB();
+
+        print('beforeeeeeeeeeee   ${learner.toMap()}');
+        learner.applications[service.getDocId()]=application.getDocId();
+        await learner.setToDB();
+        print(learner.toMap());
+
+        return application;
   }
 
 }

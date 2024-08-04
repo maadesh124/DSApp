@@ -15,8 +15,13 @@ class Learner extends Model{
    String gender;
    List<String> courseObjectIds;
    List<String> serviceObjectIds;
+   Map<String,dynamic> enquiries;
+    Map<String,dynamic> applications;
+   //LinkedMap<String, dynamic> ma1; 
 
   Learner({super.collectionType=Model.LEARNER,
+  this.enquiries=const {},
+  this.applications=const {},
      this.name='NOt mentioned',
      this.mobileNumber='NOt mentioned',
      this.email='NOt mentioned',
@@ -31,6 +36,8 @@ class Learner extends Model{
   void fromSnapShot(DocumentSnapshot snapshot) {
     setDocId(snapshot.id);
       Map<String, dynamic> map=snapshot.data()! as Map<String, dynamic> ;
+      enquiries=map['enquiries']??{};
+      applications=map['applications'];//.map((key, value) => MapEntry(key, value.toString())); ;
       name= map['name'] as String? ?? '';
       mobileNumber= map['mobileNumber'] as String? ?? '';
       email= map['email'] as String? ?? '';
@@ -44,6 +51,8 @@ class Learner extends Model{
 
   Map<String, dynamic> toMap() {
     return {
+      'enquiries':enquiries,
+      'applications':applications,
       'age':age,
       'name': name,
       'mobileNumber': mobileNumber,

@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fp3/Instructor/CourseOverViews.dart';
-import 'package:fp3/Instructor/CourseViewIns.dart';
-import 'package:fp3/Instructor/OverView.dart';
-import 'package:fp3/Instructor/ServiceOverViews.dart';
+import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/Instructor/Home.dart';
+import 'package:fp3/Learner/ApplicationView.dart';
+import 'package:fp3/Learner/CourseViewL.dart';
+import 'package:fp3/Learner/RegisteredCourse.dart';
+import 'package:fp3/Learner/SearchResults.dart';
+import 'package:fp3/Learner/ServiceViewL.dart';
+
+
 
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
@@ -13,7 +18,6 @@ import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Enquiry.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Learner.dart';
-import 'package:fp3/Models/Model.dart';
 import 'package:fp3/Models/Service.dart';
 import 'package:fp3/Models/Vehicle.dart';
 import 'package:fp3/User.dart';
@@ -26,10 +30,11 @@ Learner glearner=Learner();
  Service gservice=Service();
  Instructor ginstructor=Instructor();
  Vehicle gvehicle=Vehicle();
- List<String> gcourseIds=[];
- List<String> gserviceIds=[];
- List<String> ginstructorIds=[];
- List<String> gvehicleIds=[];
+ List<String> gcourseIds=['lO1qsZCxc4yz6RDghR9n','wq0bvtGWAhtOtmb4Lco0',];
+ List<String> gserviceIds=['vPx845ZZKuISAyLJFd2I'];
+ List<String> ginstructorIds=['rdd5DRrEQNawdDpyjaZK','U19ptDvWhqnOysfzL2gu'];
+ List<String> gvehicleIds=['LkQH1hGDc5IjPGYUfoEY','s5gwOGY5ZwFNnLaXpcQe'];
+ List<String> gdsIds=['w42tQh0oLjlD0LsEGxPs'];
  Application gapplication=Application();
  CourseAttendance gCourseAttenance=CourseAttendance();
 void main() async{
@@ -37,11 +42,13 @@ void main() async{
     WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
  FirebaseFirestore db=FirebaseFirestore.instance;
- await User.initializeIns('rdd5DRrEQNawdDpyjaZK');
+ await User.initializeLearner('LRMpU3c6QdOOAkONHcdC');
+
+gservice.setDocId('vPx845ZZKuISAyLJFd2I');
+await gservice.getFromDB();
 
 gcourse.setDocId('wq0bvtGWAhtOtmb4Lco0');
 await gcourse.getFromDB();
-
 
 // await Application.createCourse(course: gcourse,learner: glearner);
 
@@ -55,12 +62,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final double screenWidth=MediaQuery.of(context).size.width;
+   final double sh=MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
             home: Scaffold(
-       body: CourseViewIns(course: gcourse,),
-       //body: AllOverView(drivingSchool: User.getDS()),
+       body:SearchResultsView(instructorIds: ginstructorIds, schoolIds:gdsIds, 
+       courseIds: gcourseIds, serviceIds: gserviceIds)
+      //body: AllOverView(drivingSchool: User.getDS()),
       ),
     );
   }

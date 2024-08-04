@@ -74,7 +74,7 @@ Future<Model> autoDocId()async
     where(FieldPath.documentId,whereIn: docIds).get();
     for (int i = 0; i < docIds.length; i++) {
       result[i].fromSnapShot(refs.docs[i]);
-      print('${result[i].toMap()}\n\n');
+      //print('${result[i].toMap()}\n\n');
     }
 } on Exception catch (e,s) {
   print('\n\n\n\n*****************$e******************\n\n\n\n');

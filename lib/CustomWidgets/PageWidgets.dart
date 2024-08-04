@@ -75,6 +75,17 @@ class PageConstants
     LinearGradient(begin: Alignment.topCenter,end: Alignment.bottomCenter,  
     colors:<Color>[Color.fromARGB(255, 247, 210, 65),Color.fromARGB(255, 255, 225, 116)]));
     static Color INSCOLOR=Color.fromARGB(255, 255, 224,116);
+
+    static Color LEARNER_DARK=Color.fromARGB(255, 108, 88,227);
+    static Color LEARNER_LIGHT=Color.fromARGB(255,206,201,244);
+    static BoxDecoration LEARNER_BG=BoxDecoration(gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+      Color.fromARGB(255,204,198,244),
+      Color.fromARGB(255,157,146,234),
+        Color.fromARGB(255,206,201,244)
+    ]));
 }
 
 

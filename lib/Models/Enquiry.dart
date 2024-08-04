@@ -37,19 +37,21 @@ return true;
 
   }
 
-  static Future<Enquiry> create(String dsObjectId,Learner learner)async
+  static Future<Enquiry> create(DrivingSchool ds,Learner learner)async
   {
 
-DrivingSchool ds=DrivingSchool();
-ds.setDocId(dsObjectId);
-await ds.getFromDB();
+// DrivingSchool ds=DrivingSchool();
+// ds.setDocId(dsObjectId);
+// await ds.getFromDB();
     
-    Enquiry enquiry=Enquiry(enquiryNo: dsObjectId+ds.enquiryIds.length.toString(), learnerId:learner.getDocId() ,
+    Enquiry enquiry=Enquiry(enquiryNo: ds.getDocId()+ds.enquiryIds.length.toString(), learnerId:learner.getDocId() ,
     learnerAge: learner.age+0.0,isMale: (learner.gender=='Male'),
     learnerName:learner.name,learnerAddress: learner.address, );
 
 await enquiry.setToDB();
     ds.enquiryIds.add(enquiry.getDocId());
+learner.enquiries[ds.getDocId()]=enquiry.getDocId();
+await learner.setToDB();
 await ds.setToDB();
     return enquiry;
   }
@@ -96,6 +98,8 @@ Future<void> getLearner()async
   learner.setDocId(learnerId);
   await learner.getFromDB();
 }
+
+
 
 }
 

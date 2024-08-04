@@ -7,8 +7,6 @@ import 'package:fp3/DrivingSchool/InstructorView.dart';
 import 'package:fp3/DrivingSchool/VehicleView.dart';
 import 'package:fp3/Models/Application.dart';
 import 'package:fp3/Models/Course.dart';
-import 'package:fp3/Models/Enquiry.dart';
-import 'package:fp3/Models/Examples.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Learner.dart';
 import 'package:fp3/Models/Model.dart';

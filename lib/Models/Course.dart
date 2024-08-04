@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fp3/Models/CourseAttendance.dart';
 import 'package:fp3/Models/CourseMessage.dart';
+import 'package:fp3/Models/DrivingSchool.dart';
 import 'package:fp3/Models/Instructor.dart';
 import 'package:fp3/Models/Model.dart';
 import 'package:fp3/Models/Reviews.dart';
@@ -174,6 +175,24 @@ return course;
     return vehicle;
   }
 
+Future<DrivingSchool> getDrivingSchool()async
+{
+  DrivingSchool drivingSchool=DrivingSchool();
+  drivingSchool.setDocId(dsObjectId);
+  await drivingSchool.getFromDB();
+
+  return drivingSchool;
+}
+
+int noOfLessonsCompleted()
+{
+  int count=0;
+  for(Progress p in progress)
+  if(p.isCompleted)
+  count++;
+  
+  return count;
+}
 
 
 @override

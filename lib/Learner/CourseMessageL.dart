@@ -1,0 +1,88 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:flutter/material.dart';
+import 'package:fp3/CustomWidgets/PageWidgets.dart';
+import 'package:fp3/Models/Course.dart';
+import 'package:fp3/Models/CourseMessage.dart';
+import 'package:fp3/Models/Model.dart';
+import 'package:fp3/User.dart';
+
+class CourseMessageViewL extends StatefulWidget {
+  Course course;
+ CourseMessageViewL({super.key,required this.course});
+
+  @override
+  State<CourseMessageViewL> createState() => _CourseMessageViewLState();
+}
+
+class _CourseMessageViewLState extends State<CourseMessageViewL> {
+bool gotData=false;
+ChatUser currentUser=ChatUser(id: User.getLearner().getDocId(),firstName: User.getLearner().name);
+CourseMessage courseMessage=CourseMessage();
+List<ChatMessage>chatMessages=[];
+
+Future<void> initialize()async
+{
+final ref=await FirebaseFirestore.instance.collection(Model.COURSE_MESSAGE).doc(widget.course.getDocId()).
+snapshots().listen((event) {
+
+  courseMessage.fromSnapShot(event);
+   courseMessage.messages= courseMessage.messages.reversed.toList();
+  setState(() {
+      chatMessages=List.generate(courseMessage.messages.length, 
+   
+  (index) => courseMessage.messages[index].toChatMessage());
+  gotData=true;
+  });
+ });
+}
+
+
+void addMessage(ChatMessage chatMessage)
+{
+   courseMessage.messages.add(Message.fromChatMessage(chatMessage));
+   courseMessage.setToDB(); 
+}
+
+  @override
+  void initState()
+  {
+    initialize();
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    final sw=MediaQuery.of(context).size.width;
+    final sh=MediaQuery.of(context).size.height;
+    
+    return Scaffold(body: 
+    Container(decoration: PageConstants.LEARNER_BG,
+    child: Column(
+      children: [
+      SizedBox(height: 40,),
+      Top(),
+      SizedBox(height: 20,),
+      Container(width: sw*0.95,height: 45,decoration: BoxDecoration(
+        color: PageConstants.LEARNER_DARK,borderRadius: 
+        BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+      ),child: Column(mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        Text(widget.course.name,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+        Text(widget.course.dsName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
+      ],),),
+      ClipRRect(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight: Radius.circular(10)),
+        child: Container(height: sh-175,width:sw*0.95 ,
+        color: Colors.white
+        ,  child:!gotData?Center(child: CircularProgressIndicator()):
+         DashChat(
+          messageOptions: MessageOptions(//showOtherUsersAvatar: false,
+        currentUserContainerColor: PageConstants.LEARNER_DARK),
+          currentUser: currentUser, onSend: addMessage, messages: chatMessages)),
+      )
+    ],),),);
+  }
+}

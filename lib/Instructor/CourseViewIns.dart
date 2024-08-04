@@ -89,7 +89,12 @@ void gotToAtt()async
       body: SingleChildScrollView(child:Container(decoration: PageConstants.INSTRUCTOR_BACKGROUND ,child: 
       Column(children: [
         SizedBox(height: 40,),
-        ElevatedButton(onPressed: ()=>widget.course.progress.forEach((element) {print(element.toMap());}), child: Text('button')),
+        ElevatedButton(onPressed: ()=>widget.course.progress.forEach((element)
+         {
+          print(element.toMap());
+          widget.course.setToDB();
+          }), 
+          child: Text('button')),
         Top(),
         SizedBox(height: 20,),
         Row(children: [

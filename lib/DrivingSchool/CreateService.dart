@@ -120,8 +120,6 @@ void onSubmit() async
 
 
 
-
-
 class DocumentList extends StatefulWidget {
 
   List<String> reqDocs;
@@ -136,6 +134,16 @@ class _DocumentListState extends State<DocumentList> {
 
   List<Document> documentList=[];
   TextEditingController textEditingController=TextEditingController();
+
+
+
+  @override
+  void initState()
+  {
+    documentList=List.generate(widget.reqDocs.length, (index) => Document(name: widget.reqDocs[index]));
+    super.initState();
+  }
+
 
    void onPressed() async
   {
