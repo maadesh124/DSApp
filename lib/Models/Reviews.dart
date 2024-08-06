@@ -21,7 +21,7 @@ class Review  extends Model{
   void fromSnapShot(DocumentSnapshot snapshot) {
     setDocId(snapshot.id);
     Map<String, dynamic> map=snapshot.data()! as Map<String, dynamic> ;
-      currentRating= map['currentRating'];
+      currentRating= map['currentRating']+0.0;
       totalRatings= map['totalRatings'];
       receiver= map['receiver'] as String? ?? '';
       receiverId= map['receiverId'] as String? ?? '';

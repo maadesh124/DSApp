@@ -16,7 +16,7 @@ class CreateCourse extends StatefulWidget {
 }
 
 class _CreateCourseState extends State<CreateCourse> {
-  
+  List<String> selectedDays=[];
   List<Progress> progList=[];
   DateTime? startDate;
   DateTime? endDate;
@@ -84,8 +84,8 @@ final DateTime? picked = await showDatePicker(
     progress: progList,
     );
 
-    print(progList);
-    Course.create(course);
+  
+   await Course.create(course,selectedDays);
          ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(backgroundColor: Colors.white,
                 content: Text('Created Successfully',style: TextStyle(color: Colors.black),),
@@ -98,13 +98,14 @@ final DateTime? picked = await showDatePicker(
   @override
   Widget build(BuildContext context) {
     final sw=MediaQuery.of(context).size.width;
+    
     return Scaffold(
       body: SingleChildScrollView(child:Container(decoration: PageConstants.PAGEBACKGROUND,
       child: Column(children: [
         SizedBox(height: 40,),
         Top(),
         SizedBox(height: 20,),
-        Container(width: 0.95*sw,height: 420,
+        Container(width: 0.95*sw,height: 600,
         decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
         child: Stack(children: [
           Align(alignment: Alignment.topCenter, 
@@ -118,6 +119,7 @@ final DateTime? picked = await showDatePicker(
           Positioned(left: 10,top: 50,child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InputBox(width: 150, height: 30,textEditingController: name,text: 'Course Name',),
+              SizedBox(height: 30,),
               InputBox(width: 150, height: 30,textEditingController:id,text: 'Course id',),
               Row( mainAxisAlignment: MainAxisAlignment.start, children: [
                 Text((startDate.toString()=='null')?'Select Start Date':startDate.toString().split(' ')[0]),
@@ -168,13 +170,38 @@ final DateTime? picked = await showDatePicker(
                   print(picked.toString());
                 }, icon: Icon(Icons.access_time,size: 25,))
               ],),
-              InputBox(width: 150, height: 30,text: 'Course Duration',textEditingController: duration,),
-              InputBox(width: 150, height: 30,text: 'Course Fee',textEditingController: fee,),
-              InputBox(width: 150, height: 30,text: 'Total Seats',textEditingController: totalSeats,),
-              InputBox(width: 150, height: 30,text: 'Instructor Id',textEditingController: insId,),
-              InputBox(width: 150, height: 30,text: 'Vehicle Number',textEditingController: vehNum,),
-              InputBox(width: 0.8*sw, height: 30,text: 'Course Description',textEditingController: des,),
-            
+              Row(
+                children: [
+                  Container(height: 300,
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 30,),
+                        InputBox(width: 150, height: 30,text: 'Course Duration',textEditingController: duration,),
+                        Spacer(flex: 1,),
+                        Spacer(flex: 1,),
+                        InputBox(width: 150, height: 30,text: 'Course Fee',textEditingController: fee,),
+                        Spacer(flex: 1,),
+                        InputBox(width: 150, height: 30,text: 'Total Seats',textEditingController: totalSeats,),
+                        Spacer(flex: 1,),
+                        InputBox(width: 150, height: 30,text: 'Instructor Id',textEditingController: insId,),
+                        Spacer(flex: 1,),
+                        InputBox(width: 150, height: 30,text: 'Vehicle Number',textEditingController: vehNum,),
+                        Spacer(flex: 1,),// SizedBox(height:100),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                 Container(width: 200,
+                  child: DaySelectionWidget(onSelectedDaysChanged:(days)
+                  {
+                    selectedDays=days;
+                    //print(selectedDays);
+                  } ))
+                ],
+              ),
+             
+            InputBox(width: 0.8*sw, height: 30,text: 'Course Description',textEditingController: des,),
           ],),)
         ]),),
         SizedBox(height: 20,),
@@ -202,7 +229,7 @@ final DateTime? picked = await showDatePicker(
 Future<bool> isValid()async
 {
   String schoolId=User.getDS().getDocId();
-  bool ans1= await Course.alreadyExists(courseId: id.text, dsObjectId: schoolId);
+  bool ans1=! await Course.alreadyExists(courseId: id.text, dsObjectId: schoolId);
   bool ans2=await Instructor.alreadyExists(insId: insId.text, schoolId: schoolId);
   bool ans3=await Vehicle.alreadyExists(vehicleNumber: vehNum.text, schoolId: schoolId);
   bool ans4=isNumber(fee.text);
@@ -218,56 +245,49 @@ Future<bool> isValid()async
 
 
 
-class DaysOfWeekCheckboxes extends StatefulWidget {
-  final List<String> days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-List<String> controller=[];
-  DaysOfWeekCheckboxes();
+class DaySelectionWidget extends StatefulWidget {
+  final List<String> days = const ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  final ValueChanged<List<String>> onSelectedDaysChanged;
 
-  List<String> getController()=>controller;
+  const DaySelectionWidget({
+    Key? key,
+    required this.onSelectedDaysChanged,
+  }) : super(key: key);
 
   @override
-  _DaysOfWeekCheckboxesState createState() => _DaysOfWeekCheckboxesState();
+  _DaySelectionWidgetState createState() => _DaySelectionWidgetState();
 }
 
-class _DaysOfWeekCheckboxesState extends State<DaysOfWeekCheckboxes> {
-  late Map<String, bool> _checkedDays;
+class _DaySelectionWidgetState extends State<DaySelectionWidget> {
+  late List<bool> _selectedDays;
 
   @override
   void initState() {
     super.initState();
-    // Initialize all checkboxes as true
-    _checkedDays = {for (var day in widget.days) day: true};
+    _selectedDays = List.filled(widget.days.length, true);
   }
 
-  List<String> get _selectedDays {
-    // return _checkedDays.entries.where((entry) => entry.value).map((entry) => entry.key).toList();
-    return widget.controller;
-  }
+  List<String> get selectedDays =>
+      widget.days.where((day) => _selectedDays[widget.days.indexOf(day)]).toList();
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        ...widget.days.map((day) {
-          return CheckboxListTile(
-            title: Text(day),
-            value: _checkedDays[day],
-            onChanged: (bool? value) {
-              setState(() {
-                _checkedDays[day] = value ?? false;
-            widget.controller= _checkedDays.entries.where((entry) => entry.value).map((entry) => entry.key).toList();
-              });
-            },
-          );
-        }).toList(),
-        ElevatedButton(
-          onPressed: () {
-            // Print the list of selected days to the console
-            print('Selected Days: ${widget.controller}');
+      children: widget.days.asMap().entries.map((entry) {
+        final index = entry.key;
+        final day = entry.value;
+        return CheckboxListTile(
+          visualDensity: VisualDensity(vertical: -4),
+          title: Text(day),
+          value: _selectedDays[index],
+          onChanged: (value) {
+            setState(() {
+              _selectedDays[index] = value!;
+              widget.onSelectedDaysChanged(selectedDays);
+            });
           },
-          child: Text('Show Selected Days'),
-        ),
-      ],
+        );
+      }).toList(),
     );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -37,22 +39,31 @@ print(FilePicker.platform.toString());
   {
     if(Platform.isAndroid)
     {
-      print('\n\n\n\n**********android***********\n\nn\no\nm\n');
       bool isGranted=await getPermission();
-      print(isGranted);
+      if(isGranted)
+      {
       result=await FilePicker.platform.pickFiles();
-      if(result!=null)
-      await FirebaseStorage.instance.ref().child('folder/sample').putFile(File(result!.files.single.path!));
+      return File(result!.files.single.path!);
+      }
     }
   }
-  
 
-
-  //  File? picked=result!=null?File(result.files.single.path!):null;
-
- 
 }
 
+
+//picks a file and uploads it to specified folder in FirebaseStorage ,
+// folder path should not contain / at ends,example f1/f2 .
+Future<void> pickAndUpload(String path,{String? name})async
+{
+  File? file=await pickFile();
+  
+  if(file!=null)
+  {
+    name=name??file.path.split('/').last.split('.')[0];
+      await FirebaseStorage.instance.ref().child('/$path/$name').putFile(file);
+  }
+   
+}
 
 
 class TestFile extends StatelessWidget {

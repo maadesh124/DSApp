@@ -7,6 +7,7 @@ import 'package:fp4/Models/Instructor.dart';
 import 'package:fp4/Models/Model.dart';
 import 'package:fp4/Models/Reviews.dart';
 import 'package:fp4/Models/Vehicle.dart';
+import 'package:fp4/Others/Functions.dart';
 import 'package:fp4/User.dart';
 
 class Course extends Model {
@@ -77,9 +78,9 @@ class Course extends Model {
 
 
 
-  static Future<Course> create(Course course)async
+  static Future<Course> create(Course course,List<String> selectedDays)async
   {
-
+    
 //    final revref= await FirebaseFirestore.instance.collection(DataBase.REVIEWS_COLLECTION).add({});
 //    final attref=await FirebaseFirestore.instance.collection(DataBase.COURSE_ATTENDANCE_COLLECTION).add({});
 Review review=Review();
@@ -95,7 +96,7 @@ instructor.fromSnapShot(insrefs.docs.first);
 Vehicle vehicle=Vehicle();
 vehicle.fromSnapShot(vehrefs.docs.first);
 
-
+cprint('reached');
 
 course.instructorObjectId=instructor.getDocId();
 course.instructorName=instructor.name;
@@ -119,18 +120,23 @@ await courseMessage.setToDB();
 
 //add to timetable and courseids list
 instructor.courseIds.add(course.getDocId());
+print(selectedDays);
 Map<String,Map<String,String>> map=instructor.timeTable;
 map.forEach((key, value) {
+  if (selectedDays.contains(key)) {
   Map<String,String> dayTimeTable=map[key]!;
   dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${course.getDocId()}';
+}
 });
 
 //add to timetable and couse list 
 vehicle.courseObjectIds.add(course.getDocId());
 map=vehicle.timeTable;
 map.forEach((key, value) {
+  if (selectedDays.contains(key)) {
   Map<String,String> dayTimeTable=map[key]!;
   dayTimeTable['${formatTimeOfDay(course.startTime)}-${formatTimeOfDay(course.endTime)}']='${course.name}|${course.getDocId()}';
+}
 });
 
 // await   FirebaseFirestore.instance.collection(DataBase.INSTRUCTOR_COLLECTION).
@@ -218,7 +224,7 @@ static  Future<bool> alreadyExists({required String courseId,required String dsO
   startDate= DateTime.fromMillisecondsSinceEpoch((map['startDate'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
   endDate= DateTime.fromMillisecondsSinceEpoch((map['endDate'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
   courseDuration= map['courseDuration'] ?? '';
-  courseFee= map['courseFee'] ?? 0.0;
+  courseFee= map['courseFee']+0.0 ?? 0.0;
   startTime= map['startTime'] != null ? TimeOfDay(hour: int.parse(map['startTime'].split(':')[0]), minute: int.parse(map['startTime'].split(':')[1])) :const TimeOfDay(hour: 0, minute: 0);
   endTime= map['endTime'] != null ? TimeOfDay(hour:int.parse(map['endTime'].split(':')[0]), minute: int.parse(map['endTime'].split(':')[1])) :const TimeOfDay(hour: 0, minute: 0);
   totalSeats= map['totalSeats'] ?? 0;

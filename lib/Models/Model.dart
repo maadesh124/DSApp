@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures, constant_identifier_names
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class Model {
@@ -34,11 +32,7 @@ Map<String, dynamic> toMap();
 void fromSnapShot(DocumentSnapshot snapshot);
 
 String getDocId()=>_docId;
-dynamic setDocId(String docId)
-{
-  _docId=docId;
-  return this;
-}
+void setDocId(String docId)=>_docId=docId;
 
 
 Future<Model> autoDocId()async
@@ -47,12 +41,6 @@ Future<Model> autoDocId()async
   _docId=docref.id;
   setToDB();
   return this;
-}
-
-Future<bool> exists()async
-{
- final ref= await FirebaseFirestore.instance.collection(collectionType).doc(_docId).get();
- return ref.exists;
 }
 
   Future<void> setToDB()async
@@ -76,21 +64,15 @@ Future<bool> exists()async
 
  static Future<void> getAllModels(List<String> docIds,List<Model> result)async
   {
-    try {
-  if(docIds.length==0)
-  return;
-  
-    final refs=  await FirebaseFirestore.instance.collection(result.first.collectionType).
-    where(FieldPath.documentId,whereIn: docIds).get();
-    for (int i = 0; i < docIds.length; i++) {
-      result[i].fromSnapShot(refs.docs[i]);
-      //print('${result[i].toMap()}\n\n');
-    }
-} on Exception catch (e,s) {
-  print('\n\n\n\n*****************$e******************\n\n\n\n');
-  print(s);
-  // TODO
-}
+    if(docIds.length==0)
+    return;
+
+  final refs=  await FirebaseFirestore.instance.collection(result.first.collectionType).
+      where(FieldPath.documentId,whereIn: docIds).get();
+      for (int i = 0; i < docIds.length; i++) {
+        result[i].fromSnapShot(refs.docs[i]);
+        print('${result[i].toMap()}\n\n');
+      }
    
   }
 

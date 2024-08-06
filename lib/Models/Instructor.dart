@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fp4/Models/DrivingSchool.dart';
 import 'package:fp4/Models/Model.dart';
+import 'package:fp4/Others/Functions.dart';
 import 'package:fp4/User.dart';
 
 class Instructor extends Model {
@@ -46,7 +47,9 @@ class Instructor extends Model {
       instructor.dob=DateTime.parse('1998-07-24 15:44:00');
       instructor.schoolId=User.getDS().getDocId();
 
+      cprint('reached');
       await instructor.setToDB();
+      cprint('set to db');
       DrivingSchool ds=User.getDS();
       ds.instructorIds.add(instructor.getDocId());
       User.setDS(ds);
@@ -65,7 +68,7 @@ setDocId(snapshot.id);
   mobileNumber= map['mobileNumber'] as String? ?? '';
   email= map['email'] as String? ?? '';
   joinDate= DateTime.fromMillisecondsSinceEpoch((map['joinDate'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
-  salary= map['salary'] as double? ?? 0.0;
+  salary= map['salary']+0.0 as double? ?? 0.0;
   dob= DateTime.fromMillisecondsSinceEpoch((map['dob'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
   gender= map['gender'] as String? ?? '';
   specialization= map['specialization'] as String? ?? '';

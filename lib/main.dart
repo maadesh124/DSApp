@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
 import 'package:fp4/DrivingSchool/AllOverView.dart';
 import 'package:fp4/DrivingSchool/CreateCourse.dart';
+import 'package:fp4/DrivingSchool/test.dart';
 import 'package:fp4/Models/DrivingSchool.dart';
 import 'package:fp4/Models/Examples.dart';
 import 'package:fp4/Models/Reviews.dart';
@@ -27,23 +28,24 @@ await User.initializeDS('3Kch3uLFYkWUDYRPaVvo');
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    DaysOfWeekCheckboxes v=DaysOfWeekCheckboxes();
+    List<String> st=['aadhar','PAN'];
+   
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: PageConstants.LIGHTGREEN),
         useMaterial3: true,
       ),
-      home:Scaffold(body:  Column(
+      home:Scaffold(body:Column(
         children: [
-          ElevatedButton(onPressed: ()=>print(v.getController()), child:Text('data')),
-          DaysOfWeekCheckboxes(),
+          DocumentListWidget(docList: st,editable: true,onDocClicked: (String name)=>null,),
+          ElevatedButton(onPressed: ()=>print(st), child: Text('print'))
         ],
-      ),),)
+      )),)
     ;
   }
 }

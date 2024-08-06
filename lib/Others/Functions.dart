@@ -5,3 +5,8 @@ bool isNumber(String s) {
   final number = double.tryParse(s);
   return number != null;
 }
+
+void cprint(Object object)
+{
+  print('\na\nb\nc\nd************$object***********\nx\ny\nz\nz');
+}
