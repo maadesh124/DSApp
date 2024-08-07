@@ -13,8 +13,10 @@ import 'package:fp4/Models/Examples.dart';
 import 'package:fp4/Models/Reviews.dart';
 import 'package:fp4/Models/Vehicle.dart';
 import 'package:fp4/Others/ImageCarousel.dart';
+import 'package:fp4/Others/MapWidget.dart';
 import 'package:fp4/Others/MyFiles.dart';
 import 'package:fp4/Others/PdfViewer.dart';
+import 'package:fp4/Others/Test.dart';
 import 'package:fp4/User.dart';
 import 'package:fp4/firebase_options.dart';
 
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:Scaffold(
-        body:ImageCarousel(model: gvehicle,size: 400,))
+        body:Location())
         
         )
     ;
