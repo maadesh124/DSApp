@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp4/CustomWidgets/DocumentList.dart';
 import 'package:fp4/CustomWidgets/Overviews.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
 import 'package:fp4/DrivingSchool/CourseView.dart';
@@ -76,7 +77,7 @@ MaterialPageRoute(builder: (context) =>ApplicationViewLearner(service: widget.se
         SizedBox(height: 20,),
         gotData?InstructorOverview(instructor: instructor!):CircularProgressIndicator(),
         SizedBox(height: 20,),
-        DocumentList(reqDocs: widget.service.requiredDocuments,editable: false,),
+        DocumentListWidget(docList: widget.service.requiredDocuments,editable: false,onDocClicked: (_)=>null,),
      
         ReviewWidget(reviewId: widget.service.reviewObjectId)
       ],),),),

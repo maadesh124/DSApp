@@ -2,38 +2,51 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fp4/CustomWidgets/DocumentList.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
 import 'package:fp4/Models/DrivingSchool.dart';
 import 'package:fp4/Models/Examples.dart';
+import 'package:fp4/Models/Instructor.dart';
 import 'package:fp4/Models/Service.dart';
+import 'package:fp4/Others/Functions.dart';
 import 'package:fp4/User.dart';
 
-class CreateService extends StatelessWidget {
+class CreateService extends StatefulWidget {
   CreateService({super.key});
-  TextEditingController serviceController=TextEditingController();
-  TextEditingController instructorIdController=TextEditingController();
-  TextEditingController serviceFeeController=TextEditingController();
-  TextEditingController descriptionController=TextEditingController();
-  List<String> requiredDocuments=[];
-  //String dsId='w42tQh0oLjlD0LsEGxPs';
 
-String? validateName(dynamic st)=> (st==null || st.isEmpty)? 'Enter a valid Service Name':null;
-
-String? validateInsId(dynamic insId)=>
-User.getDS().serviceIds.contains(insId)? null:'Invalid Id';
-
-bool isNumeric(String str) {
-  final numericRegex = RegExp(r'^[0-9]+$');
-  return numericRegex.hasMatch(str);
+  @override
+  State<CreateService> createState() => _CreateServiceState();
 }
-String? validateFee(dynamic fee)=>(isNumeric(fee??'a'))?null:'Enter only digits';
 
+class _CreateServiceState extends State<CreateService> {
+  TextEditingController serviceController=TextEditingController();
 
+  TextEditingController instructorIdController=TextEditingController();
 
+  TextEditingController serviceFeeController=TextEditingController();
 
+  TextEditingController descriptionController=TextEditingController();
 
+  List<String> requiredDocuments=[];
+
+  //String dsId='w42tQh0oLjlD0LsEGxPs';
 void onSubmit() async
 {
+
+bool res1=await Instructor.alreadyExists(
+  insId: instructorIdController.text, schoolId: User.getDS().getDocId());
+bool res2=isNumber(serviceFeeController.text);
+if(!(res1 && res2))
+{
+  ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: Colors.white,
+                content: Text('Invalid Credentials',style: TextStyle(color: Colors.black),),
+                duration: Duration(seconds: 3), // Duration for how long the Snackbar will be visible
+              ),
+            );
+            return;
+}
+
 
   Service service=Service(name: serviceController.text, 
   fee: double.parse(serviceFeeController.text),
@@ -43,10 +56,14 @@ void onSubmit() async
    schoolObjectId: User.getDS().getDocId(),
    schoolName: User.getDS().schoolName);
 
-  Service.createService(service); 
-    
+  await Service.createService(service); 
+      ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: Colors.white,
+                content: Text('Service created Successfully',style: TextStyle(color: Colors.black),),
+                duration: Duration(seconds: 3), // Duration for how long the Snackbar will be visible
+              ),
+            );
 }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +87,11 @@ void onSubmit() async
        
           Positioned(left: 20,bottom: 20,  child:Form(child: Column( crossAxisAlignment: CrossAxisAlignment.start,  children: [
           InputBox(width: 150, height: 30, text: "Service Name",textEditingController: serviceController,
-          validator: validateName,),
+          ),
           InputBox(width: 150, height: 30, text: "Instructor id",textEditingController: instructorIdController,
-          validator: validateInsId,),
+         ),
           InputBox(width: 150, height: 30, text: "Service Fee",textEditingController: serviceFeeController,
-          validator: validateFee,),
+          ),
           InputBox(width: 400, height: 30, text: "Service Description",textEditingController: descriptionController,),
           //InputBox(width: 400, height: 30, text: "")
         ],)),),
@@ -91,7 +108,7 @@ void onSubmit() async
         ),
        
         SizedBox(height: 30,),
-        DocumentList(reqDocs: requiredDocuments,editable: true,),
+        DocumentListWidget(docList: requiredDocuments,editable: true,onDocClicked: (_)=>null,),
         SizedBox(height: 40,),
        InkWell(onTap: onSubmit,
          splashColor: Colors.black,
@@ -109,7 +126,7 @@ void onSubmit() async
         ),
            ),
          ),
-       )
+       ),SizedBox(height: 20,)
        
            ],),
            )),
@@ -120,107 +137,3 @@ void onSubmit() async
 
 
 
-class DocumentList extends StatefulWidget {
-
-  List<String> reqDocs;
-  bool editable;
-  DocumentList({super.key,required this.reqDocs,this.editable=false});
-
-  @override
-  State<DocumentList> createState() => _DocumentListState();
-}
-
-class _DocumentListState extends State<DocumentList> {
-
-  List<Document> documentList=[];
-  TextEditingController textEditingController=TextEditingController();
-
-
-
-  @override
-  void initState()
-  {
-    documentList=List.generate(widget.reqDocs.length, (index) => Document(name: widget.reqDocs[index]));
-    super.initState();
-  }
-
-
-   void onPressed() async
-  {
-    await Future.delayed(Duration(milliseconds: 100));
-    showDialog(context: context, builder: (context) 
-    {
-      return AlertDialog(title: Text("Add Document"),content: InputBox(height: 30,width: 70,
-      text: "Enter Document Name",
-      textEditingController: textEditingController,)
-      ,actions: [
-        InkWell(splashColor: PageConstants.BLACK20,  onTap: ()
-        {
-          Navigator.of(context).pop();
-        }, 
-        child: Text("CANCEL",style: TextStyle(color: Colors.black),)),
-      
-        SizedBox(width: 10,),
-        InkWell(
-          onTap: ()
-      {
-        widget.reqDocs.add(textEditingController.text);
-        print(widget.reqDocs);
-        setState(() {
-          documentList.add(Document(name: textEditingController.text));
-          
-        });
-        textEditingController.clear();
-        Navigator.of(context).pop();
-
-      }, child: Text("OK",style: TextStyle(color: Colors.black),))],);
-    } );
-    
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final double screenWidth=MediaQuery.of(context).size.width;
-    return
-       Container(width: 0.95*screenWidth,
-        height: 70+documentList.length*35,
-        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
-        child: Column( crossAxisAlignment: CrossAxisAlignment.center, children: [
-        
-          Align(alignment:Alignment.topLeft ,child:Row(children: [SizedBox(width: 0.025*screenWidth,),
-          Text("Required Documents")],)),
-          SizedBox(height: 10,),
-          Container( height: 35.0*documentList.length, width: screenWidth*0.9, 
-          child: ListView.builder(physics: NeverScrollableScrollPhysics(), itemCount: documentList.length,
-          itemBuilder: (context, index) => documentList[index],)),
-         widget.editable?  InkWell(splashColor: PageConstants.BLACK50,        onTap: onPressed, child: Container(width: screenWidth*0.9,height: 25,
-           decoration: BoxDecoration(borderRadius: 
-          BorderRadius.circular(5),color: PageConstants.BLACK20),
-          
-           child:  Row(mainAxisAlignment: MainAxisAlignment.center,  children: [Icon(Icons.add,size: 20,color: Colors.black,),
-          Text("Add Docuent")],),)):SizedBox()
-        ]),
-        
-        );
-  }
-}
-
-class Document extends StatelessWidget {
-  String name;
-   Document({super.key,required this.name});
- 
-  @override
-  Widget build(BuildContext context) {
-    final double screenWidth=MediaQuery.of(context).size.width;
-    return 
-      Container(width: 0.95*screenWidth,height: 35,color: Colors.white,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center,  children: [
-        Container(width: 0.9*screenWidth,height: 28,
-        decoration: BoxDecoration(color: PageConstants.BLACK20,
-        borderRadius: BorderRadius.circular(5)),
-        child:Center(child: Text(name)),)
-        ,SizedBox(height: 7,)
-      ],),)
-    ;
-  }
-}

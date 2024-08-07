@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fp4/CustomWidgets/DocumentList.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
 import 'package:fp4/Models/Course.dart';
 import 'package:fp4/Models/DrivingSchool.dart';
@@ -22,6 +23,7 @@ class _CreateCourseState extends State<CreateCourse> {
   DateTime? endDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
+  List<String> reqDOcs=[];
   TextEditingController name=TextEditingController();
   TextEditingController id=TextEditingController();
   TextEditingController duration=TextEditingController();
@@ -82,6 +84,7 @@ final DateTime? picked = await showDatePicker(
     courseDescription: des.text,
     instructorId: insId.text,
     progress: progList,
+    reqDOcs: reqDOcs
     );
 
   
@@ -207,13 +210,9 @@ final DateTime? picked = await showDatePicker(
         SizedBox(height: 20,),
         ProgressView(list: progList,editable: true,height: 150,),
         SizedBox(height: 30,),
-      
-        Container(width: 0.8*sw,height: 40, decoration: BoxDecoration(
-          color: Colors.white,borderRadius: BorderRadius.circular(10)
-        ),child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.add,size: 30,),
-          Text('Upload materials'),
-        ],) ,),
+  
+        // SizedBox(height: 30,),
+        DocumentListWidget(docList:reqDOcs, editable:true, onDocClicked: (_)=>null),
         SizedBox(height: 30,),
         InkWell(onTap: onCreateClicked,child: Container(width: 70,height: 25,alignment: Alignment.center, 
           decoration: BoxDecoration(color: PageConstants.DARKGREEN,

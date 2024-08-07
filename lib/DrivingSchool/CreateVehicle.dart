@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
+import 'package:fp4/Models/Model.dart';
 import 'package:fp4/Models/Vehicle.dart';
+import 'package:fp4/Others/MyFiles.dart';
 import 'package:fp4/User.dart';
 
 class CreateVehicle extends StatefulWidget {
@@ -18,6 +20,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
   TextEditingController number=TextEditingController();
 
   TextEditingController des=TextEditingController();
+  Vehicle vehicle=Vehicle();
 
 void createClicked()async
 {
@@ -35,8 +38,11 @@ bool exists=await Vehicle.alreadyExists(vehicleNumber: number.text, schoolId: Us
     return;
   }
 
-  Vehicle vehicle=Vehicle( schoolId: User.getDS().getDocId() ,vehicleNumber: number.text,
-   name: name.text, description: des.text);
+  // Vehicle vehicle=Vehicle( schoolId: User.getDS().getDocId() ,vehicleNumber: number.text,
+  //  name: name.text, description: des.text);
+  vehicle.schoolId=User.getDS().getDocId();
+  vehicle.vehicleNumber=number.text;
+  vehicle.name=name.text;
    Vehicle.create(vehicle);
 
        ScaffoldMessenger.of(context).showSnackBar(
@@ -46,6 +52,21 @@ bool exists=await Vehicle.alreadyExists(vehicleNumber: number.text, schoolId: Us
               ),
             );
 }
+
+Future<void> addImage()async
+{
+await vehicle.autoDocId();
+await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/images');
+}
+
+Future<void> uploadDocs()async
+{
+  await vehicle.autoDocId();
+  await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/pdfs');
+
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +95,10 @@ bool exists=await Vehicle.alreadyExists(vehicleNumber: number.text, schoolId: Us
             InputBox(width: 200, height: 30,text: 'Description',
             textEditingController: des,)
            ],)),
-          const Align(alignment: Alignment.centerRight,
+          Align(alignment: Alignment.centerRight,
            child: Column( mainAxisAlignment: MainAxisAlignment.center,
            crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Icon(Icons.add,size: 40,color: Colors.black,),
+            IconButton(icon:Icon(Icons.add,size: 40,color: Colors.black,),onPressed: addImage,),
             Text('Add image',style: TextStyle(fontWeight: FontWeight.w900),)
            ],),)
         ]),),
@@ -85,11 +106,13 @@ bool exists=await Vehicle.alreadyExists(vehicleNumber: number.text, schoolId: Us
       Container(width: 0.95*sw,height: 40,
       decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
       child:
-        Row(mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Icon(Icons.add,size: 30,color: Colors.black,),
-          Text('Upload Documents')
-        ],),),
+        InkWell(onTap: uploadDocs,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            Icon(Icons.add,size: 30,color: Colors.black,),
+            Text('Upload Documents')
+          ],),
+        ),),
         SizedBox(height: 50,),
         InkWell(onTap: createClicked,child: Container(width: 100,height: 35,
         decoration: BoxDecoration(color: PageConstants.DARKGREEN,borderRadius: BorderRadius.circular(5)),

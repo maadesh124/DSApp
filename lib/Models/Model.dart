@@ -37,9 +37,11 @@ void setDocId(String docId)=>_docId=docId;
 
 Future<Model> autoDocId()async
 {
+  if(_docId!='not set')
+  return this; 
   final docref=await FirebaseFirestore.instance.collection(collectionType).add({});
   _docId=docref.id;
-  setToDB();
+  //setToDB();
   return this;
 }
 

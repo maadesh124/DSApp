@@ -11,6 +11,7 @@ import 'package:fp4/Others/Functions.dart';
 import 'package:fp4/User.dart';
 
 class Course extends Model {
+  List<String> reqDOcs;
   String dsObjectId;
   String dsName;
   String name;
@@ -40,6 +41,7 @@ class Course extends Model {
 
 
   Course({super.collectionType=Model.COURSE,
+    this.reqDOcs= const [],
     this.dsObjectId = '',
     this.dsName = '',
     this.name = '',
@@ -215,6 +217,7 @@ static  Future<bool> alreadyExists({required String courseId,required String dsO
     Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
     setDocId(snapshot.id);
       try {
+  reqDOcs= List<String>.from(map['reqDOcs']??[])  ;
   currentRating=map['currentRating'];
   reviewObjectId=map['reviewObjectId'];
   dsObjectId= map['dsObjectId'] ?? '';
@@ -247,6 +250,7 @@ static  Future<bool> alreadyExists({required String courseId,required String dsO
 
   Map<String, dynamic> toMap() {
     return {
+      'reqDOcs':reqDOcs,
       'currentRating':currentRating,
       'dsObjectId': dsObjectId,
       'dsName': dsName,
