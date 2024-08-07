@@ -6,7 +6,7 @@ class DrivingSchool extends Model{
   String schoolName;
   int mobileNumber;
   String email;
-  String location;
+  GeoPoint location;
   String description;
   String ownerName;
   //String logo;
@@ -23,7 +23,7 @@ class DrivingSchool extends Model{
     this.schoolName='Not Mentioned',
     this.mobileNumber=9988776655,
     this.email='Not Mentioned',
-    this.location='Not Mentioned',
+    location1,
     this.description='Not Mentioned',
     this.ownerName='Not Mentioned',
     this.instructorIds = const [],
@@ -33,7 +33,7 @@ class DrivingSchool extends Model{
     this.enquiryIds = const [],
     this.reviewId = '',
 
-  });
+  }):location=location1??GeoPoint(10, 20);
 
   @override
   void fromSnapShot(DocumentSnapshot snapshot) {
@@ -44,7 +44,7 @@ class DrivingSchool extends Model{
       schoolName= map['schoolName'] as String? ?? '';
       mobileNumber= map['mobileNumber'] as int? ?? 0;
       email= map['email'] as String? ?? '';
-      location= map['location'] as String? ?? '';
+      location= map['location'] as GeoPoint? ?? GeoPoint(10, 20);
       description= map['description'] as String? ?? '';
       ownerName= map['ownerName'] as String? ?? '';
       instructorIds= List<String>.from(map['instructorIds'] ?? []);

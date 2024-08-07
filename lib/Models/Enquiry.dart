@@ -13,6 +13,7 @@ class Enquiry extends Model {
    String enquiryNo;
    String learnerId;
    List<Message> messages;
+   bool isReplied;
 
   Enquiry({super.collectionType=Model.ENQUIRY,
      this.enquiryNo='Not Mentioned',
@@ -22,6 +23,7 @@ class Enquiry extends Model {
     this.learnerAddress='Not Mentioned',
     this.learnerAge=20,
     this.learnerName='Not Mentioned',
+    this.isReplied=false,
     // Default to an empty list
   });
 
@@ -60,6 +62,7 @@ await ds.setToDB();
   void fromSnapShot(DocumentSnapshot snapshot) {
 Map<String, dynamic> map=snapshot.data()! as Map<String, dynamic>;
 setDocId(snapshot.id);
+      isReplied=map['isReplied'];
       learnerName= map['learnerName'];
       learnerAge= map['learnerAge'];
       learnerAddress=map['learnerAddress'] ;
@@ -74,6 +77,7 @@ setDocId(snapshot.id);
   @override
   Map<String, dynamic> toMap() {
     return {
+      'isReplied':isReplied,
       'learnerName':learnerName,
       'learnerAge':learnerAge,
       'learnerAddress':learnerAddress,
@@ -86,6 +90,9 @@ setDocId(snapshot.id);
 
 Future<Enquiry> addMessage(Message message,String objectId) async
 {
+  if(message.sender==Model.DRIVINGSCHOOL) {
+    isReplied=true;
+  }
   messages.add(message);
   await setToDB();
 

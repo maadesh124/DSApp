@@ -1,27 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp4/CustomWidgets/PageWidgets.dart';
-import 'package:fp4/DrivingSchool/AllOverView.dart';
-import 'package:fp4/DrivingSchool/CreateCourse.dart';
-import 'package:fp4/DrivingSchool/CreateService.dart';
-import 'package:fp4/DrivingSchool/CreateVehicle.dart';
-import 'package:fp4/DrivingSchool/test.dart';
+import 'package:fp4/DrivingSchool/DProfile.dart';
+import 'package:fp4/Models/Application.dart';
 import 'package:fp4/Models/Course.dart';
-import 'package:fp4/Models/DrivingSchool.dart';
-import 'package:fp4/Models/Examples.dart';
-import 'package:fp4/Models/Reviews.dart';
 import 'package:fp4/Models/Vehicle.dart';
-import 'package:fp4/Others/ImageCarousel.dart';
-import 'package:fp4/Others/MapWidget.dart';
-import 'package:fp4/Others/MyFiles.dart';
-import 'package:fp4/Others/PdfViewer.dart';
 import 'package:fp4/Others/Test.dart';
 import 'package:fp4/User.dart';
 import 'package:fp4/firebase_options.dart';
 
 Course gcourse=Course();
 Vehicle gvehicle=Vehicle();
+Application gapplication=Application();
 void main()async
  {
     WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +25,8 @@ await gcourse.getFromDB();
 
 gvehicle.setDocId('7NG8K7ISpY2eqESt7WAa');
 await gvehicle.getFromDB();
+
+
 
 
 
@@ -55,7 +47,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:Scaffold(
-        body:Location())
+        body:Dprofile())
         
         )
     ;

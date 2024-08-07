@@ -26,7 +26,7 @@ Future<bool> getPermission() async
   return isGranted;
 }
 
-Future<File?> pickFile()async
+Future<File?> pickFile(List<String> ext)async
 {
   FilePickerResult? result;
  
@@ -34,7 +34,7 @@ print(FilePicker.platform.toString());
 // Platform.isAndroid;
   if(kIsWeb)
   {
-    result=await FilePicker.platform.pickFiles();
+    result=await FilePicker.platform.pickFiles(allowedExtensions: ext,type: FileType.custom);
   }else 
   {
     if(Platform.isAndroid)
@@ -42,7 +42,7 @@ print(FilePicker.platform.toString());
       bool isGranted=await getPermission();
       if(isGranted)
       {
-      result=await FilePicker.platform.pickFiles();
+      result=await FilePicker.platform.pickFiles(allowedExtensions: ext,type: FileType.custom);
       return File(result!.files.single.path!);
       }
     }
@@ -53,9 +53,9 @@ print(FilePicker.platform.toString());
 
 //picks a file and uploads it to specified folder in FirebaseStorage ,
 // folder path should not contain / at ends,example f1/f2 .
-Future<void> pickAndUpload(String path,{String? name})async
+Future<void> pickAndUpload(String path,{String? name,required List<String> ext})async
 {
-  File? file=await pickFile();
+  File? file=await pickFile(ext);
   
   if(file!=null)
   {
@@ -71,6 +71,6 @@ class TestFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: pickFile, child:Text('pick'));
+    return ElevatedButton(onPressed:()=> pickFile(['pdf']), child:Text('pick'));
   }
 }

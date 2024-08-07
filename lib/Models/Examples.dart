@@ -25,7 +25,6 @@ class Examples
   schoolName: 'Safe Drive School',
   mobileNumber: 9876543210,
   email: 'contact@safedriveschool.com',
-  location: '123 Main Street, Cityville',
   description: 'Providing quality driving lessons for over 20 years.',
   ownerName: 'John Doe',
   instructorIds: ['inst1', 'inst2', 'inst3'],

@@ -56,13 +56,13 @@ bool exists=await Vehicle.alreadyExists(vehicleNumber: number.text, schoolId: Us
 Future<void> addImage()async
 {
 await vehicle.autoDocId();
-await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/images');
+await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/images',ext: ['jpg','png']);
 }
 
 Future<void> uploadDocs()async
 {
   await vehicle.autoDocId();
-  await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/pdfs');
+  await pickAndUpload('${Model.VEHICLE}/${vehicle.getDocId()}/pdfs',ext:['pdf']);
 
 }
 

@@ -17,14 +17,15 @@ Future<bool> getLocationPermission() async {
   return true;
 }
 
-Future<String> getcurrentLocation() async {
-  String Address;
+Future<List<dynamic>> getcurrentLocation() async {
+  String address;
 
   if (await getLocationPermission()) {
     Position position = await Geolocator.getCurrentPosition();
     List<Placemark> place =
         await placemarkFromCoordinates(position.latitude, position.longitude);
-    return "${place[0].street!},${place[0].thoroughfare},${place[0].subLocality},${place[0].locality},${place[0].administrativeArea!},${place[0].postalCode},${place[0].country},${position.latitude},${position.longitude}";
+    address= "${place[0].street!},${place[0].thoroughfare},${place[0].subLocality},${place[0].locality},${place[0].administrativeArea!},${place[0].postalCode},${place[0].country}";
+    return [address,position];
   }
-  return "Enter address manual";
+  return ["Enter address manual",''];
 }

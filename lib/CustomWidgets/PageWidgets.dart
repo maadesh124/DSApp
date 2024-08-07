@@ -413,3 +413,19 @@ class SingleReview extends StatelessWidget {
     ),);
   }
 }
+
+class CircularAvatar extends StatelessWidget {
+  
+  String letter;
+  double size;
+  Color letterColor;
+  CircularAvatar({super.key,required this.letter,required this.size,required this.letterColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(width: size,
+    height: size,decoration: BoxDecoration(color: Colors.black.withOpacity(0.2),
+    borderRadius: BorderRadius.circular(size/2)),child: Center(child: 
+    Text(letter,style: TextStyle(color: letterColor,fontSize: 0.7*size),),),);
+  }
+}

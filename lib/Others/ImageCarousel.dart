@@ -49,19 +49,19 @@ String loc='';
         gotData=true;
       });
 
-    pickFile().then((File? file)
-    {
-      setState(() {
-        loc=file!.path;
-      });
-    });
+    // pickFile().then((File? file)
+    // {
+    //   setState(() {
+    //     loc=file!.path;
+    //   });
+    // });
 
-    getcurrentLocation().then((val)
-    {
-      setState(() {
-        loc=val;
-      });
-    });
+    // getcurrentLocation().then((val)
+    // {
+    //   setState(() {
+    //     loc=val;
+    //   });
+    // });
 
   }
 
@@ -74,16 +74,11 @@ String loc='';
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return 
         !gotData?Center(child: CircularProgressIndicator(),):
         ClipRRect(borderRadius: BorderRadius.circular(25),
           child: ImageSlideshow(children: images,width: widget.size,height: widget.size,
           indicatorColor: PageConstants.BLACK50,indicatorBackgroundColor: PageConstants.BLACK20,
-          autoPlayInterval: 3000,isLoop: isLoop,),
-        ),
-        Text(loc),
-      ],
-    );
+          autoPlayInterval: 3000,isLoop: isLoop,),);
   }
 }

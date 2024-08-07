@@ -9,11 +9,13 @@ import 'package:fp4/Models/Service.dart';
 
 class Application extends Model {
 
-  double learnerAge;
+   double learnerAge;
    bool isMale;
    String learnerAddress;
-
+   List<String> reqDocs;
    DateTime dateApplied;
+   DateTime dateApproved;
+   String status;
    String learnerObjectId;
    String applicationNumber;
    String courseId; // Required
@@ -25,6 +27,9 @@ class Application extends Model {
 
   Application({super.collectionType=Model.APPLICATION,
     dateApplied,
+    dateApproved,
+    this.reqDocs=const [],
+    this.status='not approved',
     this.learnerAddress='',
     this.learnerAge=20,
     this.isMale=false,
@@ -36,7 +41,8 @@ class Application extends Model {
     this.serviceName = 'not applicable',
     this.courseName = '', // Default empty string for courseName
     this.learnerName = '', // Default empty string for learnerName
-  }):this.dateApplied=dateApplied??DateTime.now();
+  }):this.dateApplied=dateApplied??DateTime.now(),
+  this.dateApproved=DateTime.now();
 
 
 
@@ -45,7 +51,10 @@ class Application extends Model {
     Map<String,dynamic> map=snapshot.data()! as Map<String,dynamic>;
     setDocId(snapshot.id);
       try {
+  reqDocs= List<String>.from(map['reqDocs']??[])  ;
+  status=map['status'] as String? ?? ' ';
   dateApplied= DateTime.fromMillisecondsSinceEpoch((map['dateApplied'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
+  dateApproved= DateTime.fromMillisecondsSinceEpoch((map['dateApproved'].seconds * 1000) ?? DateTime.now().millisecondsSinceEpoch);
   learnerAge= map['learnerAge'];
   learnerAddress= map['learnerAddress'];
   isMale= map['isMale'] as bool;
@@ -65,6 +74,9 @@ class Application extends Model {
 
   Map<String, dynamic> toMap() {
     return {
+      'dateApproved':dateApproved,
+      'status':status,
+      'reqDocs':reqDocs,
       'learnerAge':learnerAge,
       'learnerAddress':learnerAddress,
       'isMale':isMale,
@@ -129,7 +141,8 @@ await course.setToDB();
       learnerObjectId: learner.getDocId(),
        applicationNumber: course.dsObjectId+course.applicationObjectIds.length.toString(), 
        courseId: course.courseId,
-        schoolId: course.dsObjectId);
+        schoolId: course.dsObjectId,
+        reqDocs: course.reqDOcs);
 
 await application.setToDB();
 
@@ -162,7 +175,8 @@ await application.setToDB();
        courseId: 'not applicable',
        serviceName: service.name,
        serviceId: service.getDocId(),
-        schoolId: service.schoolObjectId);
+        schoolId: service.schoolObjectId,
+        reqDocs: service.requiredDocuments);
 
         await application.setToDB();
 

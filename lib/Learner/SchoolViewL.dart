@@ -50,7 +50,7 @@ MaterialPageRoute(builder: (context) =>EnquiryViewLearner(ds: widget.drivingScho
             Align(alignment: Alignment.topCenter, child: Image.asset('assets/images/img.png')),
             Text(widget.drivingSchool.mobileNumber.toString()),
             Text(widget.drivingSchool.email),
-            Text(widget.drivingSchool.location),
+            Text(widget.drivingSchool.location.toString()),
             Text(widget.drivingSchool.description),
             Align(alignment: Alignment.bottomCenter,child: 
             ElevatedButton(onPressed:enquiryClicked , child:Text('enquire') ),)
